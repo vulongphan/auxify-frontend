@@ -1,27 +1,13 @@
-import React, { Fragment } from 'react';
-import './App.css';
+import React from 'react';
+import '../style/App.css';
 import SpotifyWebApi from 'spotify-web-api-js';
 
-const spotifyApi = new SpotifyWebApi();
+import NowPlaying from './NowPlaying';
+import Queue from './Queue';
+import DefaultPlaylist from './DefaultPlaylist';
+import LogIn from './LogIn';
 
-function LogIn(props) {
-  const isLoggedIn = props.loggedIn;
-  const info = props.info;
-  if (!isLoggedIn) {
-    return (
-      <button className="login">
-        <a href="http://authentication-auxify.herokuapp.com/login"> Login to Spotify </a>
-      </button>
-    );
-  }
-  return (
-    <div className="media-body">
-      <img src={info.profileImage} type="width: 100%"></img>
-      <h1 className="name">{info.name}</h1>
-      <p className="country">{info.country}</p>
-    </div>
-  )
-}
+const spotifyApi = new SpotifyWebApi();
 
 class Suggestion extends React.Component {
   constructor(props) {
@@ -144,166 +130,6 @@ class Search extends React.Component {
   }
 }
 
-class QueueItem extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    const songInfo = this.props.songInfo;
-    return (
-      <tr>
-        <td>
-          <img src={songInfo.image} width="30" height="30" />
-        </td>
-        <td> {songInfo.name}</td>
-        <td> - {songInfo.artists.map(artist => artist.name).join(', ')}</td>
-        <td>
-          <button onClick={() => this.props.onVoteUp(this.props.index)}>upvote</button>
-        </td>
-        <td>
-          <button onClick={() => this.props.onVoteDown(this.props.index)}>downvote</button>
-        </td>
-        <td>
-          {this.props.vote}
-        </td>
-      </tr>
-    );
-  }
-}
-
-class Queue extends React.Component {
-  constructor(props) {
-    super(props);
-
-  }
-
-  render() {
-    const queue = this.props.queue;
-    const vote = this.props.vote;
-
-    return (
-      <div className="queue-container">
-        <div>Queue</div>
-        <table>
-          <tbody id="queue">
-            {queue.map((song, index) => {
-              var songInfo = {
-                image: song.album.images[2].url,
-                name: song.name,
-                artists: song.artists,
-              };
-              return (
-                <QueueItem
-                  key={song.id}
-                  index={index}
-                  vote={vote[index]}
-                  songInfo={songInfo}
-                  onVoteUp={this.props.onVoteUp}
-                  onVoteDown={this.props.onVoteDown} />
-              )
-            })}
-          </tbody>
-        </table>
-        <Search
-          className="search-track"
-          onClick={this.props.addToQueue}
-          types={['track']}
-          maxSuggestion={10}
-          placeholder={"What song do you want to play?"}
-        ></Search>
-      </div>
-    )
-  }
-}
-
-class NowPlaying extends React.PureComponent {
-  constructor() {
-    super();
-
-    this.count = 2000;
-    this.timer = null;
-  }
-
-  componentDidMount() {
-    this.timer = setInterval(this.props.getNowPlaying, this.count);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.timer);
-  }
-
-  componentDidUpdate() {
-    const left = this.props.nowPlayingSong.duration - this.props.nowPlayingState.currentPosition;
-    if (left <= this.count) this.props.play();
-  }
-
-  render() {
-    if (this.props.nowPlayingState.playing) {
-      const nowPlaying = this.props.nowPlayingSong;
-      const percentage = +(this.props.nowPlayingState.currentPosition * 100 / nowPlaying.duration).toFixed(2) + '%';
-      return (
-        <div className="now-playing">
-          <div className="now-playing__text media">
-            <div className="media__img">
-              <img src={nowPlaying.albumArt} width="170" height="170" />
-            </div>
-            <div className="now-playing__bd media__bd">
-              <div className="now-playing__track-name">
-                {nowPlaying.name}
-              </div>
-              <div className="now-playing__artist-name">
-                {nowPlaying.artists.map(a => a.name).join(', ')}
-              </div>
-            </div>
-          </div>
-          <div className="now-playing__progress">
-            <div className="now-playing__progress_bar" style={{ width: percentage }} />
-          </div>
-        </div>
-      );
-    } else {
-      return (
-        <div className="now-playing">Currently not online</div>
-      )
-    }
-  }
-}
-
-class DefaultPlaylist extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  componentDidUpdate() {
-    if (!this.props.isPlaying) this.props.onUpdate();
-  }
-
-  render() {
-    const playlist = this.props.playlist;
-    return (
-      <div className="container">
-        {playlist &&
-          <div className="display-playlist">
-            <p>The default playlist is </p>
-            <span>
-              <img src={playlist.images[0].url} width="20px" height="20px" />
-              <span> {playlist.name}</span>
-              <span> by {playlist.owner.display_name}</span>
-            </span>
-          </div>}
-        <Search
-          className="search-playlist"
-          onClick={this.props.updateDefaultPlaylist}
-          types={['playlist']}
-          maxSuggestion={5}
-          placeholder={"Choose a playlist as default"}
-        />
-      </div>
-    )
-  }
-}
-
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -314,6 +140,7 @@ class App extends React.Component {
     if (token) {
       spotifyApi.setAccessToken(token);
     }
+
     this.state = {
       loggedIn: token ? true : false,
       info: { name: '', profileImage: '', country: '' },
@@ -341,6 +168,29 @@ class App extends React.Component {
     this.onVoteDown = this.onVoteDown.bind(this);
   }
 
+  componentDidMount() {
+    const isLoggedIn = this.state.loggedIn;
+    //if not logged in, only show the button to log in
+    if (!isLoggedIn) {
+      this.hide();
+    } else {
+      this.getInfo();
+      this.onRerender();
+      window.addEventListener("beforeunload", this.onRefresh.bind(this));
+    }
+  }
+
+  componentWillUnmount() {
+    //before reload/exit, save the current user's data in localStorage
+    if (this.state.loggedIn) {
+      window.removeEventListener(
+        "beforeunload",
+        this.onRefresh.bind(this)
+      );
+      this.onRefresh();
+    }
+  }
+
   hide() {
     document.getElementById("after-log-in").style.visibility = "hidden";
   }
@@ -357,31 +207,30 @@ class App extends React.Component {
     return hashParams;
   }
 
+  //only works if user starts playing a song first to get device
   play() {
+    //if queue is not empty, play from queue;
     if (this.state.queue.length > 0) {
       var options = {
         uris: [this.state.queue[0].uri],
       };
-      console.log(options);
       spotifyApi.play(options)
         .then(() => { this.removeFromQueue() },
           err => {
-            if (err.status === 404) alert("Check if your device is online or logged in");
+            console.log(err);
           });
     }
+    //if queue is empty, play from default playlist;
     else if (this.state.default_playlist) {
       var options = {
         context_uri: this.state.default_playlist.uri,
       }
-      console.log(options);
       spotifyApi.play(options)
         .catch(err => console.log(err));
     }
-    else {
-      console.log(this.state.default_playlist);
-    }
   }
 
+  //update the user's current playback state
   getNowPlaying() {
     spotifyApi.getMyCurrentPlaybackState()
       .then(
@@ -431,11 +280,11 @@ class App extends React.Component {
     if (!newQueue.includes(song)) {
       newQueue.push(song);
       newVote.push(0);
+      this.setState({
+        queue: newQueue,
+        vote: newVote,
+      });
     }
-    this.setState({
-      queue: newQueue,
-      vote: newVote,
-    });
   }
 
   swap(arr, i, j) {
@@ -444,6 +293,7 @@ class App extends React.Component {
     arr[j] = temp;
   }
 
+  //update vote and sort the vote array
   onVoteUp(index) {
     var newVote = this.state.vote.slice();
     newVote[index] += 1;
@@ -478,89 +328,101 @@ class App extends React.Component {
         this.setState({
           vote: newVote,
         })
+      }
     }
   }
-}
 
-removeFromQueue() {
-  var newQueue = this.state.queue.slice(1);
-  var newVote = this.state.vote.slice(1);
-  this.setState({
-    queue: newQueue,
-    vote: newVote,
-  });
-}
-
-getInfo() {
-  spotifyApi.getMe()
-    .then(
-      (response) => {
-        this.setState({
-          info: {
-            name: response.display_name,
-            profileImage: response.images[0].url,
-            country: response.country
-          }
-        })
-      }
-      , err => console.error(err));
-}
-
-/*
-getDevice() {
-  spotifyApi.getMyDevices()
-    .then(
-      (response) => {
-        this.setState({
-          devices: response.devices[0].id,
-        })
-      }
-    )
-    .catch(err => console.error(err));
-}
-*/
-
-componentDidMount() {
-  const isLoggedIn = this.state.loggedIn;
-  if (!isLoggedIn) {
-    this.hide();
-  } else {
-    this.getInfo();
-    //this.getDevice();
+  removeFromQueue() {
+    var newQueue = this.state.queue.slice(1);
+    var newVote = this.state.vote.slice(1);
+    this.setState({
+      queue: newQueue,
+      vote: newVote,
+    });
   }
-}
 
-render() {
-  const isLoggedIn = this.state.loggedIn;
-  return (
-    <div className='App'>
-      <div className="Log-in">
-        <LogIn
-          loggedIn={isLoggedIn}
-          info={this.state.info} />
+  getInfo() {
+    spotifyApi.getMe()
+      .then(
+        (response) => {
+          this.setState({
+            info: {
+              name: response.display_name,
+              profileImage: response.images[0].url,
+              country: response.country
+            }
+          })
+        }
+        , err => console.error(err));
+  }
+
+  //fetch the previous state before refresh and update the current state
+  onRerender() {
+    for (let key in this.state) {
+      if (localStorage.hasOwnProperty(key)) {
+        let value = localStorage.getItem(key);
+        try {
+          value = JSON.parse(value);
+          console.log(key + " " + value);
+          this.setState({ [key]: value });
+        } catch (e) {
+          this.setState({ [key]: value });
+        }
+      }
+    }
+  }
+
+  //save the current state before refresh
+  onRefresh() {
+    localStorage.setItem("queue", JSON.stringify(this.state.queue));
+    localStorage.setItem("vote", JSON.stringify(this.state.vote));
+    localStorage.setItem("default_playlist", JSON.stringify(this.state.default_playlist));
+  }
+
+  render() {
+    const isLoggedIn = this.state.loggedIn;
+    console.log(this.state.queue);
+    return (
+      <div className='App'>
+        <div className="Log-in">
+          <LogIn
+            loggedIn={isLoggedIn}
+            info={this.state.info} />
+        </div>
+        <div id="after-log-in">
+          <DefaultPlaylist
+            playlist={this.state.default_playlist}
+            onUpdate={this.play}
+            isPlaying={this.state.nowPlayingState.playing} />
+          <Search
+            className="search-playlist"
+            onClick={this.updateDefaultPlaylist}
+            types={['playlist']}
+            maxSuggestion={5}
+            placeholder={"Choose a playlist as default"}
+          />
+          <NowPlaying
+            play={this.play}
+            getNowPlaying={this.getNowPlaying}
+            nowPlayingState={this.state.nowPlayingState}
+            nowPlayingSong={this.state.nowPlayingSong} />
+          <Queue
+            queue={this.state.queue}
+            vote={this.state.vote}
+            onVoteUp={this.onVoteUp}
+            onVoteDown={this.onVoteDown}>
+          </Queue>
+          <Search
+            className="search-track"
+            onClick={this.addToQueue}
+            types={['track']}
+            maxSuggestion={10}
+            placeholder={"What song do you want to play?"}
+          ></Search>
+        </div>
       </div>
-      <div id="after-log-in">
-        <DefaultPlaylist
-          playlist={this.state.default_playlist}
-          updateDefaultPlaylist={this.updateDefaultPlaylist}
-          onUpdate={this.play}
-          isPlaying={this.state.nowPlayingState.playing} />
-        <NowPlaying
-          play={this.play}
-          getNowPlaying={this.getNowPlaying}
-          nowPlayingState={this.state.nowPlayingState}
-          nowPlayingSong={this.state.nowPlayingSong} />
-        <Queue
-          queue={this.state.queue}
-          vote={this.state.vote}
-          addToQueue={this.addToQueue}
-          onVoteUp={this.onVoteUp}
-          onVoteDown={this.onVoteDown}>
-        </Queue>
-      </div>
-    </div>
-  );
-}
+    );
+  }
 
 }
 
