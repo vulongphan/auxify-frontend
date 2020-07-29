@@ -1,5 +1,5 @@
 ### How to deply the app to Heroku
-To fix the H10 error, add "heroku-postbuild": "npm run build" to "scripts" in package.json file , then run "yarn add serve --save" to add the 'serve' command to the dependencies, then change "start" script to: "start": "serve -s build" 
+To fix the H10 error, add "heroku-postbuild": "npm run build" to "scripts" in package.json file , then run "yarn add serve --save" to add the 'serve' command to the dependencies, then change "start" script to: "start": "serve -s build", "dev: react-scripts start"
 
 ### How to run the app locally
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
