@@ -1,39 +1,28 @@
 import React from 'react';
 
-class QueueItem extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    const songInfo = this.props.songInfo;
-    return (
-      <tr>
-        <td>
-          <img src={songInfo.image} width="30" height="30" />
-        </td>
-        <td> {songInfo.name}</td>
-        <td> - {songInfo.artists.map(artist => artist.name).join(', ')}</td>
-        <td>
-          <button onClick={() => this.props.onVoteUp(this.props.index)}>upvote</button>
-        </td>
-        <td>
-          <button onClick={() => this.props.onVoteDown(this.props.index)}>downvote</button>
-        </td>
-        <td>
-          {this.props.vote}
-        </td>
-      </tr>
-    );
-  }
+function QueueItem(props) {
+  const songInfo = props.songInfo;
+  return (
+    <tr>
+      <td>
+        <img src={songInfo.image} width="30" height="30" />
+      </td>
+      <td> {songInfo.name}</td>
+      <td> - {songInfo.artists.map(artist => artist.name).join(', ')}</td>
+      <td>
+        <button onClick={() => props.onVoteUp(props.index)}>upvote</button>
+      </td>
+      <td>
+        <button onClick={() => props.onVoteDown(props.index)}>downvote</button>
+      </td>
+      <td>
+        {props.vote}
+      </td>
+    </tr>
+  );
 }
 
 class Queue extends React.Component {
-  constructor(props) {
-    super(props);
-
-  }
-
   render() {
     const queue = this.props.queue;
     const vote = this.props.vote;

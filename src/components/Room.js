@@ -5,141 +5,17 @@ import SpotifyWebApi from 'spotify-web-api-js';
 import NowPlaying from './NowPlaying';
 import Queue from './Queue';
 import DefaultPlaylist from './DefaultPlaylist';
+import SearchBar from './SearchBar';
 
 const spotifyApi = new SpotifyWebApi();
+const PROXY = "http://authentication-auxify.herokuapp.com" /*"http://localhost:8888"*/;
 //var xhr = new XMLHttpRequest();
-
-class Suggestion extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        if (this.props.types.includes("track")) {
-            const searchResult = this.props.searchResult.song;
-
-            return (
-                <ul className="suggestionList">
-                    {searchResult.map((song) => {
-                        return (
-                            <li key={song.id} onClick={() => { this.props.onClick(song); this.props.clearSearch() }}>
-                                <div>
-                                    <span>
-                                        <img src={song.album.images[2].url} height="20px" width="20px" />
-                                        <span> {song.name}</span>
-                                        <span> - {song.artists[0].name}</span>
-                                    </span>
-                                </div>
-                            </li>
-                        );
-                    })}
-                </ul>
-            );
-        } else {
-            const searchResult = this.props.searchResult.playlist;
-
-            return (
-                <ul className="suggestionList">
-                    {searchResult.map((playlist) => {
-                        return (
-                            <li key={playlist.id} onClick={() => { this.props.onClick(playlist); this.props.clearSearch() }}>
-                                <div>
-                                    <span>
-                                        <img src={playlist.images[0].url} height="20px" width="20px" />
-                                        <span> {playlist.name}</span>
-                                        <span> by {playlist.owner.display_name}</span>
-                                    </span>
-                                </div>
-                            </li>
-                        );
-                    })}
-                </ul>
-            )
-        }
-    }
-}
-
-class Search extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            searchResult: { song: [], playlist: [] },
-        }
-
-        this.clearSearch = this.clearSearch.bind(this);
-        this.search = this.search.bind(this);
-    }
-
-    search(query) {
-        if (query) {
-            const types = this.props.types;
-            spotifyApi.search(query, types)
-                .then((response) => {
-                    var result;
-                    if (types.includes("track")) {
-                        result = response.tracks.items;
-                        if (result.length > this.props.maxSuggestion) {
-                            result = result.slice(0, this.props.maxSuggestion);
-                        }
-                        this.setState({
-                            searchResult: { song: result }
-                        });
-                    }
-                    if (types.includes("playlist")) {
-                        result = response.playlists.items;
-                        if (result.length > this.props.maxSuggestion) {
-                            result = result.slice(0, this.props.maxSuggestion);
-                        }
-                        this.setState({
-                            searchResult: { playlist: result }
-                        });
-                    }
-                })
-                .catch(err => console.log(err));
-        } else this.clearSearch();
-    }
-
-    clearSearch() {
-        this.setState({
-            searchResult: { song: [], playlist: [] },
-        });
-    }
-
-    render() {
-        return (
-            <div>
-                <input
-                    className="searchbar"
-                    onKeyUp={event => { this.search(event.target.value) }}
-                    placeholder={this.props.placeholder}
-                    type="text"
-                    size="50"
-                />
-                <Suggestion
-                    searchResult={this.state.searchResult}
-                    types={this.props.types}
-                    onClick={this.props.onClick}
-                    clearSearch={this.clearSearch}>
-                </Suggestion>
-            </div>
-        );
-    }
-}
 
 class Room extends React.Component {
     constructor(props) {
         super(props);
 
         const params = this.getHashParams();
-        
-        /*
-        const token = params.access_token;
-
-        if (token) {
-            spotifyApi.setAccessToken(token);
-        }
-        */
 
         this.state = {
             room_id: params.room_id,
@@ -171,11 +47,11 @@ class Room extends React.Component {
     componentDidMount() {
         //this.getInfo();
         this.getToken()
-        .then((response) => {
-          if (response.access_token) {
-            spotifyApi.setAccessToken(response.access_token);
-          }
-        });
+            .then((response) => {
+                if (response.access_token) {
+                    spotifyApi.setAccessToken(response.access_token);
+                }
+            });
         this.onRerender();
         window.addEventListener("beforeunload", this.onRefresh.bind(this));
     }
@@ -189,7 +65,7 @@ class Room extends React.Component {
     }
 
     getToken = async () => { //to get the response from authentication server
-        const response = await fetch('http://authentication-auxify.herokuapp.com/' + this.state.room_id);
+        const response = await fetch(PROXY + '/' + this.state.room_id);
         const body = await response.json();
         if (response.status !== 200) throw Error(body.message);
         else console.log("Here");
@@ -210,9 +86,10 @@ class Room extends React.Component {
 
     //only works if user starts playing a song first to get device
     play() {
+        var options;
         //if queue is not empty, play from queue;
         if (this.state.queue.length > 0) {
-            var options = {
+            options = {
                 uris: [this.state.queue[0].uri],
             };
             spotifyApi.play(options)
@@ -223,7 +100,7 @@ class Room extends React.Component {
         }
         //if queue is empty, play from default playlist;
         else if (this.state.default_playlist) {
-            var options = {
+            options = {
                 context_uri: this.state.default_playlist.uri,
             }
             spotifyApi.play(options)
@@ -281,11 +158,11 @@ class Room extends React.Component {
         if (!newQueue.includes(song)) {
             newQueue.push(song);
             newVote.push(0);
+            /*
             var data = {
                 queue: newQueue,
                 vote: newVote,
             }
-            /*
             xhr.open('POST', 'http://localhost:8888/queue', true);
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             xhr.send(JSON.stringify(data));
@@ -397,8 +274,9 @@ class Room extends React.Component {
                     playlist={this.state.default_playlist}
                     onUpdate={this.play}
                     isPlaying={this.state.nowPlayingState.playing} />
-                <Search
+                <SearchBar
                     className="search-playlist"
+                    spotifyApi={spotifyApi}
                     onClick={this.updateDefaultPlaylist}
                     types={['playlist']}
                     maxSuggestion={5}
@@ -415,13 +293,14 @@ class Room extends React.Component {
                     onVoteUp={this.onVoteUp}
                     onVoteDown={this.onVoteDown}>
                 </Queue>
-                <Search
+                <SearchBar
                     className="search-track"
+                    spotifyApi={spotifyApi}
                     onClick={this.addToQueue}
                     types={['track']}
                     maxSuggestion={10}
                     placeholder={"What song do you want to play?"}
-                ></Search>
+                />
             </div>
         );
     }

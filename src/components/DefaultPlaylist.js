@@ -1,10 +1,6 @@
 import React from 'react';
 
 class DefaultPlaylist extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidUpdate() {
     if (!this.props.isPlaying) this.props.onUpdate();
   }
