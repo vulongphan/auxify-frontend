@@ -95,9 +95,6 @@ class Search extends React.Component {
                             searchResult: { playlist: result }
                         });
                     }
-
-                    //console.log(result);
-
                 })
                 .catch(err => console.log(err));
         } else this.clearSearch();
@@ -195,6 +192,7 @@ class Room extends React.Component {
         const response = await fetch('/' + this.state.room_id);
         const body = await response.json();
         if (response.status !== 200) throw Error(body.message);
+        else console.log("Here");
         return body;
     };
 
