@@ -24,7 +24,6 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "proxy": "http://authentication-auxify.herokuapp.com",
   "browserslist": {
     "production": [
       ">0.2%",

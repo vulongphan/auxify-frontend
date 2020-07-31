@@ -189,7 +189,7 @@ class Room extends React.Component {
     }
 
     getToken = async () => { //to get the response from authentication server
-        const response = await fetch('/' + this.state.room_id);
+        const response = await fetch('http://authentication-auxify.herokuapp.com/' + this.state.room_id);
         const body = await response.json();
         if (response.status !== 200) throw Error(body.message);
         else console.log("Here");
