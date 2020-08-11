@@ -1,16 +1,26 @@
 import React from 'react';
 
 class NowPlaying extends React.PureComponent {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.count = 2000;
     this.timer = null;
+
+    this.state = {
+      playing: false,
+      currentPosition: 0,
+      name: '',
+      albumArt: '',
+      artists: [],
+      duration: 0,
+    }
+
+    this.getNowPlaying = this.getNowPlaying.bind(this);
   }
 
   componentDidMount() {
-    this.props.getNowPlaying();
-    this.timer = setInterval(this.props.getNowPlaying, this.count);
+    this.timer = setInterval(this.getNowPlaying, this.count);
   }
 
   componentWillUnmount() {
@@ -18,26 +28,56 @@ class NowPlaying extends React.PureComponent {
   }
 
   componentDidUpdate() {
-    const left = this.props.nowPlayingSong.duration - this.props.nowPlayingState.currentPosition;
-    if (left <= this.count) this.props.play();
+    const left = this.state.duration - this.state.currentPosition;
+    if (this.state.playing && left <= this.count) {
+      this.props.play();
+    }
+  }
+
+  getNowPlaying() {
+    this.props.spotifyApi.getMyCurrentPlaybackState()
+      .then(
+        (response) => {
+          if (response.item.name !== this.state.name) {
+            this.setState({
+              playing: true,
+              currentPosition: response.progress_ms,
+              name: response.item.name,
+              albumArt: response.item.album.images[0].url,
+              artists: response.item.artists,
+              duration: response.item.duration_ms,
+            })
+          }
+          else {
+            this.setState({
+              playing: true,
+              currentPosition: response.progress_ms,
+            })
+          }
+        })
+      .catch(() => {
+        this.setState({
+          playing: false,
+          currentPosition: 0,
+        })
+      })
   }
 
   render() {
-    if (this.props.nowPlayingState.playing) {
-      const nowPlaying = this.props.nowPlayingSong;
-      const percentage = +(this.props.nowPlayingState.currentPosition * 100 / nowPlaying.duration).toFixed(2) + '%';
+    if (this.state.playing) {
+      const percentage = +(this.state.currentPosition * 100 / this.state.duration).toFixed(2) + '%';
       return (
         <div className="now-playing">
           <div className="now-playing__text media">
             <div className="media__img">
-              <img src={nowPlaying.albumArt} width="170" height="170" />
+              <img src={this.state.albumArt} width="170" height="170" />
             </div>
             <div className="now-playing__bd media__bd">
               <div className="now-playing__track-name">
-                {nowPlaying.name}
+                {this.state.name}
               </div>
               <div className="now-playing__artist-name">
-                {nowPlaying.artists.map(a => a.name).join(', ')}
+                {this.state.artists.map(a => a.name).join(', ')}
               </div>
             </div>
           </div>
@@ -48,7 +88,7 @@ class NowPlaying extends React.PureComponent {
       );
     } else {
       return (
-        <div className="now-playing">Currently not online</div>
+        <div className="now-playing">Play a song on your device for Auxify to connect with it</div>
       )
     }
   }

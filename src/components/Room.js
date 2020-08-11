@@ -1,15 +1,15 @@
 import React from 'react';
 import '../style/Room.css';
 import SpotifyWebApi from 'spotify-web-api-js';
+import api from '../api/api.js';
 
 import NowPlaying from './NowPlaying';
 import Queue from './Queue';
-import DefaultPlaylist from './DefaultPlaylist';
 import SearchBar from './SearchBar';
+import RoomInfo from './RoomInfo';
 
 const spotifyApi = new SpotifyWebApi();
-const PROXY = "http://authentication-auxify.herokuapp.com" /*"http://localhost:8888"*/;
-//var xhr = new XMLHttpRequest();
+const frontEnd = /*'http://localhost:3000/home'*/ "https://auxify.herokuapp.com/home";
 
 class Room extends React.Component {
     constructor(props) {
@@ -19,58 +19,56 @@ class Room extends React.Component {
 
         this.state = {
             room_id: params.room_id,
-            info: { name: '', profileImage: '', country: '' },
-            nowPlayingState: {
-                playing: false,
-                currentPosition: 0,
-            },
-            nowPlayingSong: {
-                name: '',
-                albumArt: '',
-                artists: [],
-                duration: 0,
-            },
+            hostInfo: {},
             queue: [],
-            vote: [],
             default_playlist: null,
         }
 
+        this.count = 500;
+
         this.addToQueue = this.addToQueue.bind(this);
-        this.removeFromQueue = this.removeFromQueue.bind(this);
         this.play = this.play.bind(this);
         this.updateDefaultPlaylist = this.updateDefaultPlaylist.bind(this);
-        this.getNowPlaying = this.getNowPlaying.bind(this);
-        this.onVoteUp = this.onVoteUp.bind(this);
-        this.onVoteDown = this.onVoteDown.bind(this);
     }
 
     componentDidMount() {
-        //this.getInfo();
-        this.getToken()
-            .then((response) => {
-                if (response.access_token) {
-                    spotifyApi.setAccessToken(response.access_token);
-                }
-            });
-        this.onRerender();
-        window.addEventListener("beforeunload", this.onRefresh.bind(this));
+        this.timer = setInterval(() => this.fetchRoom(this.state.room_id), this.count);
     }
 
     componentWillUnmount() {
-        window.removeEventListener(
-            "beforeunload",
-            this.onRefresh.bind(this)
-        );
-        this.onRefresh();
+        clearInterval(this.timer);
     }
 
-    getToken = async () => { //to get the response from authentication server
-        const response = await fetch(PROXY + '/' + this.state.room_id);
-        const body = await response.json();
-        if (response.status !== 200) throw Error(body.message);
-        else console.log("Here");
-        return body;
-    };
+    fetchRoom(room_id) {
+        api.getRoom(room_id)
+            .then(res => {
+                if (res.data.success) {
+                    const room = res.data.data;
+                    spotifyApi.setAccessToken(room.access_token);
+                    this.getInfo();
+                    this.setState({
+                        queue: room.queue,
+                        default_playlist: room.default_playlist,
+                    })
+                } else {
+                    window.location.href = frontEnd;
+                }
+                /*
+                //Session timer functionality
+                const current_time = Date.now() / 1000; //get the number of seconds elapsed in seconds
+
+                //to check if the current_time is greater than end_time of the room, if it is then close the room
+                if (current_time >= room.end_time) {
+                    console.log('Session expired');
+                    window.location.href = 'http://localhost:3000/expire';
+                    api.deleteRoom(room_id).then(res => {
+                        console.log(res);
+                    });
+                }
+                */
+            })
+            .catch(err => console.log(err));
+    }
 
     getHashParams() {
         var hashParams = {};
@@ -86,146 +84,45 @@ class Room extends React.Component {
 
     //only works if user starts playing a song first to get device
     play() {
-        var options;
-        //if queue is not empty, play from queue;
-        if (this.state.queue.length > 0) {
-            options = {
-                uris: [this.state.queue[0].uri],
-            };
-            spotifyApi.play(options)
-                .then(() => { this.removeFromQueue() },
-                    err => {
-                        console.log(err);
-                    });
-        }
-        //if queue is empty, play from default playlist;
-        else if (this.state.default_playlist) {
-            options = {
-                context_uri: this.state.default_playlist.uri,
+        if (spotifyApi.getAccessToken()) {
+            var options;
+            //if queue is not empty, play from queue;
+            if (this.state.queue.length > 0) {
+                options = {
+                    uris: [this.state.queue[0].uri],
+                };
+                spotifyApi.play(options)
+                    .then(() => { api.removeFromQueue(this.state.room_id) },
+                        err => {
+                            console.log(err);
+                        });
             }
-            spotifyApi.play(options)
-                .catch(err => console.log(err));
+            //if queue is empty, play from default playlist;
+            else if (this.state.default_playlist) {
+                options = {
+                    context_uri: this.state.default_playlist.uri,
+                }
+                spotifyApi.play(options)
+                    .catch(err => console.log(err));
+            } else {
+                alert("Add songs to queue or a default playlist");
+            }
         }
     }
 
     //update the user's current playback state
-    getNowPlaying() {
-        spotifyApi.getMyCurrentPlaybackState()
-            .then(
-                (response) => {
-                    if (response.item.name !== this.state.nowPlayingSong.name) {
-                        this.setState({
-                            nowPlayingState: {
-                                playing: true,
-                                currentPosition: response.progress_ms,
-                            },
-                            nowPlayingSong: {
-                                name: response.item.name,
-                                albumArt: response.item.album.images[0].url,
-                                artists: response.item.artists,
-                                duration: response.item.duration_ms,
-                            }
-                        })
-                    }
-                    else {
-                        this.setState({
-                            nowPlayingState: {
-                                playing: true,
-                                currentPosition: response.progress_ms,
-                            }
-                        })
-                    }
-                })
-            .catch(() => {
-                this.setState({
-                    nowPlayingState: {
-                        playing: false,
-                        currentPosition: 0,
-                    }
-                })
-            })
-    }
-
     updateDefaultPlaylist(playlist) {
-        this.setState({
-            default_playlist: playlist,
-        })
+        const payload = { default_playlist: playlist }
+        api.updateDefaultPlaylist(this.state.room_id, payload)
+            .then(() => console.log("Successfully updated"))
+            .catch(err => console.log(err));
     }
 
     addToQueue(song) {
-        var newQueue = this.state.queue.slice();
-        var newVote = this.state.vote.slice();
-        if (!newQueue.includes(song)) {
-            newQueue.push(song);
-            newVote.push(0);
-            /*
-            var data = {
-                queue: newQueue,
-                vote: newVote,
-            }
-            xhr.open('POST', 'http://localhost:8888/queue', true);
-            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xhr.send(JSON.stringify(data));
-            */
-            this.setState({
-                queue: newQueue,
-                vote: newVote,
-            });
-        }
-    }
-
-    swap(arr, i, j) {
-        const temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
-    }
-
-    //update vote and sort the vote array
-    onVoteUp(index) {
-        var newVote = this.state.vote.slice();
-        newVote[index] += 1;
-        if (index > 0 && newVote[index] > newVote[index - 1]) {
-            this.swap(newVote, index, index - 1);
-            var newQueue = this.state.queue.slice();
-            this.swap(newQueue, index, index - 1);
-            this.setState({
-                vote: newVote,
-                queue: newQueue,
-            });
-        } else {
-            this.setState({
-                vote: newVote,
-            });
-        }
-    }
-
-    onVoteDown(index) {
-        if (this.state.vote[index] >= 1) {
-            var newVote = this.state.vote.slice();
-            newVote[index] -= 1;
-            if (index < newVote.length - 1 && newVote[index] < newVote[index + 1]) {
-                this.swap(newVote, index, index + 1);
-                var newQueue = this.state.queue.slice();
-                this.swap(newQueue, index, index + 1);
-                this.setState({
-                    vote: newVote,
-                    queue: newQueue,
-                });
-            } else {
-                this.setState({
-                    vote: newVote,
-                })
-            }
-        }
-    }
-
-    removeFromQueue() {
-        var newQueue = this.state.queue.slice(1);
-        var newVote = this.state.vote.slice(1);
-        this.setState({
-            queue: newQueue,
-            vote: newVote,
-        });
+        song.vote = 0;
+        api.addToQueue(this.state.room_id, song)
+            .then(() => console.log("Successfully added"))
+            .catch(err => console.log(err));
     }
 
     getInfo() {
@@ -233,49 +130,26 @@ class Room extends React.Component {
             .then(
                 (response) => {
                     this.setState({
-                        info: {
+                        hostInfo: {
                             name: response.display_name,
-                            profileImage: response.images[0].url,
-                            country: response.country
+                            profileImage: response.images[0].url
                         }
                     })
                 }
                 , err => console.error(err));
     }
 
-    //fetch the previous state before refresh and update the current state
-    onRerender() {
-        for (let key in this.state) {
-            if (localStorage.hasOwnProperty(key)) {
-                let value = localStorage.getItem(key);
-                try {
-                    value = JSON.parse(value);
-                    console.log(key + " " + value);
-                    this.setState({ [key]: value });
-                } catch (e) {
-                    this.setState({ [key]: value });
-                }
-            }
-        }
-    }
-
-    //save the current state before refresh
-    onRefresh() {
-        localStorage.setItem("queue", JSON.stringify(this.state.queue));
-        localStorage.setItem("vote", JSON.stringify(this.state.vote));
-        localStorage.setItem("default_playlist", JSON.stringify(this.state.default_playlist));
-    }
-
     render() {
-        //const isLoggedIn = this.state.loggedIn;
         return (
             <div className='Room'>
+                <RoomInfo
+                    hostInfo={this.state.hostInfo}
+                    room_id={this.state.room_id} />
                 <DefaultPlaylist
-                    playlist={this.state.default_playlist}
-                    onUpdate={this.play}
-                    isPlaying={this.state.nowPlayingState.playing} />
+                    playlist={this.state.default_playlist} />
                 <SearchBar
-                    className="search-playlist"
+                    id="searchPlaylist"
+                    className="searchbarPlaylist"
                     spotifyApi={spotifyApi}
                     onClick={this.updateDefaultPlaylist}
                     types={['playlist']}
@@ -284,17 +158,13 @@ class Room extends React.Component {
                 />
                 <NowPlaying
                     play={this.play}
-                    getNowPlaying={this.getNowPlaying}
-                    nowPlayingState={this.state.nowPlayingState}
-                    nowPlayingSong={this.state.nowPlayingSong} />
+                    spotifyApi={spotifyApi} />
                 <Queue
                     queue={this.state.queue}
-                    vote={this.state.vote}
-                    onVoteUp={this.onVoteUp}
-                    onVoteDown={this.onVoteDown}>
-                </Queue>
+                    room_id={this.state.room_id} />
                 <SearchBar
-                    className="search-track"
+                    id="searchTrack"
+                    className="searchbarTrack"
                     spotifyApi={spotifyApi}
                     onClick={this.addToQueue}
                     types={['track']}
@@ -305,6 +175,25 @@ class Room extends React.Component {
         );
     }
 
+}
+
+const DefaultPlaylist = (props) => {
+    const playlist = props.playlist;
+    if (playlist) {
+        return (
+            <div className="display-playlist">
+                <span>
+                    <img src={playlist.images[0].url} width="20px" height="20px" />
+                    <span className="display-playlist__name"> {playlist.name}</span>
+                    <span className="display-playlist__owner"> by {playlist.owner.display_name}</span>
+                </span>
+            </div>
+        )
+    } else {
+        return (
+            <div className="display-playlist">N/A</div>
+        )
+    }
 }
 
 export default Room;

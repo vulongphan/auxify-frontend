@@ -41,61 +41,45 @@
   }
 }
 
+html {
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+li, p {
+  line-height: 1.5;
+}
+
 div, button {
   margin: 10px;
   border: black 10px;
 }
 
-button{
- display:inline-block;
- padding:0.3em 1.2em;
- margin:0 0.3em 0.3em 0;
- border-radius:2em;
- font-family:'Roboto',sans-serif;
- font-size: 30px;
- font-weight:300;
- text-align:center;
- transition: all 0.2s;
- color:white;
- background-color: blue;
-}
-button.login{
-  color:#FFFFFF;
-  background-color: green;
-}
-button:hover{
-  background-color: lightblue;
-}
-button.login:hover{
-  border-color: white;
+/*room info*/
+.room-info{
+  background-color: lightskyblue;
+  position: relative;
 }
 
-ul, ol{
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  background-color: #333333;
+/*display playlist*/
+.display-playlist{
+  background-color: cornsilk;
+  float: right;
+  padding: 5px 5px;
+  margin: 0px;
 }
 
-li {
-  display: block;
-  color: white;
-  padding: 16px;
-}
-li:hover{
-  background-color: #111111;
-}
-
-img{
-  alt: "Not Available"
-}
-
+/*now playing*/
 .now-playing {
   background-color: #424d58;
   color: #fff;
   height: 250px;
   position: relative;
   width: 100%;
+  font-size: 1.5em;
 }
 .now-playing__text {
   padding: 40px;
@@ -105,14 +89,11 @@ img{
 }
 .now-playing__track-name {
   font-size: 2em;
-  padding-top: 1.2em;
+  padding-top: 0.8em;
 }
 .now-playing__artist-name {
   font-size: 1.2em;
-  padding-bottom: 2em;
-  padding-top: 0.5em;
-}
-.now-playing__user {
+  padding-bottom: 2.5em;
   padding-top: 0.5em;
 }
 .now-playing__progress_bar {
@@ -132,12 +113,6 @@ img{
   float: left;
   margin-right: 10px;
 }
-.user-image {
-  border-radius: 50%;
-}
-.user-name {
-  line-height: 30px;
-}
 
 .media-body {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
@@ -149,4 +124,76 @@ img{
 
 .media-body > .name{
   font-size: 30px;
+}
+
+/*queue */
+.queue-container{
+  position: absolute;
+  float: left;
+  width: 50%
+}
+
+.queue-item__track-name {
+  font-size: 1.2em;
+}
+
+.queue-item__artist-name {
+  font-size: 0.8em;
+}
+
+.vote-btn{
+  background-color: white;
+  padding: 8px 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;  
+  color: black;
+  text-align: center;
+}
+
+.like{
+  border: 2px solid #4CAF50;
+}
+
+.like:hover, .liked {
+  background-color: #4CAF50;
+}
+
+.dislike{
+  border: 2px solid rgba(0, 0, 0, 0.815);
+}
+
+.dislike:hover, .disliked{
+  background-color: black;
+  color: white;
+}
+
+/*searchbar */
+.searchbarPlaylist{
+  width: 400px;
+}
+
+.searchbarTrack{
+  width: 400px;
+  float: right;
+}
+
+.suggestionList{
+  list-style-type: square;
+  margin: 0;
+  padding: 0;
+  background-color: #333333;
+}
+
+.suggestionItem {
+  display: block;
+  color: white;
+  padding: 3px;
+}
+.suggestionItem:hover{
+  background-color: #111111;
+}
+
+#searchTrack{
+  margin-top: 30px;
 }

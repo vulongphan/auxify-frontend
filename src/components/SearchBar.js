@@ -8,7 +8,7 @@ function Suggestion(props) {
             <ul className="suggestionList">
                 {searchResult.map((song) => {
                     return (
-                        <li key={song.id} onClick={() => {props.onClick(song); props.clearSearch() }}>
+                        <li className="suggestionItem" key={song.id} onClick={() => {props.onClick(song); props.clearSearch() }}>
                             <div>
                                 <span>
                                     <img src={song.album.images[2].url} height="20px" width="20px" />
@@ -28,7 +28,7 @@ function Suggestion(props) {
             <ul className="suggestionList">
                 {searchResult.map((playlist) => {
                     return (
-                        <li key={playlist.id} onClick={() => {props.onClick(playlist); props.clearSearch() }}>
+                        <li className="suggestionItem" key={playlist.id} onClick={() => {props.onClick(playlist); props.clearSearch() }}>
                             <div>
                                 <span>
                                     <img src={playlist.images[0].url} height="20px" width="20px" />
@@ -87,6 +87,7 @@ class SearchBar extends React.Component {
     }
 
     clearSearch() {
+        document.getElementById(this.props.id).value = '';
         this.setState({
             searchResult: { song: [], playlist: [] },
         });
@@ -94,13 +95,13 @@ class SearchBar extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className = {this.props.className}>
                 <input
-                    className="searchbar"
+                    id={this.props.id}
                     onKeyUp={event => { this.search(event.target.value) }}
                     placeholder={this.props.placeholder}
                     type="text"
-                    size="50"
+                    style={{width: "100%"}}
                 />
                 <Suggestion
                     searchResult={this.state.searchResult}
