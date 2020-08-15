@@ -2,87 +2,54 @@
   box-sizing: border-box;
 }
 
-.Room {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 html {
   font-family: Helvetica, Arial, sans-serif;
 }
 
-h2 {
-  font-size: 2rem;
+/*Room flexbox design*/
+.Room{
+  text-align: center;
 }
 
-li, p {
-  line-height: 1.5;
+.ColumnFlex {
+  display: flex;
+  flex-direction: column;
 }
 
-div, button {
-  margin: 10px;
-  border: black 10px;
+.RowFlex{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.Room-row1{
+  order: 1;
+  background-color: lightgreen;
+}
+.Room-row2{
+  order: 2;
+  background-color: #424d58;
+}
+.Room-row3{
+  order: 3;
 }
 
 /*room info*/
 .room-info{
-  background-color: lightskyblue;
-  position: relative;
+  flex-grow: 4;
 }
 
 /*display playlist*/
 .display-playlist{
-  background-color: cornsilk;
-  float: right;
   padding: 5px 5px;
   margin: 0px;
 }
 
 /*now playing*/
 .now-playing {
-  background-color: #424d58;
   color: #fff;
-  height: 250px;
   position: relative;
-  width: 100%;
   font-size: 1.5em;
-}
-.now-playing__text {
-  padding: 40px;
 }
 .now-playing__bd {
   padding-left: 30px;
@@ -99,7 +66,7 @@ div, button {
 .now-playing__progress_bar {
   bottom: 0;
   background-color: #222;
-  height: 5px;
+  height: 10px;
   position: absolute;
   width: 100%;
 }
@@ -110,27 +77,15 @@ div, button {
   zoom: 1;
 }
 .media .media__img {
+  padding: 0px;
   float: left;
-  margin-right: 10px;
-}
-
-.media-body {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  border: black 5px 5px 5px 5px;
-  max-width: 300px;
-  margin: auto;
-  text-align: center;
-}
-
-.media-body > .name{
-  font-size: 30px;
+  margin: 10px;
 }
 
 /*queue */
 .queue-container{
-  position: absolute;
-  float: left;
-  width: 50%
+  order: 1;
+  flex-grow: 3;
 }
 
 .queue-item__track-name {
@@ -174,8 +129,8 @@ div, button {
 }
 
 .searchbarTrack{
+  order: 2;
   width: 400px;
-  float: right;
 }
 
 .suggestionList{
@@ -188,7 +143,7 @@ div, button {
 .suggestionItem {
   display: block;
   color: white;
-  padding: 3px;
+  padding: 5px;
 }
 .suggestionItem:hover{
   background-color: #111111;

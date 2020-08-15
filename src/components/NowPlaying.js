@@ -67,7 +67,7 @@ class NowPlaying extends React.PureComponent {
     if (this.state.playing) {
       const percentage = +(this.state.currentPosition * 100 / this.state.duration).toFixed(2) + '%';
       return (
-        <div className="now-playing">
+        <div className="Room-row2 now-playing">
           <div className="now-playing__text media">
             <div className="media__img">
               <img src={this.state.albumArt} width="170" height="170" />
@@ -88,7 +88,7 @@ class NowPlaying extends React.PureComponent {
       );
     } else {
       return (
-        <div className="now-playing">Play a song on your device for Auxify to connect with it</div>
+        <div className="now-playing Room-row2">Play a song on your device for Auxify to connect with it</div>
       )
     }
   }

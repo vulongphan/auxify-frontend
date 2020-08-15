@@ -9,7 +9,7 @@ import SearchBar from './SearchBar';
 import RoomInfo from './RoomInfo';
 
 const spotifyApi = new SpotifyWebApi();
-const frontEnd = /*'http://localhost:3000/home'*/ "https://auxify.herokuapp.com/home";
+const frontEnd = 'http://localhost:3000'/* "https://auxify.herokuapp.com"*/;
 
 class Room extends React.Component {
     constructor(props) {
@@ -141,59 +141,42 @@ class Room extends React.Component {
 
     render() {
         return (
-            <div className='Room'>
-                <RoomInfo
-                    hostInfo={this.state.hostInfo}
-                    room_id={this.state.room_id} />
-                <DefaultPlaylist
-                    playlist={this.state.default_playlist} />
-                <SearchBar
-                    id="searchPlaylist"
-                    className="searchbarPlaylist"
-                    spotifyApi={spotifyApi}
-                    onClick={this.updateDefaultPlaylist}
-                    types={['playlist']}
-                    maxSuggestion={5}
-                    placeholder={"Choose a playlist as default"}
-                />
+            <div className='Room ColumnFlex'>
+                <div className='Room-row1 RowFlex'>
+                    <RoomInfo
+                        hostInfo={this.state.hostInfo}
+                        room_id={this.state.room_id}
+                        playlist={this.state.default_playlist} />
+                    <SearchBar
+                        id="searchPlaylist"
+                        className="searchbarPlaylist"
+                        spotifyApi={spotifyApi}
+                        onClick={this.updateDefaultPlaylist}
+                        types={['playlist']}
+                        maxSuggestion={5}
+                        placeholder={"Choose a playlist as default"} />
+                </div>
                 <NowPlaying
                     play={this.play}
                     spotifyApi={spotifyApi} />
-                <Queue
-                    queue={this.state.queue}
-                    room_id={this.state.room_id} />
-                <SearchBar
-                    id="searchTrack"
-                    className="searchbarTrack"
-                    spotifyApi={spotifyApi}
-                    onClick={this.addToQueue}
-                    types={['track']}
-                    maxSuggestion={10}
-                    placeholder={"What song do you want to play?"}
-                />
+                <div className='Room-row3 RowFlex'>
+                    <Queue
+                        queue={this.state.queue}
+                        room_id={this.state.room_id} />
+                    <SearchBar
+                        id="searchTrack"
+                        className="searchbarTrack"
+                        spotifyApi={spotifyApi}
+                        onClick={this.addToQueue}
+                        types={['track']}
+                        maxSuggestion={10}
+                        placeholder={"What song do you want to play?"}
+                    />
+                </div>
             </div>
         );
     }
 
-}
-
-const DefaultPlaylist = (props) => {
-    const playlist = props.playlist;
-    if (playlist) {
-        return (
-            <div className="display-playlist">
-                <span>
-                    <img src={playlist.images[0].url} width="20px" height="20px" />
-                    <span className="display-playlist__name"> {playlist.name}</span>
-                    <span className="display-playlist__owner"> by {playlist.owner.display_name}</span>
-                </span>
-            </div>
-        )
-    } else {
-        return (
-            <div className="display-playlist">N/A</div>
-        )
-    }
 }
 
 export default Room;
