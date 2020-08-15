@@ -7,9 +7,10 @@ import NowPlaying from './NowPlaying';
 import Queue from './Queue';
 import SearchBar from './SearchBar';
 import RoomInfo from './RoomInfo';
+import Expire from './Expire';
 
 const spotifyApi = new SpotifyWebApi();
-const frontEnd = 'http://localhost:3000'/* "https://auxify.herokuapp.com"*/;
+const expired = /*'http://localhost:3000/expire'*/ "https://auxify.herokuapp.com/expire";
 
 class Room extends React.Component {
     constructor(props) {
@@ -50,23 +51,9 @@ class Room extends React.Component {
                         queue: room.queue,
                         default_playlist: room.default_playlist,
                     })
-                } else {
-                    window.location.href = frontEnd;
-                }
-                /*
-                //Session timer functionality
-                const current_time = Date.now() / 1000; //get the number of seconds elapsed in seconds
-                //to check if the current_time is greater than end_time of the room, if it is then close the room
-                if (current_time >= room.end_time) {
-                    console.log('Session expired');
-                    window.location.href = 'http://localhost:3000/expire';
-                    api.deleteRoom(room_id).then(res => {
-                        console.log(res);
-                    });
-                }
-                */
+                } 
             })
-            .catch(err => console.log(err));
+            .catch(() => {window.location.href = expired});
     }
 
     getHashParams() {
@@ -158,10 +145,7 @@ class Room extends React.Component {
                 <NowPlaying
                     play={this.play}
                     spotifyApi={spotifyApi} />
-                <div className='Room-row3 RowFlex'>
-                    <Queue
-                        queue={this.state.queue}
-                        room_id={this.state.room_id} />
+                <div className='Room-row3 RowFlexReverse'>
                     <SearchBar
                         id="searchTrack"
                         className="searchbarTrack"
@@ -171,6 +155,9 @@ class Room extends React.Component {
                         maxSuggestion={10}
                         placeholder={"What song do you want to play?"}
                     />
+                    <Queue
+                        queue={this.state.queue}
+                        room_id={this.state.room_id} />
                 </div>
             </div>
         );

@@ -41,12 +41,13 @@ class Home extends React.Component {
       <div className="homePage center" >
         <h1 className="fromtop text_style" >Welcome to Auxify</h1>
         <div className="btn-group fromtop" >
-          {/* <button><Link to={'/'}>Home</Link></button> */}
-          {/* <button><Link to={'/about'} >About</Link></button> */}
-          <button><Link to={'/create'} >New Room</Link></button>
-          <button><Link to={'/join'}>Join Room</Link></button>
+          <form action='/create'>
+            <button type="submit" >New Room</button>
+          </form>
+          <form action='/join'>
+            <button type="submit" >Join Room</button>
+          </form>
         </div>
-
       </div>
     )
   }

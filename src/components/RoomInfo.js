@@ -4,11 +4,11 @@ class RoomInfo extends React.Component{
     render(){
         const hostInfo = this.props.hostInfo;
         return(
-            <div className="room-info media">
-                <div className="room-info media__img">
+            <div className="room-info media text_style highlight">
+                <div className="media__img">
                 <img src={hostInfo.profileImage} width="170" height="170" />
                 </div>
-                <div className="room-info media__bd">
+                <div className="media__bd">
                     <p>Room ID: {this.props.room_id}</p>
                     <p>Hosted by: {hostInfo.name}</p>
                 </div>
@@ -23,7 +23,6 @@ const DefaultPlaylist = (props) => {
     if (playlist) {
         return (
             <div className="display-playlist">
-                <p>Default Playlist:</p>
                 <span>
                     <img src={playlist.images[0].url} width="20px" height="20px" />
                     <span className="display-playlist__name"> {playlist.name}</span>

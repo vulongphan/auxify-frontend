@@ -22,12 +22,19 @@ html {
   flex-wrap: wrap;
 }
 
+.RowFlexReverse{
+  display: flex;
+  flex-direction: row-reverse;
+  flex-wrap: wrap;
+}
+
 .Room-row1{
   order: 1;
-  background-color: lightgreen;
+  background-color: #88A2AA;
 }
 .Room-row2{
   order: 2;
+  /*background-color: #ADA296;*/
   background-color: #424d58;
 }
 .Room-row3{
@@ -87,7 +94,7 @@ html {
 
 /*queue */
 .queue-container{
-  order: 1;
+  order: 2;
   flex-grow: 3;
 }
 
@@ -128,13 +135,17 @@ html {
   color: white;
 }
 
+#coming_up{
+  margin-top: 20px;
+}
+
 /*searchbar */
 .searchbarPlaylist{
   width: 400px;
 }
 
 .searchbarTrack{
-  order: 2;
+  order: 1;
   width: 400px;
 }
 
@@ -156,9 +167,4 @@ html {
 
 #searchTrack{
   margin-top: 10px;
-}
-
-#coming_up{
-  margin-top: 20px;
-  font-weight: 600;
 }

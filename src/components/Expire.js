@@ -1,12 +1,16 @@
 import React from 'react';
 
-class Expire extends React.Component{
-    constructor(props){
-        super(props);
-    }
-    render(){
+class Expire extends React.Component {
+    render() {
         return (
-            <h1> This session has ended </h1>
+            <div className="homePage center btn-group fromtop">
+                <h1 className="text_style">
+                    Your session has ended, please go back to our home page
+                </h1>
+                <form action='/'>
+                    <button type="submit" >OK</button>
+                </form>
+            </div>
         )
     }
 
