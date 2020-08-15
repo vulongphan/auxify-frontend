@@ -12,8 +12,8 @@ function Suggestion(props) {
                             <div>
                                 <span>
                                     <img src={song.album.images[2].url} height="20px" width="20px" />
-                                    <span> {song.name}</span>
-                                    <span> - {song.artists[0].name}</span>
+                                    <span className = "text_style"> {song.name}</span>
+                                    <span className = "text_style"> - {song.artists[0].name}</span>
                                 </span>
                             </div>
                         </li>
