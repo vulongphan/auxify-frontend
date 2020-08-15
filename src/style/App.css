@@ -18,12 +18,6 @@ ul {
   overflow: hidden;
 }
 
-.navbar{
-  background-color: #BFD9C6;
-  margin: 0;
-  padding: 0;
-  height: 5vh;
-}
 
 li{
   display: inline;
@@ -36,29 +30,75 @@ li:hover{
   background-color: #D8E9D8;
 }
 
-button.login{
-    color:#FFFFFF;
-    background-color: green;
-    display:inline-block;
-    padding:0.3em 1.2em;
-    margin:0 0.3em 0.3em 0;
-    border-radius:2em;
-    font-family:'Roboto',sans-serif;
-    font-size: 30px;
-    font-weight:300;
-    text-align:center;
-    transition: all 0.2s;
-}
 
-button.login:hover{
-    background-color: chartreuse;
-}
+/* align things center*/
+
 
 /*Home Page*/
-.homePage{
-  width: 100vh;
-  height: 85vh;
+.homePage, .createPage, .joinPage {
+  width: 100vw;
+  height: 100vh;
 }
+
+body{
+  background-color: black;
+}
+
+.btn-group button,input{
+  background-color: white; /* background */
+  border: 2px solid grey; /* border */
+  border-radius: 4px;
+  color: black; /* text color */
+  font-family: 'proxima-nova', sans-serif;
+  font-weight: 400; /*weight of text*/
+  padding: 10px 24px; /* Some padding */
+  cursor: pointer; /* Pointer/hand icon */
+  width: 200px;
+  margin: 10px auto 0px auto;
+  display:block;
+}
+
+a, Link { /*to make the text inside the button have the intended color, by making these attibutes inherit the color from the button*/
+  color: inherit
+}
+
+/* align the place holder text to center*/
+::-webkit-input-placeholder {
+  text-align: center;
+}
+
+:-moz-placeholder {
+  text-align: center;
+}
+
+/* align the input to the center*/
+input {
+  text-align: center;
+  cursor: auto;
+}
+
+.center {
+  margin: auto;
+  width: 50%;
+  /* padding: 10px; */
+  text-align: center;
+  position: relative;
+}
+
+.fromtop{
+  position: relative;
+  top: 30%; /* 30% of the parent element*/
+}
+
+.text_style{
+  color: white;
+  font-family: 'proxima-nova', sans-serif;
+  cursor: default;
+
+}
+
+
+
 
 /*footer*/
 footer{

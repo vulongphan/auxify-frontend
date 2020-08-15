@@ -13,21 +13,21 @@ class App extends React.Component {
     return (
       <Router>
         <div>
-          <nav className="navbar">
+          {/* <nav className="navbar">
             <ul className="navbar-nav">
               <li><Link to={'/'} className="nav-link">Home</Link></li>
               <li><Link to={'/about'} className="right">About</Link></li>
               <li><Link to={'/create'} className="right">New Room</Link></li>
               <li><Link to={'/join'} className="right">Join Room</Link></li>
             </ul>
-          </nav>
+          </nav> */}
           <Switch>
             <Route path='/' exact component={Home} />
             <Route path='/about' component={About} />
             <Route path='/room' component={Room} />
-            <Route path='/create' component={CreateRoom}/>
-            <Route path='/join' component={JoinRoom}/>
-            <Route path= '/expire' component = {Expire}/>
+            <Route path='/create' component={CreateRoom} />
+            <Route path='/join' component={JoinRoom} />
+            <Route path='/expire' component={Expire} />
           </Switch>
         </div>
       </Router>
@@ -35,16 +35,28 @@ class App extends React.Component {
   }
 }
 
-const Home = () => (
-  <div className="homePage">
-    <h1>Welcome to Auxify</h1>
-  </div>
-)
+class Home extends React.Component {
+  render() {
+    return (
+      <div className="homePage center" >
+        <h1 className="fromtop text_style" >Welcome to Auxify</h1>
+        <div className="btn-group fromtop" >
+          {/* <button><Link to={'/'}>Home</Link></button> */}
+          {/* <button><Link to={'/about'} >About</Link></button> */}
+          <button><Link to={'/create'} >New Room</Link></button>
+          <button><Link to={'/join'}>Join Room</Link></button>
+        </div>
+
+      </div>
+    )
+  }
+}
+
 
 const Footer = () => (
   <footer>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
-    <button className="fa fa-github"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <button className="fa fa-github" />
   </footer>
 )
 

@@ -56,7 +56,6 @@ class Room extends React.Component {
                 /*
                 //Session timer functionality
                 const current_time = Date.now() / 1000; //get the number of seconds elapsed in seconds
-
                 //to check if the current_time is greater than end_time of the room, if it is then close the room
                 if (current_time >= room.end_time) {
                     console.log('Session expired');

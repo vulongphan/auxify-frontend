@@ -65,13 +65,13 @@ function QueueItem(props) {
           <tbody>
             <tr>
               <td
-                className="queue-item__track-name"
+                className="queue-item__track-name text_style"
                 align="left">
                 {songInfo.name}</td>
             </tr>
             <tr>
               <td
-                className="queue-item__artist-name"
+                className="queue-item__artist-name text_style"
                 align="left">
                 {songInfo.artists.map(artist => artist.name).join(', ')}</td>
             </tr>
@@ -81,18 +81,18 @@ function QueueItem(props) {
       <td width="10%">
         <button
           id={'like' + props.id}
-          className="vote-btn like"
+          className="vote-btn like text_style"
           onClick={() => onClickLike(props.index)}>
           Like</button>
       </td>
       <td width="10%">
         <button
           id={'dislike' + props.id}
-          className="vote-btn dislike"
+          className="vote-btn dislike text_style"
           onClick={() => onClickDislike(props.index)}>
           Dislike</button>
       </td>
-      <td width="5%">
+      <td width="5%" className = "text_style">
         {songInfo.vote}
       </td>
     </tr>
@@ -105,7 +105,7 @@ class Queue extends React.Component {
 
     return (
       <div className="queue-container">
-        <div>Coming Up</div>
+        <div className = "text_style" id = "coming_up" >Coming Up</div>
         <table id="queue">
           <tbody>
             {queue.map((song, index) => {

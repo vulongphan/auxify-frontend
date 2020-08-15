@@ -73,10 +73,10 @@ class NowPlaying extends React.PureComponent {
               <img src={this.state.albumArt} width="170" height="170" />
             </div>
             <div className="now-playing__bd media__bd">
-              <div className="now-playing__track-name">
+              <div className="now-playing__track-name text_style">
                 {this.state.name}
               </div>
-              <div className="now-playing__artist-name">
+              <div className="now-playing__artist-name text_style">
                 {this.state.artists.map(a => a.name).join(', ')}
               </div>
             </div>

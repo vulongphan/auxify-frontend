@@ -37,6 +37,7 @@ html {
 /*room info*/
 .room-info{
   flex-grow: 4;
+  cursor: default;
 }
 
 /*display playlist*/
@@ -57,15 +58,17 @@ html {
 .now-playing__track-name {
   font-size: 2em;
   padding-top: 0.8em;
+  cursor: default;
 }
 .now-playing__artist-name {
   font-size: 1.2em;
   padding-bottom: 2.5em;
   padding-top: 0.5em;
+  cursor: default;
 }
 .now-playing__progress_bar {
   bottom: 0;
-  background-color: #222;
+  background-color: gainsboro;
   height: 10px;
   position: absolute;
   width: 100%;
@@ -107,19 +110,21 @@ html {
 }
 
 .like{
-  border: 2px solid #4CAF50;
+  border: 2px solid green;
+  border-radius: 2px;
 }
 
 .like:hover, .liked {
-  background-color: #4CAF50;
+  background-color: green;
 }
 
 .dislike{
-  border: 2px solid rgba(0, 0, 0, 0.815);
+  border: 2px solid gray;
+  border-radius: 2px;
 }
 
 .dislike:hover, .disliked{
-  background-color: black;
+  background-color: grey;
   color: white;
 }
 
@@ -150,5 +155,10 @@ html {
 }
 
 #searchTrack{
-  margin-top: 30px;
+  margin-top: 10px;
+}
+
+#coming_up{
+  margin-top: 20px;
+  font-weight: 600;
 }
