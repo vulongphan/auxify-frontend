@@ -1,7 +1,7 @@
 import React from 'react';
 import '../style/App.css'
 
-const backEndLogin = "http://localhost:8888/login";
+const backEndLogin = "https://auxify-backend.herokuapp.com";
 
 class CreateRoom extends React.Component {
     render() {

@@ -9,7 +9,7 @@ import SearchBar from './SearchBar';
 import RoomInfo from './RoomInfo';
 
 const spotifyApi = new SpotifyWebApi();
-const frontEnd = 'http://localhost:3000'/* "https://auxify.herokuapp.com"*/;
+const frontEnd =  "https://auxify.herokuapp.com";
 
 class Room extends React.Component {
     constructor(props) {
