@@ -230,6 +230,10 @@ html {
     font-size: 0.6em;
   }
 
+  .homePage #welcome {
+    font-size: 30;
+  }
+
   .queue-item > td {
     width: 25%;
   }
