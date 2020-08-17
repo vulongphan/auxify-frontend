@@ -33,7 +33,7 @@ html {
   order: 1;
   flex-grow: 1 ;
   background-color: #88A2AA;
-  border-radius: 10px;
+  border-radius: 20px;
   margin-top: 10px
 
 }
@@ -41,7 +41,7 @@ html {
   order: 2;
   flex-grow: 1;
   background-color: #424d58;
-  border-radius: 10px;
+  border-radius: 20px;
   margin-top: 10px
 }
 .Room-row3{
@@ -56,10 +56,18 @@ html {
   border-radius: 4px;
 }
 
+.room-info .host{
+  color: black;
+  font-size: 20px;
+}
+
 /*display playlist*/
 .display-playlist{
   padding: 5px 5px;
   margin: 0px;
+  font-family: 'proxima-nova', sans-serif;
+  color: black
+
 }
 
 /*now playing*/
@@ -72,14 +80,14 @@ html {
   padding-left: 30px;
 }
 .now-playing__track-name {
-  font-size: 2em;
+  font-size: 1.4em;
   padding-top: 0.8em;
   cursor: default;
   float: auto; 
 
 }
 .now-playing__artist-name {
-  font-size: 1.2em;
+  font-size: 1em;
   padding-bottom: 2.5em;
   padding-top: 0.5em;
   cursor: default;
@@ -92,7 +100,7 @@ html {
   height: 10px;
   position: absolute;
   width: 100%;
-  border-radius: 10px;
+  border-radius: 20px;
 }
 .media,
 .media__bd {
@@ -109,13 +117,25 @@ html {
 .media__img img{
   width: 170px;
   height: 170px;
+  border-radius: 20px;
+}
+
+
+.room_id span{
+  background-color: green;
+  font-size: 30px;
   border-radius: 10px;
+  padding: 5px;
 }
 
 /*queue */
 .queue-container{
   order: 2;
   flex-grow: 3;
+}
+
+.queue-item img{
+  border-radius: 2px;
 }
 
 .queue-item__track-name {
@@ -138,7 +158,8 @@ html {
 
 .like{
   border: 2px solid green;
-  border-radius: 2px;
+  border-radius: 20px;
+  width: 75px;
 }
 
 .like:hover, .liked {
@@ -147,7 +168,7 @@ html {
 
 .dislike{
   border: 2px solid gray;
-  border-radius: 2px;
+  border-radius: 20px;
 }
 
 .dislike:hover, .disliked{
@@ -155,19 +176,23 @@ html {
   color: white;
 }
 
-#coming_up{
+.queue-container #coming_up{
   margin-top: 20px;
+  margin-left: 50px !important;
+  font-size: 1.2em;
 }
 
 /*searchbar */
 .searchbarPlaylist{
   width: 400px;
+  padding-right: 2px;
 }
 
 .searchbarTrack{
   order: 1;
   width: 400px;
 }
+
 
 .suggestionList{
   list-style-type: square;
@@ -203,6 +228,10 @@ html {
   }
   .now-playing__artist-name{
     font-size: 0.6em;
+  }
+
+  .queue-item > td {
+    width: 25%;
   }
   
 }

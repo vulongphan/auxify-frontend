@@ -10,7 +10,7 @@ import RoomInfo from './RoomInfo';
 import Expire from './Expire';
 
 const spotifyApi = new SpotifyWebApi();
-const expired = "https://auxify.herokuapp.com/expire";
+const expired =  "https://auxify.herokuapp.com/expire";
 
 class Room extends React.Component {
     constructor(props) {

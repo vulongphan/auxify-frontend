@@ -13,14 +13,6 @@ class App extends React.Component {
     return (
       <Router>
         <div>
-          {/* <nav className="navbar">
-            <ul className="navbar-nav">
-              <li><Link to={'/'} className="nav-link">Home</Link></li>
-              <li><Link to={'/about'} className="right">About</Link></li>
-              <li><Link to={'/create'} className="right">New Room</Link></li>
-              <li><Link to={'/join'} className="right">Join Room</Link></li>
-            </ul>
-          </nav> */}
           <Switch>
             <Route path='/' exact component={Home} />
             <Route path='/about' component={About} />
@@ -39,13 +31,13 @@ class Home extends React.Component {
   render() {
     return (
       <div className="homePage center" >
-        <h1 className="fromtop text_style" >Welcome to Auxify</h1>
+        <h1 className="fromtop text_style" id = "welcome" >Welcome to Auxify</h1>
         <div className="btn-group fromtop" >
           <form action='/create'>
-            <button type="submit" >New Room</button>
+            <button type="submit" className = "roomAction" >New Room</button>
           </form>
           <form action='/join'>
-            <button type="submit" >Join Room</button>
+            <button type="submit" className = "roomAction">Join Room</button>
           </form>
         </div>
       </div>

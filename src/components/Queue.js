@@ -57,8 +57,8 @@ function QueueItem(props) {
   const songInfo = props.songInfo;
   return (
     <tr className="queue-item">
-      <td width="15%">
-        <img src={songInfo.image} width="50" height="50" />
+      <td width="10%">
+        <img src={songInfo.image} />
       </td>
       <td width="60%">
         <table>
@@ -78,7 +78,7 @@ function QueueItem(props) {
           </tbody>
         </table>
       </td>
-      <td width="10%">
+      <td width="15%">
         <button
           id={'like' + props.id}
           className="vote-btn like text_style"

@@ -9,7 +9,7 @@ class CreateRoom extends React.Component {
             <div className="createPage center ">
                 <div className="btn-group fromtop">
                     <form action={backEndLogin}>
-                        <button type="submit" > Create a room </button>
+                        <button type="submit" className = "roomAction" > Create a room </button>
                     </form>
                 </div>
 

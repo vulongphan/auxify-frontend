@@ -19,18 +19,79 @@ body{
   background-color: black;
 }
 
-.btn-group button,input{
+.Room input{
   background-color: white; /* background */
-  border: 2px solid grey; /* border */
-  border-radius: 4px;
+  border: 2px solid grey !important; /* border */
+  border-radius: 20px;
   color: black; /* text color */
   font-family: 'proxima-nova', sans-serif;
   font-weight: 400; /*weight of text*/
+  text-align: center;
+  cursor: auto;
   padding: 10px 24px; /* Some padding */
-  cursor: pointer; /* Pointer/hand icon */
+  cursor: auto; /* Pointer/hand icon */
   width: 200px;
   margin: 10px auto 0px auto;
   display:block;
+}
+
+.Room input:active{
+  outline-color: none !important;
+  box-shadow: none !important;
+}
+
+.joinPage input {
+  background-color: white; /* background */
+  border: 2px solid white; /* border */
+  border-radius: 30px;
+  color: black; /* text color */
+  font-family: 'proxima-nova', sans-serif;
+  font-weight: 400; /*weight of text*/
+  font-size: 20px;
+  text-align: center;
+  cursor: auto;
+  padding: 10px 24px; /* Some padding */
+  cursor: auto; /* Pointer/hand icon */
+  width: 300px;
+  height: 50px;
+  margin: 10px auto 0px auto;
+  display:block;
+}
+
+
+
+.btn-group #join_room{
+  background-color: green;
+  border-radius: 20px;
+  border: 2px solid green; /* border */
+  color: white;
+  font-family: 'proxima-nova', sans-serif;
+  font-weight: 600; /*weight of text*/
+  font-size: 20px;
+  padding: center; /* Some padding */
+  cursor: pointer; /* Pointer/hand icon */
+  width: 100px;
+  height: 40px;
+  margin: 10px auto 0px auto;
+  display:block;
+
+}
+
+.btn-group .roomAction {
+  background-color:green; /* background */
+  border: 2px solid green; /* border */
+  border-radius: 35px;
+  color: white; /* text color */
+  font-family: 'proxima-nova', sans-serif;
+  font-weight: 600; /*weight of text*/
+  font-size: 20px;
+  padding: 10px 24px; /* Some padding */
+  cursor: pointer; /* Pointer/hand icon */
+  width: 250px;
+  height: 50px;
+  margin: 10px auto 0px auto;
+  display:block;
+
 }
 
 .btn-group button:hover{
@@ -44,12 +105,6 @@ body{
 
 :-moz-placeholder {
   text-align: center;
-}
-
-/* align the input to the center*/
-input {
-  text-align: center;
-  cursor: auto;
 }
 
 .center {
@@ -70,7 +125,9 @@ input {
   font-family: 'proxima-nova', sans-serif;
   cursor: default;
 }
-
+.homePage #welcome {
+  font-size: 40px;
+}
 .highlight{
   font-weight: 600;
 }

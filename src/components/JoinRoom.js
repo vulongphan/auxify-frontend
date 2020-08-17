@@ -1,5 +1,6 @@
 import React from 'react';
 import api from '../api/api.js';
+import '../style/App.css'
 
 const frontEndRoom = "http://auxify.herokuapp.com/room#room_id=";
 
@@ -32,14 +33,14 @@ class JoinRoom extends React.Component {
                     <form onSubmit={this.handleSubmit}>
                         <label>
                             <input
-                                className="searchbar"
+                                className="searchbarId"
                                 placeholder="Enter Room ID"
                                 type="text"
                                 value={this.state.value}
                                 onChange={this.handleChange}
                                 size="50" />
                         </label>
-                        <button type="submit" > Join</button>
+                        <button type="submit" id = "join_room" > Join</button>
                     </form>
                 </div>
             </div>
