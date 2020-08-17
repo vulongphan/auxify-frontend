@@ -14,6 +14,7 @@ html {
 .ColumnFlex {
   display: flex;
   flex-direction: column;
+  
 }
 
 .RowFlex{
@@ -30,21 +31,29 @@ html {
 
 .Room-row1{
   order: 1;
+  flex-grow: 1 ;
   background-color: #88A2AA;
+  border-radius: 10px;
+  margin-top: 10px
+
 }
 .Room-row2{
   order: 2;
-  /*background-color: #ADA296;*/
+  flex-grow: 1;
   background-color: #424d58;
+  border-radius: 10px;
+  margin-top: 10px
 }
 .Room-row3{
   order: 3;
+  flex-grow: 1;
 }
 
 /*room info*/
 .room-info{
   flex-grow: 4;
   cursor: default;
+  border-radius: 4px;
 }
 
 /*display playlist*/
@@ -66,12 +75,16 @@ html {
   font-size: 2em;
   padding-top: 0.8em;
   cursor: default;
+  float: auto; 
+
 }
 .now-playing__artist-name {
   font-size: 1.2em;
   padding-bottom: 2.5em;
   padding-top: 0.5em;
   cursor: default;
+  float: auto; 
+
 }
 .now-playing__progress_bar {
   bottom: 0;
@@ -79,6 +92,7 @@ html {
   height: 10px;
   position: absolute;
   width: 100%;
+  border-radius: 10px;
 }
 .media,
 .media__bd {
@@ -86,10 +100,16 @@ html {
   _overflow: visible;
   zoom: 1;
 }
-.media .media__img {
+.media__img {
   padding: 0px;
   float: left;
   margin: 10px;
+}
+
+.media__img img{
+  width: 170px;
+  height: 170px;
+  border-radius: 10px;
 }
 
 /*queue */
@@ -168,3 +188,23 @@ html {
 #searchTrack{
   margin-top: 10px;
 }
+
+/*using media querries for different screen width*/
+
+
+
+@media screen and (max-width: 768px){
+  .media__img img{
+    width: 70px;
+    height: 70px
+  }
+  .now-playing__track-name{
+    font-size: 1em;
+  }
+  .now-playing__artist-name{
+    font-size: 0.6em;
+  }
+  
+}
+
+

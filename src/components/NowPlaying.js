@@ -70,7 +70,7 @@ class NowPlaying extends React.PureComponent {
         <div className="Room-row2 now-playing">
           <div className="now-playing__text media">
             <div className="media__img">
-              <img src={this.state.albumArt} width="170" height="170" />
+              <img src={this.state.albumArt}  />
             </div>
             <div className="now-playing__bd media__bd">
               <div className="now-playing__track-name text_style">

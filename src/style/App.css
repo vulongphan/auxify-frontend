@@ -76,8 +76,6 @@ input {
 }
 
 
-
-
 /*footer*/
 footer{
   background-color: black;
@@ -98,3 +96,5 @@ footer{
 .fa:hover {
     opacity: 0.7;
 }
+
+

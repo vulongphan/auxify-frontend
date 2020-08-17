@@ -1,18 +1,18 @@
 import React from 'react';
 
-class RoomInfo extends React.Component{
-    render(){
+class RoomInfo extends React.Component {
+    render() {
         const hostInfo = this.props.hostInfo;
-        return(
+        return (
             <div className="room-info media text_style highlight">
                 <div className="media__img">
-                <img src={hostInfo.profileImage} width="170" height="170" />
+                    <img src={hostInfo.profileImage} />
                 </div>
                 <div className="media__bd">
                     <p>Room ID: {this.props.room_id}</p>
                     <p>Hosted by: {hostInfo.name}</p>
                 </div>
-                <DefaultPlaylist playlist={this.props.playlist}/>
+                <DefaultPlaylist playlist={this.props.playlist} />
             </div>
         )
     }
