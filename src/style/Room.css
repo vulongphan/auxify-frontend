@@ -227,12 +227,9 @@ html {
   .now-playing__artist-name{
     font-size: 0.6em;
   }
-
-  .like{
-    width: 50px;
-  }
-  .dislike{
-    width: 50px;
+  .room-info .host{
+    color: black;
+    font-size: 15px;
   }
   
 }
