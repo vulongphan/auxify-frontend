@@ -78,6 +78,23 @@ body{
 
 }
 
+.btn-group .roomAction {
+  background-color:green; /* background */
+  border: 2px solid green; /* border */
+  border-radius: 35px;
+  color: white; /* text color */
+  font-family: 'proxima-nova', sans-serif;
+  font-weight: 600; /*weight of text*/
+  font-size: 20px;
+  padding: 10px 24px; /* Some padding */
+  cursor: pointer; /* Pointer/hand icon */
+  width: 20vw;
+  height: 7vh;
+  margin: 10px auto 0px auto;
+  display:block;
+
+}
+
 
 
 
