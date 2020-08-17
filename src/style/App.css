@@ -163,12 +163,16 @@ footer{
     color: white; /* text color */
     font-family: 'proxima-nova', sans-serif;
     font-weight: 400; /*weight of text*/
-    font-size: 15px;
+    font-size: 20px;
     padding: 10px 24px; /* Some padding */
     cursor: pointer; /* Pointer/hand icon */
     width: 200px;
     margin: 10px auto 0px auto;
     display:block;
+  }
+
+  .homePage #welcome {
+    font-size: 30px;
   }
 
 }
