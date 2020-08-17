@@ -178,7 +178,6 @@ html {
 
 .queue-container #coming_up{
   margin-top: 20px;
-  margin-left: 50px !important;
   font-size: 1.2em;
 }
 
@@ -229,9 +228,11 @@ html {
     font-size: 0.6em;
   }
 
-  
-  .queue-item > td {
-    width: 25%;
+  .like{
+    width: 50px;
+  }
+  .dislike{
+    width: 50px;
   }
   
 }
