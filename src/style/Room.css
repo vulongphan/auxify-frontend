@@ -229,8 +229,12 @@ html {
   }
   .room-info .host{
     color: black;
-    font-size: 15px;
+    font-size: 20px;
   }
+  .room_id span{
+    font-size: 25px;
+  }
+
   
 }
 
