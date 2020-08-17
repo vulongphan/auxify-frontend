@@ -40,7 +40,7 @@ body{
   box-shadow: none !important;
 }
 
-.joinPage input {
+.joinPage label {
   background-color: white; /* background */
   border: 2px solid white; /* border */
   border-radius: 30px;
@@ -86,7 +86,7 @@ body{
   font-family: 'proxima-nova', sans-serif;
   font-weight: 600; /*weight of text*/
   font-size: 20px;
-  padding: 10px 24px; /* Some padding */
+  padding: center; /* Some padding */
   cursor: pointer; /* Pointer/hand icon */
   width: 20vw;
   height: 7vh;
@@ -168,7 +168,7 @@ footer{
     font-family: 'proxima-nova', sans-serif;
     font-weight: 400; /*weight of text*/
     font-size: 20px;
-    padding: 10px 24px; /* Some padding */
+    padding: center; /* Some padding */
     cursor: pointer; /* Pointer/hand icon */
     width: 50vw;
     height: 7vh;
@@ -178,6 +178,24 @@ footer{
 
   .homePage #welcome {
     font-size: 30px;
+  }
+
+  .joinPage label {
+    background-color: white; /* background */
+    border: 2px solid white; /* border */
+    border-radius: 30px;
+    color: black; /* text color */
+    font-family: 'proxima-nova', sans-serif;
+    font-weight: 400; /*weight of text*/
+    font-size: 20px;
+    text-align: center;
+    cursor: auto;
+    padding: center; /* Some padding */
+    cursor: auto; /* Pointer/hand icon */
+    width: 75vw;
+    height: 7vh;
+    margin: 10px auto 0px auto;
+    display:block;
   }
 
 }
