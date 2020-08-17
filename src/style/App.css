@@ -95,10 +95,6 @@ body{
 
 }
 
-
-
-
-
 .btn-group button:hover{
   opacity: 0.9;
 }
@@ -180,7 +176,7 @@ footer{
     font-size: 30px;
   }
 
-  .btn-group input {
+  .btn-group .searchbarId {
     background-color: white; /* background */
     border: 2px solid white; /* border */
     border-radius: 30px;
