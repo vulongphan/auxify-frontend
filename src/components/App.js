@@ -32,7 +32,7 @@ class Home extends React.Component {
     return (
       <div className="homePage center" >
         <h1 className="fromtop text_style" id = "welcome" >Welcome to Auxify</h1>
-        <div className="btn-group fromtop center" >
+        <div className="btn-group fromtop" >
           <form action='/create'>
             <button type="submit" className = "roomAction" >New Room</button>
           </form>
