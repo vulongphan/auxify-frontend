@@ -184,13 +184,12 @@ html {
 
 /*searchbar */
 .searchbarPlaylist{
-  width: 400px;
-  padding-right: 2px;
+  width: 450px;
 }
 
 .searchbarTrack{
   order: 1;
-  width: 400px;
+  width: 450px;
 }
 
 
