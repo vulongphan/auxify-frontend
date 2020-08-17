@@ -31,7 +31,9 @@ const DefaultPlaylist = (props) => {
                     <span>Playlist: </span>
                     {/* <img src={playlist.images[0].url} width="20px" height="20px" /> */}
                     <span className="display-playlist__name"> {playlist.name}</span>
-                    <span className="display-playlist__owner"> by {playlist.owner.display_name}</span>
+                    <span className="display-playlist__owner"> 
+                    {/* by {playlist.owner.display_name} */}
+                    </span>
                 </span>
             </div>
         )
