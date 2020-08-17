@@ -155,4 +155,21 @@ footer{
     opacity: 0.7;
 }
 
+@media screen and (max-width: 768px){
+  .btn-group .roomAction {
+    background-color:green; /* background */
+    border: 2px solid green; /* border */
+    border-radius: 20px;
+    color: white; /* text color */
+    font-family: 'proxima-nova', sans-serif;
+    font-weight: 400; /*weight of text*/
+    font-size: 15px;
+    padding: 10px 24px; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    margin: 10px auto 0px auto;
+    display:block;
+  }
+
+}
+
 
