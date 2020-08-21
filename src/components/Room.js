@@ -42,21 +42,39 @@ class Room extends React.Component {
 
     fetchRoom(room_id) {
         api.getRoom(room_id)
-            .then(res => {
+            .then(res => { //the returned Promise in successful case is stored in res parameter
                 if (res.data.success) {
                     const room = res.data.data;
+                    //console.log("Current access_token: " + room.access_token);
+
+                    const current_time = Date.now();
+                    const duration = 3600 * 1000; //lifetime for an access_token in the room (in mili sec)
+                    //console.log("end_time at: "+ room.end_time);
+                    //console.log("Now is: " + current_time);
+                    if (current_time >= room.end_time && current_time < room.end_time + this.count) {
+                        console.log("Pass end_time");
+                        //make sure we only request access_token once when the current access_token expires
+                        //request new access_token from refresh_token 
+                        api.requestToken(room.refresh_token).then(access_token => {
+                            console.log("New access_token: " + access_token);
+                            //update the access_token and end_time of room
+                            api.updateToken(room_id, {access_token: access_token});
+                            api.updateEndtime(room_id, {end_time: current_time + duration});
+                        }
+                        );
+                    }
                     spotifyApi.setAccessToken(room.access_token);
                     this.getInfo();
                     this.setState({
                         queue: room.queue,
                         default_playlist: room.default_playlist,
                     })
-                } 
+
+                }
             })
-            .catch(() => {
-                window.location.href = expired;
-                console.log("Session expired");
-            });
+            .catch(() => { window.location.href = expired });
+
+
     }
 
     getHashParams() {
