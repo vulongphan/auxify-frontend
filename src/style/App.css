@@ -9,15 +9,26 @@
 /* align things center*/
 
 
-/*Home Page*/
-.homePage, .createPage, .joinPage {
+/*Widths and heights of Pages for the fromtop and frombottom class to work*/
+.homePage, .createPage, .joinPage, .expirePage {
   width: 100vw;
   height: 100vh;
+}
+
+.instruction{
+  width: 100vw;
+  height: 100 vh;
+  line-height: 200%;
+}
+
+.developed_by{
+  line-height: 150%;
 }
 
 body{
   background-color: black;
 }
+
 
 .Room input{
   background-color: white; /* background */
@@ -35,10 +46,12 @@ body{
   display:block;
 }
 
+/*
 .Room input:active{
   outline-color: none !important;
   box-shadow: none !important;
 }
+*/
 
 .btn-group input {
   background-color: white; /* background */
@@ -60,7 +73,6 @@ body{
   width: 300px;
   height: 50px;
 }
-
 
 
 .btn-group #join_room{
@@ -99,7 +111,7 @@ body{
 }
 
 .btn-group button:hover{
-  opacity: 0.9;
+  opacity: 0.8;
 }
 
 /* align the place holder text to center*/
@@ -123,12 +135,24 @@ body{
   position: relative;
   top: 30%; /* 30% of the parent element*/
 }
-
+.frombottom{
+  position: relative;
+  top: 60%;
+}
 .text_style{
   color: white;
   font-family: 'proxima-nova', sans-serif;
   cursor: default;
 }
+p Link,a {
+  color: white;
+  font-family: 'proxima-nova', sans-serif;
+  cursor: pointer !important;
+} 
+p Link,a:hover{
+  color: green
+}
+
 .homePage #welcome {
   font-size: 40px;
 }
@@ -138,6 +162,7 @@ body{
 
 
 /*footer*/
+/*
 footer{
   background-color: black;
   height: 5vh;
@@ -157,8 +182,13 @@ footer{
 .fa:hover {
     opacity: 0.7;
 }
+*/
 
 @media screen and (max-width: 768px){
+  html {
+    transform: rotateZ(90deg);
+  }
+  
   .btn-group .roomAction {
     background-color:green; /* background */
     border: 2px solid green; /* border */
@@ -175,16 +205,24 @@ footer{
     display:block;
   }
 
-  .homePage #welcome {
+  .fromtop{
+    position: relative;
+    top: 25%; 
+  }
+
+  .homePage #welcome  {
     font-size: 30px;
   }
 
+  .expirePage #Expire {
+    font-size: 30px;
+  }
   
 
   .searchbarId{
     width: 50vw;
-  }
 
+  }
 
 }
 

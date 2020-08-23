@@ -40,17 +40,11 @@ class Home extends React.Component {
             <button type="submit" className = "roomAction">Join Room</button>
           </form>
         </div>
+        <p className = "frombottom"><u><Link to = {`/about`}>About</Link></u></p>
       </div>
     )
   }
 }
 
-
-const Footer = () => (
-  <footer>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-    <button className="fa fa-github" />
-  </footer>
-)
 
 export default App;
