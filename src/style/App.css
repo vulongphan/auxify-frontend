@@ -207,6 +207,11 @@ footer{
     top: 25%; 
   }
 
+  .frombottom{
+    position: relative;
+    top: 45%;
+  }
+
   .homePage #welcome  {
     font-size: 30px;
   }
@@ -223,10 +228,5 @@ footer{
 
 }
 
-@media screen and (max-width : 768px) and (orientation: lanscape){
-  html {
-    transform: rotateZ(90deg);
-  }
-}
 
 
