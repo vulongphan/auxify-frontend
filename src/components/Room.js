@@ -7,10 +7,9 @@ import NowPlaying from './NowPlaying';
 import Queue from './Queue';
 import SearchBar from './SearchBar';
 import RoomInfo from './RoomInfo';
-import Expire from './Expire';
 
 const spotifyApi = new SpotifyWebApi();
-const expired =  "https://auxify.herokuapp.com/expire";
+const expired = 'http://localhost:3000/expire' /*"https://auxify.herokuapp.com/expire"*/;
 
 class Room extends React.Component {
     constructor(props) {

@@ -8,12 +8,13 @@ function Suggestion(props) {
             <ul className="suggestionList">
                 {searchResult.map((song) => {
                     return (
-                        <li className="suggestionItem" key={song.id} onClick={() => {props.onClick(song); props.clearSearch() }}>
+                        <li className="suggestionItem" key={song.id} onClick={() => { props.onClick(song); props.clearSearch() }}>
                             <div>
                                 <span>
-                                    <img src={song.album.images[2].url} height="20px" width="20px" />
-                                    <span className = "text_style"> {song.name}</span>
-                                    <span className = "text_style"> - {song.artists[0].name}</span>
+                                    {song.album.images.length >= 3 &&
+                                        <img alt = "" src={song.album.images[2].url} height="20px" width="20px" />}
+                                    <span className="text_style"> {song.name}</span>
+                                    <span className="text_style"> - {song.artists[0].name}</span>
                                 </span>
                             </div>
                         </li>
@@ -28,10 +29,10 @@ function Suggestion(props) {
             <ul className="suggestionList">
                 {searchResult.map((playlist) => {
                     return (
-                        <li className="suggestionItem" key={playlist.id} onClick={() => {props.onClick(playlist); props.clearSearch() }}>
+                        <li className="suggestionItem" key={playlist.id} onClick={() => { props.onClick(playlist); props.clearSearch() }}>
                             <div>
                                 <span>
-                                    <img src={playlist.images[0].url} height="20px" width="20px" />
+                                    <img alt = "" src={playlist.images[0].url} height="20px" width="20px" />
                                     <span> {playlist.name}</span>
                                     <span> by {playlist.owner.display_name}</span>
                                 </span>
@@ -95,13 +96,13 @@ class SearchBar extends React.Component {
 
     render() {
         return (
-            <div className = {this.props.className}>
+            <div className={this.props.className}>
                 <input
                     id={this.props.id}
                     onKeyUp={event => { this.search(event.target.value) }}
                     placeholder={this.props.placeholder}
                     type="text"
-                    style={{width: "100%"}}
+                    style={{ width: "100%" }}
                 />
                 <Suggestion
                     searchResult={this.state.searchResult}
