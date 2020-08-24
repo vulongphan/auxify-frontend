@@ -11,7 +11,8 @@ function Suggestion(props) {
                         <li className="suggestionItem" key={song.id} onClick={() => {props.onClick(song); props.clearSearch() }}>
                             <div>
                                 <span>
-                                    <img src={song.album.images[2].url} height="20px" width="20px" />
+                                    {song.album.images.length > 2 &&
+                                    <img src={song.album.images[2].url} height="20px" width="20px" />}
                                     <span className = "text_style"> {song.name}</span>
                                     <span className = "text_style"> - {song.artists[0].name}</span>
                                 </span>

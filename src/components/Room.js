@@ -10,7 +10,7 @@ import RoomInfo from './RoomInfo';
 import Expire from './Expire';
 
 const spotifyApi = new SpotifyWebApi();
-const expired =  "https://auxify.herokuapp.com/expire";
+const expired = 'http://localhost:3000/expire'/*"https://auxify.herokuapp.com/expire"*/;
 
 class Room extends React.Component {
     constructor(props) {
@@ -49,8 +49,6 @@ class Room extends React.Component {
 
                     const current_time = Date.now();
                     const duration = 3600 * 1000; //lifetime for an access_token in the room (in mili sec)
-                    //console.log("end_time at: "+ room.end_time);
-                    //console.log("Now is: " + current_time);
                     if (current_time >= room.end_time && current_time < room.end_time + this.count) {
                         console.log("Pass end_time");
                         //make sure we only request access_token once when the current access_token expires
@@ -73,8 +71,6 @@ class Room extends React.Component {
                 }
             })
             .catch(() => { window.location.href = expired });
-
-
     }
 
     getHashParams() {

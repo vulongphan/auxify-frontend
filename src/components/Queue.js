@@ -7,8 +7,40 @@ function QueueItem(props) {
   const DISLIKE = 'disliked';
   const LIKE_BTN_ID = 'like' + props.id;
   const DISLIKE_BTN_ID = 'dislike' + props.id;
+  const cookieExpired = 3600 * 1000 * 4;
 
-  const onClickLike = (index) => {
+  /*
+  var hasLiked = (id) => {return document.cookie.split(';').some((item) => {
+    return item.indexOf(id + '=1') >= 0 })};
+
+  var hasDisliked = (id) => {return document.cookie.split(';').some((item) => {
+    return item.indexOf(id + '=-1') >= 0 })};
+
+  var hasNeither = (id) => {return !document.cookie.split('; ').find(row => row.startsWith(id))
+  || document.cookie.split(';').some((item) => {return item.indexOf(id + '=0') >= 0 })};
+
+  //; expires=" + (Date.now() + cookieExpired).toUTCString();
+  const onClickLike = (index, id) => {
+    var payload;
+    if (hasNeither(id)) {
+      document.cookie = id + "=1";
+      payload = {index: index, amount : 1};
+    } else {
+      if (hasLiked(id)){
+        document.cookie = id + "=0";
+        payload = {index: index, amount : - 1};
+      } else if (hasDisliked(id)){
+        document.cookie = id + "=1";
+        payload = {index: index, amount : 2};
+      }
+    }
+    console.log(document.cookie.split("; "));
+    api.vote(room_id, payload)
+    .then(() => console.log("Click liked button at " + index))
+    .catch(err => console.log(err));
+  }
+  */
+  const onClickLike = (index, id) => {
     var payload;
     var likeList = document.getElementById(LIKE_BTN_ID).classList;
     var dislikeList = document.getElementById(DISLIKE_BTN_ID).classList;
@@ -82,7 +114,7 @@ function QueueItem(props) {
         <button
           id={'like' + props.id}
           className="vote-btn like text_style"
-          onClick={() => onClickLike(props.index)}>
+          onClick={() => onClickLike(props.index, props.id)}>
           Like</button>
       </td>
       <td width="10%">
