@@ -122,7 +122,7 @@ html {
 
 
 .room_id span{
-  background-color: green;
+  background-color: #1db954;
   font-size: 30px;
   border-radius: 10px;
   padding: 5px;
@@ -157,13 +157,13 @@ html {
 }
 
 .like{
-  border: 2px solid green;
+  border: 2px solid #1DB954;
   border-radius: 20px;
   width: 75px;
 }
 
 .like:hover, .liked {
-  background-color: green;
+  background-color: #1db954;
 }
 
 .dislike{

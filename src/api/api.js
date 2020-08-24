@@ -31,7 +31,7 @@ export const requestToken = async (refresh_token) => {
     function doRequest(options) {
         return new Promise(function (resolve, reject) { //we need to return a Promise because we want to wait for the access_token to be returned
             request.post(options, function (error, response, body) {
-                if (!error && response.statusCode == 200) {
+                if (!error && response.statusCode === 200) {
                     resolve(body.access_token);
                 } else {
                     reject(error);

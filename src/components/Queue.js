@@ -9,46 +9,13 @@ function QueueItem(props) {
   const DISLIKE_BTN_ID = 'dislike' + props.id;
   const cookieExpired = 3600 * 1000 * 4;
 
-  /*
-  var hasLiked = (id) => {return document.cookie.split(';').some((item) => {
-    return item.indexOf(id + '=1') >= 0 })};
-
-  var hasDisliked = (id) => {return document.cookie.split(';').some((item) => {
-    return item.indexOf(id + '=-1') >= 0 })};
-
-  var hasNeither = (id) => {return !document.cookie.split('; ').find(row => row.startsWith(id))
-  || document.cookie.split(';').some((item) => {return item.indexOf(id + '=0') >= 0 })};
-
-  //; expires=" + (Date.now() + cookieExpired).toUTCString();
   const onClickLike = (index, id) => {
     var payload;
-    if (hasNeither(id)) {
-      document.cookie = id + "=1";
-      payload = {index: index, amount : 1};
-    } else {
-      if (hasLiked(id)){
-        document.cookie = id + "=0";
-        payload = {index: index, amount : - 1};
-      } else if (hasDisliked(id)){
-        document.cookie = id + "=1";
-        payload = {index: index, amount : 2};
-      }
-    }
-    console.log(document.cookie.split("; "));
-    api.vote(room_id, payload)
-    .then(() => console.log("Click liked button at " + index))
-    .catch(err => console.log(err));
-  }
-  */
-  const onClickLike = (index, id) => {
-    var payload;
-    var likeList = document.getElementById(LIKE_BTN_ID).classList;
-    var dislikeList = document.getElementById(DISLIKE_BTN_ID).classList;
-    if (!likeList.contains(LIKE)) {
-      //click the like button at initial state
-      if (!dislikeList.contains(DISLIKE)) payload = { index: index, amount: 1 };
-      //click the like button when the song was previously disliked
-      else {
+    var likeList = document.getElementById(LIKE_BTN_ID).classList; //return the className(s) of the LIKE button element as a list
+    var dislikeList = document.getElementById(DISLIKE_BTN_ID).classList; //return the className(s) of the Dislike button element as a list
+    if (!likeList.contains(LIKE)) { //click the like button at initial state
+      if (!dislikeList.contains(DISLIKE)) payload = { index: index, amount: 1 }; 
+      else { //click the like button when the song was previously disliked
         payload = { index: index, amount: 2 };
         dislikeList.remove(DISLIKE);
       }
@@ -90,7 +57,7 @@ function QueueItem(props) {
   return (
     <tr className="queue-item">
       <td width="10%">
-        <img src={songInfo.image} />
+        <img alt= "" src={songInfo.image} />
       </td>
       <td width="60%">
         <table>
@@ -164,3 +131,35 @@ class Queue extends React.Component {
 }
 
 export default Queue;
+
+  /*
+  var hasLiked = (id) => {return document.cookie.split(';').some((item) => {
+    return item.indexOf(id + '=1') >= 0 })};
+
+  var hasDisliked = (id) => {return document.cookie.split(';').some((item) => {
+    return item.indexOf(id + '=-1') >= 0 })};
+
+  var hasNeither = (id) => {return !document.cookie.split('; ').find(row => row.startsWith(id))
+  || document.cookie.split(';').some((item) => {return item.indexOf(id + '=0') >= 0 })};
+
+  //; expires=" + (Date.now() + cookieExpired).toUTCString();
+  const onClickLike = (index, id) => {
+    var payload;
+    if (hasNeither(id)) {
+      document.cookie = id + "=1";
+      payload = {index: index, amount : 1};
+    } else {
+      if (hasLiked(id)){
+        document.cookie = id + "=0";
+        payload = {index: index, amount : - 1};
+      } else if (hasDisliked(id)){
+        document.cookie = id + "=1";
+        payload = {index: index, amount : 2};
+      }
+    }
+    console.log(document.cookie.split("; "));
+    api.vote(room_id, payload)
+    .then(() => console.log("Click liked button at " + index))
+    .catch(err => console.log(err));
+  }
+  */
