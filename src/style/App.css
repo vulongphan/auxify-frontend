@@ -76,9 +76,9 @@ body{
 
 
 .btn-group #join_room{
-  background-color: green;
+  background-color:#1db954;
   border-radius: 20px;
-  border: 2px solid green; /* border */
+  border: 2px solid #1db954; /* border */
   color: white;
   font-family: 'proxima-nova', sans-serif;
   font-weight: 600; /*weight of text*/
@@ -94,8 +94,8 @@ body{
 }
 
 .btn-group .roomAction {
-  background-color:green; /* background */
-  border: 2px solid green; /* border */
+  background-color:#1db954; /* background */
+  border: 2px solid #1db954; /* border */
   border-radius: 35px;
   color: white; /* text color */
   font-family: 'proxima-nova', sans-serif;
@@ -150,12 +150,13 @@ p Link,a {
   cursor: pointer !important;
 } 
 p Link,a:hover{
-  color: green
+  color: #1db954
 }
 
 .homePage #welcome {
   font-size: 40px;
 }
+
 .highlight{
   font-weight: 600;
 }
@@ -187,8 +188,8 @@ footer{
 @media screen and (max-width: 768px){
   
   .btn-group .roomAction {
-    background-color:green; /* background */
-    border: 2px solid green; /* border */
+    background-color:#1db954; /* background */
+    border: 2px solid #1db954; /* border */
     border-radius: 20px;
     color: white; /* text color */
     font-family: 'proxima-nova', sans-serif;
@@ -213,6 +214,10 @@ footer{
   }
 
   .homePage #welcome  {
+    font-size: 30px;
+  }
+
+  .instruction h1, .developed_by h1 {
     font-size: 30px;
   }
 
