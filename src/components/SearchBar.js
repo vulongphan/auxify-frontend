@@ -117,7 +117,7 @@ class SearchBar extends React.Component {
         });
     }
 
-    findIndex(event) { //rerender SearchBar and its child elements if ArrowDown and ArrowUp are pressed
+    onKeyDown(event) { //rerender SearchBar and its child elements if ArrowDown and ArrowUp are pressed
         var key = event.key;
         var i = this.state.index;
         if (key === "ArrowDown") {
@@ -132,6 +132,8 @@ class SearchBar extends React.Component {
             var song = this.state.searchResult[this.state.index]; //the song that the user picks
             this.props.onClick(song);
             this.clearSearch();
+        } else {
+            this.search(event.target.value);
         }
     }
 
@@ -140,8 +142,7 @@ class SearchBar extends React.Component {
             <div className={this.props.className}>
                 <input
                     id={this.props.id}
-                    onKeyUp={event => { this.search(event.target.value) }}
-                    onKeyDown={event => this.findIndex(event)}
+                    onKeyDown={event => this.onKeyDown(event)}
                     placeholder={this.props.placeholder}
                     type="text"
                     style={{ width: "100%" }}
