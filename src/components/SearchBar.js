@@ -86,7 +86,7 @@ class SearchBar extends React.Component {
 
         this.clearSearch = this.clearSearch.bind(this);
         this.search = this.search.bind(this);
-        this.findIndex = this.findIndex.bind(this);
+        this.onKeyDown = this.onKeyDown.bind(this);
     }
 
     search(query) {
