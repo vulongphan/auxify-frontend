@@ -11,17 +11,10 @@ function Suggestion(props) {
                         <li className="suggestionItem" key={song.id} onClick={() => { props.onClick(song); props.clearSearch() }}>
                             <div>
                                 <span>
-<<<<<<< HEAD
-                                    {song.album.images.length > 2 &&
-                                    <img src={song.album.images[2].url} height="20px" width="20px" />}
-                                    <span className = "text_style"> {song.name}</span>
-                                    <span className = "text_style"> - {song.artists[0].name}</span>
-=======
                                     {song.album.images.length >= 3 &&
                                         <img alt = "" src={song.album.images[2].url} height="20px" width="20px" />}
                                     <span className="text_style"> {song.name}</span>
                                     <span className="text_style"> - {song.artists[0].name}</span>
->>>>>>> bd8dbd80bd9bb6af1c61f830395c19caf56316c7
                                 </span>
                             </div>
                         </li>

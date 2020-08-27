@@ -9,11 +9,7 @@ import SearchBar from './SearchBar';
 import RoomInfo from './RoomInfo';
 
 const spotifyApi = new SpotifyWebApi();
-<<<<<<< HEAD
 const expired = 'http://localhost:3000/expire'/*"https://auxify.herokuapp.com/expire"*/;
-=======
-const expired = "https://auxify.herokuapp.com/expire";
->>>>>>> bd8dbd80bd9bb6af1c61f830395c19caf56316c7
 
 class Room extends React.Component {
     constructor(props) {
@@ -59,8 +55,8 @@ class Room extends React.Component {
                         api.requestToken(room.refresh_token).then(access_token => {
                             console.log("New access_token: " + access_token);
                             //update the access_token and end_time of room
-                            api.updateToken(room_id, {access_token: access_token});
-                            api.updateEndtime(room_id, {end_time: current_time + duration});
+                            api.updateToken(room_id, { access_token: access_token });
+                            api.updateEndtime(room_id, { end_time: current_time + duration });
                         }
                         );
                     }
@@ -135,12 +131,21 @@ class Room extends React.Component {
         spotifyApi.getMe()
             .then(
                 (response) => {
-                    this.setState({
-                        hostInfo: {
-                            name: response.display_name,
-                            profileImage: response.images[0].url
-                        }
-                    })
+                    if (response.images.length > 0) {
+                        this.setState({
+                            hostInfo: {
+                                name: response.display_name,
+                                profileImage: response.images[0].url
+                            }
+                        })
+                    } else {
+                        this.setState({
+                            hostInfo: {
+                                name: response.display_name,
+                                profileImage: null
+                            }
+                        })
+                    }
                 }
                 , err => console.error(err));
     }

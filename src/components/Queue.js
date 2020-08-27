@@ -7,7 +7,6 @@ function QueueItem(props) {
   const DISLIKE = 'disliked';
   const LIKE_BTN_ID = 'like' + props.id;
   const DISLIKE_BTN_ID = 'dislike' + props.id;
-  const cookieExpired = 3600 * 1000 * 4;
 
   const onClickLike = (index, id) => {
     var payload;
@@ -133,6 +132,8 @@ class Queue extends React.Component {
 export default Queue;
 
   /*
+  const cookieExpired = 3600 * 1000 * 4;
+
   var hasLiked = (id) => {return document.cookie.split(';').some((item) => {
     return item.indexOf(id + '=1') >= 0 })};
 

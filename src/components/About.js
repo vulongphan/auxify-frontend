@@ -13,7 +13,7 @@ function About(){
             </div>
             <div className = "developed_by center">
             <h1>Developed by</h1> 
-            <p> <a href = "">Hieu Do</a></p>   
+            <p> <a href = "https://www.linkedin.com/in/hdo2000/">Hieu Do</a></p>   
             <p><a href = "https://vulongphan.netlify.app/">Long Phan</a></p>
             </div>
         </div>
