@@ -204,7 +204,7 @@ html {
   color: white;
   padding: 5px;
 }
-.suggestionItem:hover{
+.suggestionItem:hover , .suggestionItemAt{
   background-color: #111111;
 }
 
