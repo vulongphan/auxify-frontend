@@ -1,13 +1,11 @@
 import React from 'react';
 
 function Suggestion(props) {
+    const searchResult = props.searchResult;
     if (props.types.includes("track")) { //search bar for track
-        const searchResult = props.searchResult.song; //list of search results
-        //console.log("index of song to pick: " + this.props.index);
         return (
             <ul className="suggestionList">
                 {searchResult.map((song, index) => {
-                    //call func
                     if (index !== props.index) {
                         return ( //show the song that the user has the pick at
                             <li className="suggestionItem" key={song.id} onClick={() => { props.onClick(song); props.clearSearch() }}>
@@ -40,22 +38,36 @@ function Suggestion(props) {
             </ul>
         );
     } else { //search bar for playlist
-        const searchResult = props.searchResult.playlist;
-
         return (
             <ul className="suggestionList">
-                {searchResult.map((playlist) => {
-                    return (
-                        <li className="suggestionItem" key={playlist.id} onClick={() => { props.onClick(playlist); props.clearSearch() }}>
-                            <div>
-                                <span>
-                                    <img alt="" src={playlist.images[0].url} height="20px" width="20px" />
-                                    <span> {playlist.name}</span>
-                                    <span> by {playlist.owner.display_name}</span>
-                                </span>
-                            </div>
-                        </li>
-                    );
+                {searchResult.map((playlist, index) => {
+                    if (index !== props.index) {
+                        return (
+                            <li className="suggestionItem" key={playlist.id} onClick={() => { props.onClick(playlist); props.clearSearch() }}>
+                                <div>
+                                    <span>
+                                        {playlist.images.length > 0 &&
+                                            <img alt="" src={playlist.images[0].url} height="20px" width="20px" />}
+                                        <span> {playlist.name}</span>
+                                        <span> by {playlist.owner.display_name}</span>
+                                    </span>
+                                </div>
+                            </li>
+                        )
+                    } else {
+                        return (
+                            <li className="suggestionItem suggestionItemAt" key={playlist.id} onClick={() => { props.onClick(playlist); props.clearSearch() }}>
+                                <div>
+                                    <span>
+                                        {playlist.images.length > 0 &&
+                                            <img alt="" src={playlist.images[0].url} height="20px" width="20px" />}
+                                        <span> {playlist.name}</span>
+                                        <span> by {playlist.owner.display_name}</span>
+                                    </span>
+                                </div>
+                            </li>
+                        )
+                    }
                 })}
             </ul>
         )
@@ -68,7 +80,7 @@ class SearchBar extends React.Component {
         super(props);
 
         this.state = {
-            searchResult: { song: [], playlist: [] },
+            searchResult: [],
             index: -1,
         }
 
@@ -84,24 +96,14 @@ class SearchBar extends React.Component {
             spotifyApi.search(query, types)
                 .then((response) => {
                     var result;
-                    if (types.includes("track")) {
-                        result = response.tracks.items;
-                        if (result.length > this.props.maxSuggestion) {
-                            result = result.slice(0, this.props.maxSuggestion);
-                        }
-                        this.setState({
-                            searchResult: { song: result }
-                        });
+                    if (types.includes("track")) result = response.tracks.items;
+                    else if (types.includes("playlist")) result = response.playlists.items;
+                    if (result.length > this.props.maxSuggestion) {
+                        result = result.slice(0, this.props.maxSuggestion);
                     }
-                    if (types.includes("playlist")) {
-                        result = response.playlists.items;
-                        if (result.length > this.props.maxSuggestion) {
-                            result = result.slice(0, this.props.maxSuggestion);
-                        }
-                        this.setState({
-                            searchResult: { playlist: result }
-                        });
-                    }
+                    this.setState({
+                        searchResult: result,
+                    });
                 })
                 .catch(err => console.log(err));
         } else this.clearSearch();
@@ -110,43 +112,27 @@ class SearchBar extends React.Component {
     clearSearch() {
         document.getElementById(this.props.id).value = '';
         this.setState({
-            searchResult: { song: [], playlist: [] },
+            searchResult: [],
             index: -1,
         });
     }
 
-    findIndex(event, type) { //rerender SearchBar and its child elements if ArrowDown and ArrowUp are pressed
+    findIndex(event) { //rerender SearchBar and its child elements if ArrowDown and ArrowUp are pressed
         var key = event.key;
-        if (type === "track") {
-            if (key === "ArrowDown") {
-                var i = this.state.index;
-                if (i < this.state.searchResult.song.length - 1) {
-                    this.setState({
-                        index: i + 1,
-                    })
-                }
-                else {
-                    this.setState({
-                        index: 0,
-                    })
-                }
-            }
-            else if (key === "ArrowUp") {
-                var i = this.state.index;
-                if (i >= 1) {
-                    this.setState({ index: i - 1 });
-                }
-                else {
-                    this.setState({ index: this.state.searchResult.song.length - 1 })
-                }
-            }
-            else if (key == "Enter" && this.state.index >= 0) {
-                var song = this.state.searchResult.song[this.state.index]; //the song that the user picks
-                this.props.onClick(song);
-                this.clearSearch();
-            }
+        var i = this.state.index;
+        if (key === "ArrowDown") {
+            if (i < this.state.searchResult.length - 1) this.setState({ index: i + 1 })
+            else this.setState({ index: 0 })
         }
-
+        else if (key === "ArrowUp") {
+            if (i >= 1) this.setState({ index: i - 1 })
+            else this.setState({ index: this.state.searchResult.length - 1 })
+        }
+        else if (key == "Enter" && this.state.index >= 0) {
+            var song = this.state.searchResult[this.state.index]; //the song that the user picks
+            this.props.onClick(song);
+            this.clearSearch();
+        }
     }
 
     render() {
@@ -155,7 +141,7 @@ class SearchBar extends React.Component {
                 <input
                     id={this.props.id}
                     onKeyUp={event => { this.search(event.target.value) }}
-                    onKeyDown={event => this.findIndex(event, this.props.types[0])}
+                    onKeyDown={event => this.findIndex(event)}
                     placeholder={this.props.placeholder}
                     type="text"
                     style={{ width: "100%" }}
