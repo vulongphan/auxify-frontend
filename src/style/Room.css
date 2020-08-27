@@ -204,7 +204,7 @@ html {
   color: white;
   padding: 5px;
 }
-.suggestionItem:hover{
+.suggestionItem:hover , .suggestionItemAt{
   background-color: #111111;
 }
 
@@ -226,6 +226,11 @@ html {
   }
   .now-playing__artist-name{
     font-size: 0.6em;
+  }
+  .now-playing {
+    color: #fff;
+    position: relative;
+    font-size: 1em;
   }
   .room-info .host{
     font-size: 15px;
