@@ -104,7 +104,7 @@ class Queue extends React.Component {
     return (
       <div className="queue-container">
         <div className = "text_style highlight" id = "coming_up" >Coming Up</div>
-        <table id="queue">
+        <table id="queue" className = "table-center">
           <tbody>
             {queue.map((song, index) => {
               var songInfo = {

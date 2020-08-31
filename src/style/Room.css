@@ -265,6 +265,10 @@ html {
     flex-grow: 1;
   }
 
+  .table-center{
+    margin-left: auto;
+    margin-right: auto;
+  }
   
 }
 
