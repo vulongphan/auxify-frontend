@@ -170,7 +170,7 @@ class Room extends React.Component {
                 <NowPlaying
                     play={this.play}
                     spotifyApi={spotifyApi} />
-                <div className='Room-row3 RowFlexReverse ColumnFlex'>
+                <div className='Room-row3 RowFlexReverse'>
                     <SearchBar
                         id="searchTrack"
                         className="Room-row3-column1 searchbarTrack"
