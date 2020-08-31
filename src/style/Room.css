@@ -131,7 +131,7 @@ html {
 /*queue */
 .queue-container{
   order: 2;
-  flex-grow: 0.6;
+  flex-grow: 1;
 }
 
 .queue-item img{
@@ -189,11 +189,8 @@ html {
 .searchbarTrack{
   order: 1;
   /*width: 450px;*/
-  flex-grow: 0.4
+  flex-grow: 1
 }
-
-
-
 
 .suggestionList{
   list-style-type: square;
