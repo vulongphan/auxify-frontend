@@ -190,7 +190,8 @@ html {
 .searchbarTrack{
   order: 1;
   /*width: 450px;*/
-  flex-grow: 4;
+  /* flex-grow: 4; */
+  width: 30vw;
 }
 
 .suggestionList{
@@ -265,7 +266,8 @@ html {
 
   .queue-container{
     order: 2;
-    flex-grow: 6;
+    /* flex-grow: 6; */
+    width: 70vw;
   }
 
   .queue-container #coming_up{
