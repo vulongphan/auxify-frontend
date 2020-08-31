@@ -170,10 +170,10 @@ class Room extends React.Component {
                 <NowPlaying
                     play={this.play}
                     spotifyApi={spotifyApi} />
-                <div className='Room-row3 RowFlexReverse'>
+                <div className='Room-row3 RowFlexReverse ColumnFlex'>
                     <SearchBar
                         id="searchTrack"
-                        className="searchbarTrack"
+                        className="Room-row3-column1 searchbarTrack"
                         spotifyApi={spotifyApi}
                         onClick={this.addToQueue}
                         types={['track']}
@@ -181,6 +181,7 @@ class Room extends React.Component {
                         placeholder={"What song do you want to play?"}
                     />
                     <Queue
+                        className = "Room-row3-column2"
                         queue={this.state.queue}
                         room_id={this.state.room_id} />
                 </div>

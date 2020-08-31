@@ -256,11 +256,7 @@ html {
     font-size: 1.2em;
   }
 
-  .RowFlexReverse{ 
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
+  
 }
 
 
