@@ -242,6 +242,11 @@ html {
     font-size: 25px;
   }
 
+  .searchbarPlaylist{
+    /* width: 450px; */
+    width: 100vw;
+  }
+  
   .searchbarTrack{
     order: 1;
     /* flex-grow: 1; */
