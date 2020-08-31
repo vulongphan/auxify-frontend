@@ -129,10 +129,10 @@ html {
 }
 
 /*queue */
-/* .queue-container{
+.queue-container{
   order: 2;
-  flex-grow: 1;
-} */
+  flex-grow: 0.6;
+}
 
 .queue-item img{
   border-radius: 2px;
@@ -191,6 +191,8 @@ html {
   /*width: 450px;*/
   flex-grow: 0.4
 }
+
+
 
 
 .suggestionList{
