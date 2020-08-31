@@ -132,7 +132,7 @@ html {
 .queue-container{
   order: 2;
   /* flex-grow: 6; */
-  width: 70vw;
+  width: 65vw;
 }
 
 .queue-item img{
@@ -275,15 +275,6 @@ html {
   .queue-container #coming_up{
     margin-top: 10px;
     font-size: 1.2em;
-  }
-
-  .Room-row3-column1{
-    order: 1;
-    flex-grow: 1;
-  }
-  .Room-row3-column2{
-    order: 2;
-    flex-grow: 1;
   }
 
   #queue{
