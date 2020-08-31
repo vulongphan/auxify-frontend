@@ -131,7 +131,7 @@ html {
 /*queue */
 .queue-container{
   order: 2;
-  flex-grow: 1;
+  flex-grow: 6;
 }
 
 .queue-item img{
@@ -189,7 +189,7 @@ html {
 .searchbarTrack{
   order: 1;
   /*width: 450px;*/
-  flex-grow: 1
+  flex-grow: 4;
 }
 
 .suggestionList{
@@ -238,6 +238,16 @@ html {
   .room_id span{
     font-size: 25px;
   }
+
+  .searchbarTrack{
+    order: 1;
+    flex-grow: 1;
+  }
+
+  .queue-container{
+    order: 2;
+    flex-grow: 1;
+  }
   
 }
 
@@ -248,7 +258,12 @@ html {
   
   .searchbarTrack{
     order: 1;
-    width: 250px;
+    flex-grow: 4;
+  }
+
+  .queue-container{
+    order: 2;
+    flex-grow: 6;
   }
 
   .queue-container #coming_up{
