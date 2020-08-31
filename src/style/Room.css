@@ -238,8 +238,18 @@ html {
   .room_id span{
     font-size: 25px;
   }
-
   
+}
+
+@media screen and (min-width: 769px) and (max-width: 945px){
+  .searchbarPlaylist{
+    width: 350px;
+  }
+  
+  .searchbarTrack{
+    order: 1;
+    width: 350px;
+  }
 }
 
 
