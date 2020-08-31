@@ -131,7 +131,7 @@ html {
 /*queue */
 .queue-container{
   order: 2;
-  flex-grow: 3;
+  flex-grow: 1;
 }
 
 .queue-item img{
@@ -265,7 +265,7 @@ html {
     flex-grow: 1;
   }
 
-  .table-center{
+  #queue{
     margin-left: auto;
     margin-right: auto;
   }
