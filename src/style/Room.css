@@ -184,14 +184,15 @@ html {
 
 /*searchbar */
 .searchbarPlaylist{
-  width: 450px;
+  /* width: 450px; */
+  width: 35vw;
 }
 
 .searchbarTrack{
   order: 1;
   /*width: 450px;*/
   /* flex-grow: 4; */
-  width: 30vw;
+  width: 35vw;
 }
 
 .suggestionList{
@@ -217,7 +218,7 @@ html {
 /*using media querries for different screen width*/
 
 
-
+/*for smartphones*/
 @media screen and (max-width: 768px){
   .media__img img{
     width: 70px;
@@ -254,11 +255,11 @@ html {
   
 }
 
+/*for tablets*/
 @media screen and (min-width: 769px) and (max-width: 948px){
   .searchbarPlaylist{
-    width: 250px;
+    width: 30vw;
   }
-  
   .searchbarTrack{
     order: 1;
     /* flex-grow: 4; */
