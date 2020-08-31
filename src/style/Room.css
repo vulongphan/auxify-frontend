@@ -243,12 +243,12 @@ html {
 
 @media screen and (min-width: 769px) and (max-width: 948px){
   .searchbarPlaylist{
-    width: 350px;
+    width: 250px;
   }
   
   .searchbarTrack{
     order: 1;
-    width: 350px;
+    width: 250px;
   }
 
   .queue-container #coming_up{
