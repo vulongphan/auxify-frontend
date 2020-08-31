@@ -250,6 +250,11 @@ html {
     order: 1;
     width: 350px;
   }
+
+  .queue-container #coming_up{
+    margin-top: 10px;
+    font-size: 1.2em;
+  }
 }
 
 
