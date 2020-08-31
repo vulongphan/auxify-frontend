@@ -131,7 +131,8 @@ html {
 /*queue */
 .queue-container{
   order: 2;
-  flex-grow: 6;
+  /* flex-grow: 6; */
+  width: 30vw;
 }
 
 .queue-item img{
@@ -241,12 +242,13 @@ html {
 
   .searchbarTrack{
     order: 1;
-    flex-grow: 1;
+    /* flex-grow: 1; */
+    width: 100vw;
   }
 
   .queue-container{
     order: 2;
-    flex-grow: 1;
+    width: 100vw;
   }
   
 }
