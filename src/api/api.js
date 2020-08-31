@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-var baseurl = 'http://auxify-backend.herokuapp.com/api';
+var baseurl = /*'http://localhost:8888/api'*/'http://auxify-backend.herokuapp.com/api';
 
 const api = axios.create({
     baseURL: baseurl,

@@ -9,7 +9,7 @@ import SearchBar from './SearchBar';
 import RoomInfo from './RoomInfo';
 
 const spotifyApi = new SpotifyWebApi();
-const expired = "https://auxify.herokuapp.com/expire";
+const expired = /*'http://localhost:3000/expire'*/'https://auxify.herokuapp.com/expire';
 
 class Room extends React.Component {
     constructor(props) {
@@ -48,8 +48,6 @@ class Room extends React.Component {
 
                     const current_time = Date.now();
                     const duration = 3600 * 1000; //lifetime for an access_token in the room (in mili sec)
-                    //console.log("end_time at: "+ room.end_time);
-                    //console.log("Now is: " + current_time);
                     if (current_time >= room.end_time && current_time < room.end_time + this.count) {
                         console.log("Pass end_time");
                         //make sure we only request access_token once when the current access_token expires
@@ -57,8 +55,8 @@ class Room extends React.Component {
                         api.requestToken(room.refresh_token).then(access_token => {
                             console.log("New access_token: " + access_token);
                             //update the access_token and end_time of room
-                            api.updateToken(room_id, {access_token: access_token});
-                            api.updateEndtime(room_id, {end_time: current_time + duration});
+                            api.updateToken(room_id, { access_token: access_token });
+                            api.updateEndtime(room_id, { end_time: current_time + duration });
                         }
                         );
                     }
@@ -72,8 +70,6 @@ class Room extends React.Component {
                 }
             })
             .catch(() => { window.location.href = expired });
-
-
     }
 
     getHashParams() {
@@ -135,12 +131,21 @@ class Room extends React.Component {
         spotifyApi.getMe()
             .then(
                 (response) => {
-                    this.setState({
-                        hostInfo: {
-                            name: response.display_name,
-                            profileImage: response.images[0].url
-                        }
-                    })
+                    if (response.images.length > 0) {
+                        this.setState({
+                            hostInfo: {
+                                name: response.display_name,
+                                profileImage: response.images[0].url
+                            }
+                        })
+                    } else {
+                        this.setState({
+                            hostInfo: {
+                                name: response.display_name,
+                                profileImage: null
+                            }
+                        })
+                    }
                 }
                 , err => console.error(err));
     }
