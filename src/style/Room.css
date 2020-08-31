@@ -129,10 +129,10 @@ html {
 }
 
 /*queue */
-.queue-container{
+/* .queue-container{
   order: 2;
   flex-grow: 1;
-}
+} */
 
 .queue-item img{
   border-radius: 2px;
@@ -188,7 +188,8 @@ html {
 
 .searchbarTrack{
   order: 1;
-  width: 450px;
+  /*width: 450px;*/
+  flex-grow: 0.4
 }
 
 
