@@ -242,7 +242,10 @@ html {
     margin-top: 23px;
   }
   .room_id span{
-    font-size: 25px;
+    background-color: #21315f;
+    font-size: 23px;
+    border-radius: 10px;
+    padding: 5px;
   }
   .display-playlist{
     margin: auto;
