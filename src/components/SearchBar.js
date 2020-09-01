@@ -48,8 +48,8 @@ function Suggestion(props) {
                                     <span>
                                         {playlist.images.length > 0 &&
                                             <img alt="" src={playlist.images[0].url} height="20px" width="20px" />}
-                                        <span> {playlist.name}</span>
-                                        <span> by {playlist.owner.display_name}</span>
+                                        <span className="text_style"> {playlist.name}</span>
+                                        <span className="text_style"> by {playlist.owner.display_name}</span>
                                     </span>
                                 </div>
                             </li>
@@ -61,8 +61,8 @@ function Suggestion(props) {
                                     <span>
                                         {playlist.images.length > 0 &&
                                             <img alt="" src={playlist.images[0].url} height="20px" width="20px" />}
-                                        <span> {playlist.name}</span>
-                                        <span> by {playlist.owner.display_name}</span>
+                                        <span className="text_style"> {playlist.name}</span>
+                                        <span className="text_style"> by {playlist.owner.display_name}</span>
                                     </span>
                                 </div>
                             </li>
