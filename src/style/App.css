@@ -6,11 +6,8 @@
   text-align: center;
 }
 
-/* align things center*/
-
-
 /*Widths and heights of Pages for the fromtop and frombottom class to work*/
-.homePage, .createPage, .joinPage, .expirePage {
+.homePage, .createPage, .joinPage, .expirePage, .maintainancePage {
   width: 100vw;
   height: 100vh;
 }
@@ -38,20 +35,12 @@ body{
   font-family: 'proxima-nova', sans-serif;
   font-weight: 400; /*weight of text*/
   text-align: center;
-  cursor: auto;
   padding: 10px 24px; /* Some padding */
-  cursor: auto; /* Pointer/hand icon */
+  cursor: auto; 
   width: 200px;
   margin: 10px auto 0px auto;
   display:block;
 }
-
-/*
-.Room input:active{
-  outline-color: none !important;
-  box-shadow: none !important;
-}
-*/
 
 .btn-group input {
   background-color: white; /* background */
@@ -62,7 +51,6 @@ body{
   font-weight: 400; /*weight of text*/
   font-size: 20px;
   text-align: center;
-  cursor: auto;
   padding: center; /* Some padding */
   cursor: auto; /* Pointer/hand icon */
   margin: 10px auto 0px auto;
@@ -161,30 +149,7 @@ p Link,a:hover{
   font-weight: 600;
 }
 
-
-/*footer*/
-/*
-footer{
-  background-color: black;
-  height: 5vh;
-  width: 100%;
-}
-
-.fa {
-  padding: 10px;
-  font-size: 30px;
-  text-align: center;
-  text-decoration: none;
-  width: 100px;
-  margin: 0 auto;
-  display: block;
-}
-
-.fa:hover {
-    opacity: 0.7;
-}
-*/
-
+/*for smartphones*/
 @media screen and (max-width: 768px){
   
   .btn-group .roomAction {
@@ -222,6 +187,10 @@ footer{
   }
 
   .expirePage #Expire {
+    font-size: 30px;
+  }
+
+  .maintainancePage #Maintanance {
     font-size: 30px;
   }
   
