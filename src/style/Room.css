@@ -57,8 +57,9 @@ html {
 }
 
 .room-info .host{
-  color:  white;
+  color: white;
   font-size: 20px;
+  margin-top: 27px;
 }
 
 /*display playlist*/
@@ -178,7 +179,7 @@ html {
 }
 
 .queue-container #coming_up{
-  margin-top: 20px;
+  margin-top: 12px;
   font-size: 1.2em;
 }
 
@@ -238,6 +239,7 @@ html {
   }
   .room-info .host{
     font-size: 15px;
+    margin-top: 20px;
   }
   .room_id span{
     font-size: 25px;
@@ -259,11 +261,15 @@ html {
     width: 100vw;
   }
 
+  .queue-container #coming_up{
+    margin-top: 10px;
+    font-size: 1.2em;
+  }
+
   .queue-container{
     order: 2;
     width: 100vw;
   }
-  
 }
 
 /*for tablets*/
