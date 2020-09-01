@@ -57,14 +57,14 @@ html {
 }
 
 .room-info .host{
-  color: white;
+  color:  white;
   font-size: 20px;
 }
 
 /*display playlist*/
 .display-playlist{
-  padding: 5px 5px;
-  margin: 0px;
+  margin: auto;
+  font-size: 20px;
   font-family: 'proxima-nova', sans-serif;
   color: white
 
@@ -184,14 +184,11 @@ html {
 
 /*searchbar */
 .searchbarPlaylist{
-  /* width: 450px; */
   width: 35vw;
 }
 
 .searchbarTrack{
   order: 1;
-  /*width: 450px;*/
-  /* flex-grow: 4; */
   width: 35vw;
 }
 
@@ -245,15 +242,20 @@ html {
   .room_id span{
     font-size: 25px;
   }
+  .display-playlist{
+    margin: auto;
+    font-size: 15px;
+    font-family: 'proxima-nova', sans-serif;
+    color: white
+  
+  }
 
   .searchbarPlaylist{
-    /* width: 450px; */
     width: 100vw;
   }
 
   .searchbarTrack{
     order: 1;
-    /* flex-grow: 1; */
     width: 100vw;
   }
 
@@ -271,13 +273,11 @@ html {
   }
   .searchbarTrack{
     order: 1;
-    /* flex-grow: 4; */
     width: 30vw;
   }
 
   .queue-container{
     order: 2;
-    /* flex-grow: 6; */
     width: 70vw;
   }
 
