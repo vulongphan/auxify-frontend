@@ -165,7 +165,7 @@ html {
 }
 
 .like:hover, .liked {
-  background-image: linear-gradient(#6BE193, #3B7775);
+  background-color: #6BE193;
 }
 
 .dislike{
