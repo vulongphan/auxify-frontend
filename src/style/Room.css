@@ -132,8 +132,8 @@ html {
 /*queue */
 .queue-container{
   order: 2;
-  /* flex-grow: 6; */
-  width: 65vw;
+  flex-grow: 1; 
+  /* width: 65vw; */
 }
 
 .queue-item img{
@@ -185,12 +185,12 @@ html {
 
 /*searchbar */
 .searchbarPlaylist{
-  width: 500px;
+  width: 450px;
 }
 
 .searchbarTrack{
   order: 1;
-  width: 500px;
+  width: 450px;
 }
 
 .suggestionList{
