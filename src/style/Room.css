@@ -221,7 +221,7 @@ html {
 
 
 /*for smartphones*/
-@media screen and (max-width: 768px){
+@media screen and (max-width: 295px){
   .media__img img{
     width: 70px;
     height: 70px
@@ -276,7 +276,7 @@ html {
 }
 
 /*for tablets*/
-@media screen and (min-width: 769px) and (max-width: 948px){
+@media screen and (min-width: 505px) and (max-width: 1160px){
   .searchbarPlaylist{
     width: 30vw;
   }
