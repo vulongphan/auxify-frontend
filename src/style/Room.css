@@ -185,12 +185,12 @@ html {
 
 /*searchbar */
 .searchbarPlaylist{
-  width: 35vw;
+  width: 450px;
 }
 
 .searchbarTrack{
   order: 1;
-  width: 35vw;
+  width: 450px;
 }
 
 .suggestionList{
