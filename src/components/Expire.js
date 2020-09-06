@@ -7,8 +7,8 @@ class Expire extends React.Component {
                 <h1 className="text_style fromtop" id = "Expire">
                     Your session has ended, please go back to our home page
                 </h1>
-                <form className = "fromtop" /*action='/'*/>
-                    <button type="submit" className = "roomAction"><a href = "http://auxify.herokuapp.com">OK</a></button>
+                <form className = "fromtop" action='/'>
+                    <button type="submit" className = "roomAction" >OK</button>
                 </form>
             </div>
         )

@@ -150,7 +150,7 @@ class Room extends React.Component {
                         placeholder={"Choose a playlist as default"} />
                 </div>
                 <NowPlaying
-                    play={this.play}
+                    // play={this.play}
                     spotifyApi={spotifyApi}
                     room_id={this.state.room_id}
                     nowPlaying={this.state.nowPlaying} />

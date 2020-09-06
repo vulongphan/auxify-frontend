@@ -7,34 +7,44 @@ import About from './About';
 import CreateRoom from './CreateRoom';
 import JoinRoom from './JoinRoom';
 import Expire from './Expire';
-import Maintainance from './Maintainance'
+import NoConnection from './NoConnection';
+import Maintainance from './Maintainance';
 
-var maintainance = false; //defaultly we dont need maintainance
+var maintainance = false;
+var online = navigator.onLine; //internet connection status of browser
 
 class App extends React.Component {
   render() {
     if (maintainance === false) { //if no maintainance if needed
-      return (
-        <Router>
-          <div>
-            <Switch>
-              <Route path='/' exact component={Home} />
-              <Route path='/about' component={About} />
-              <Route path='/room' component={Room} />
-              <Route path='/create' component={CreateRoom} />
-              <Route path='/join' component={JoinRoom} />
-              <Route path='/expire' component={Expire} />
-            </Switch>
-          </div>
-        </Router>
-      )
+      if (online === false) { //if there is no internet connection
+        console.log("No internet connection")
+        return (
+          <NoConnection />
+        )
+      }
+      else { //if there is internet connection
+        return (
+          <Router>
+            <div>
+              <Switch>
+                <Route path='/' exact component={Home} />
+                <Route path='/about' component={About} />
+                <Route path='/room' component={Room} />
+                <Route path='/create' component={CreateRoom} />
+                <Route path='/join' component={JoinRoom} />
+                <Route path='/expire' component={Expire} />
+              </Switch>
+            </div>
+          </Router>
+        )
+      }
     }
     else { //if maintainance is needed
       return (
         <Router>
           <div>
             <Switch>
-              <Route path = '/' exact component = {Maintainance} /> 
+              <Route path='/' exact component={Maintainance} />
             </Switch>
           </div>
         </Router>
