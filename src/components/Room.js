@@ -49,6 +49,7 @@ class Room extends React.Component {
     }
 
     fetchRoom(room_id) {
+        // var current_time = Date.now();
         api.getRoom(room_id)
             .then(res => { //the returned Promise in successful case is stored in res parameter
                 if (res.data.success) {
@@ -56,9 +57,11 @@ class Room extends React.Component {
 
                     const current_time = Date.now();
                     const duration = 3600 * 1000; //lifetime for an access_token in the room (in mili sec)
-                    if (current_time >= room.end_time && current_time < room.end_time + this.count) {
+                    //console.log("end_time at: "+ room.end_time);
+                    //console.log("Now is: " + current_time);
+                    if (current_time >= room.end_time ) {
                         console.log("Pass end_time");
-                        //make sure we only request access_token once when the current access_token expires
+                        //note that we will only request access_token once when the current access_token expires
                         //request new access_token from refresh_token 
                         api.requestToken(room.refresh_token).then(access_token => {
                             console.log("New access_token: " + access_token);

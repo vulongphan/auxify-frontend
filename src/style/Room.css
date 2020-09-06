@@ -58,12 +58,13 @@ html {
 .room-info .host{
   color: white;
   font-size: 20px;
+  margin-top: 27px;
 }
 
 /*display playlist*/
 .display-playlist{
-  padding: 5px 5px;
-  margin: 0px;
+  margin: auto;
+  font-size: 20px;
   font-family: 'proxima-nova', sans-serif;
   color: white
 
@@ -129,8 +130,8 @@ html {
 /*queue */
 .queue-container{
   order: 2;
-  /* flex-grow: 6; */
-  width: 65vw;
+  flex-grow: 1; 
+  /* width: 65vw; */
 }
 
 .queue-item img{
@@ -162,7 +163,7 @@ html {
 }
 
 .like:hover, .liked {
-  background-image: linear-gradient(#6BE193, #3B7775);
+  background-color: #6BE193;
 }
 
 .dislike{
@@ -176,18 +177,26 @@ html {
 }
 
 .queue-container #coming_up{
-  margin-top: 20px;
+  margin-top: 12px;
   font-size: 1.2em;
 }
 
 /*searchbar */
 .searchbarPlaylist{
+<<<<<<< HEAD
   width: 35vw;
+=======
+  width: 450px;
+>>>>>>> fa666c6e5f1828c09bc8522da2b9047ad3a19458
 }
 
 .searchbarTrack{
   order: 1;
+<<<<<<< HEAD
   width: 35vw;
+=======
+  width: 450px;
+>>>>>>> fa666c6e5f1828c09bc8522da2b9047ad3a19458
 }
 
 .suggestionList{
@@ -218,7 +227,7 @@ html {
 
 
 /*for smartphones*/
-@media screen and (max-width: 768px){
+@media screen and (max-width: 500px){
   .media__img img{
     width: 70px;
     height: 70px
@@ -236,20 +245,34 @@ html {
   }
   .room-info .host{
     font-size: 15px;
+    margin-top: 23px;
   }
   .room_id span{
-    font-size: 25px;
+    background-color: #21315f;
+    font-size: 23px;
+    border-radius: 10px;
+    padding: 5px;
+  }
+  .display-playlist{
+    margin: auto;
+    font-size: 15px;
+    font-family: 'proxima-nova', sans-serif;
+    color: white
+  
   }
 
   .searchbarPlaylist{
-    /* width: 450px; */
     width: 100vw;
   }
 
   .searchbarTrack{
     order: 1;
-    /* flex-grow: 1; */
     width: 100vw;
+  }
+
+  .queue-container #coming_up{
+    margin-top: 10px;
+    font-size: 1.2em;
   }
 
   .queue-container{
@@ -259,19 +282,17 @@ html {
 }
 
 /*for tablets*/
-@media screen and (min-width: 769px) and (max-width: 948px){
+@media screen and (min-width: 505px) and (max-width: 1160px){
   .searchbarPlaylist{
     width: 30vw;
   }
   .searchbarTrack{
     order: 1;
-    /* flex-grow: 4; */
     width: 30vw;
   }
 
   .queue-container{
     order: 2;
-    /* flex-grow: 6; */
     width: 70vw;
   }
 

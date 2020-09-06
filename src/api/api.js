@@ -17,8 +17,8 @@ export const deleteRoom = (id) => api.get(`/deleteRoom/${id}`);
 export const updateToken = (id, payload) => api.post(`/updateToken/${id}`, payload);
 
 export const requestToken = async (refresh_token) => {
-    let client_id = '4a8772300cb64c018d48cc371bd223c0'; // Your client id
-    let client_secret = 'bb776306a7e74c79b96810016215ffeb'; // Your secret
+    let client_id = '98c53852256e4816afb8a2c86d95e913'; // Long's client id
+    let client_secret = 'd3cd3fae251f4eceb4751c6cd82c984d'; // Long's client secret
     let authOptions = {
         url: 'https://accounts.spotify.com/api/token',
         headers: { 'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')) },
