@@ -24,7 +24,7 @@ class JoinRoom extends React.Component {
             .then(() => {
                 window.location.href = frontEndRoom + this.state.value;
             })
-            .catch(() => alert("Invalid Room ID"));
+            .catch(() => alert("Invalid Room Id or No Internet Connection"));
     }
 
     render() {
