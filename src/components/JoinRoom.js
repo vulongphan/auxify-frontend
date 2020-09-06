@@ -3,7 +3,7 @@ import api from '../api/api.js';
 import server from '../server';
 import '../style/App.css'
 
-const frontEndRoom = sever.frontend + '/room#room_id=';
+const frontEndRoom = server.frontend + '/room#room_id=';
 
 class JoinRoom extends React.Component {
     constructor() {
