@@ -183,20 +183,12 @@ html {
 
 /*searchbar */
 .searchbarPlaylist{
-<<<<<<< HEAD
-  width: 35vw;
-=======
   width: 450px;
->>>>>>> fa666c6e5f1828c09bc8522da2b9047ad3a19458
 }
 
 .searchbarTrack{
   order: 1;
-<<<<<<< HEAD
-  width: 35vw;
-=======
   width: 450px;
->>>>>>> fa666c6e5f1828c09bc8522da2b9047ad3a19458
 }
 
 .suggestionList{
