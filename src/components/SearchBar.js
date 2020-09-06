@@ -128,7 +128,7 @@ class SearchBar extends React.Component {
             if (i >= 1) this.setState({ index: i - 1 })
             else this.setState({ index: this.state.searchResult.length - 1 })
         }
-        else if (key == "Enter" && this.state.index >= 0) {
+        else if (key === "Enter" && this.state.index >= 0) {
             var song = this.state.searchResult[this.state.index]; //the song that the user picks
             this.props.onClick(song);
             this.clearSearch();

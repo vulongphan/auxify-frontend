@@ -1,6 +1,7 @@
 import React from 'react';
 import '../style/Room.css';
 import SpotifyWebApi from 'spotify-web-api-js';
+import server from '../server';
 import api from '../api/api.js';
 
 import NowPlaying from './NowPlaying';
@@ -9,7 +10,7 @@ import SearchBar from './SearchBar';
 import RoomInfo from './RoomInfo';
 
 const spotifyApi = new SpotifyWebApi();
-const expired = /*'http://localhost:3000/expire'*/'https://auxify.herokuapp.com/expire';
+const expired = server.frontend + '/expire';
 
 class Room extends React.Component {
     constructor(props) {
@@ -22,12 +23,20 @@ class Room extends React.Component {
             hostInfo: {},
             queue: [],
             default_playlist: null,
+            nowPlaying: {
+                playing: false,
+                currentPosition: 0,
+                name: null,
+                albumArt: null,
+                artists: null,
+                duration: 0,
+            }
         }
 
         this.count = 500;
 
         this.addToQueue = this.addToQueue.bind(this);
-        this.play = this.play.bind(this);
+        //this.play = this.play.bind(this);
         this.updateDefaultPlaylist = this.updateDefaultPlaylist.bind(this);
     }
 
@@ -44,7 +53,6 @@ class Room extends React.Component {
             .then(res => { //the returned Promise in successful case is stored in res parameter
                 if (res.data.success) {
                     const room = res.data.data;
-                    //console.log("Current access_token: " + room.access_token);
 
                     const current_time = Date.now();
                     const duration = 3600 * 1000; //lifetime for an access_token in the room (in mili sec)
@@ -55,16 +63,15 @@ class Room extends React.Component {
                         api.requestToken(room.refresh_token).then(access_token => {
                             console.log("New access_token: " + access_token);
                             //update the access_token and end_time of room
-                            api.updateToken(room_id, { access_token: access_token });
-                            api.updateEndtime(room_id, { end_time: current_time + duration });
-                        }
-                        );
+                            api.updateToken(room_id, { access_token: access_token, end_time: current_time + duration });
+                        });
                     }
                     spotifyApi.setAccessToken(room.access_token);
                     this.getInfo();
                     this.setState({
                         queue: room.queue,
                         default_playlist: room.default_playlist,
+                        nowPlaying: room.nowPlaying,
                     })
 
                 }
@@ -82,34 +89,6 @@ class Room extends React.Component {
             e = r.exec(q);
         }
         return hashParams;
-    }
-
-    //only works if user starts playing a song first to get device
-    play() {
-        if (spotifyApi.getAccessToken()) {
-            var options;
-            //if queue is not empty, play from queue;
-            if (this.state.queue.length > 0) {
-                options = {
-                    uris: [this.state.queue[0].uri],
-                };
-                spotifyApi.play(options)
-                    .then(() => { api.removeFromQueue(this.state.room_id) },
-                        err => {
-                            console.log(err);
-                        });
-            }
-            //if queue is empty, play from default playlist;
-            else if (this.state.default_playlist) {
-                options = {
-                    context_uri: this.state.default_playlist.uri,
-                }
-                spotifyApi.play(options)
-                    .catch(err => console.log(err));
-            } else {
-                alert("Add songs to queue or a default playlist");
-            }
-        }
     }
 
     //update the user's current playback state
@@ -169,7 +148,9 @@ class Room extends React.Component {
                 </div>
                 <NowPlaying
                     play={this.play}
-                    spotifyApi={spotifyApi} />
+                    spotifyApi={spotifyApi}
+                    room_id={this.state.room_id}
+                    nowPlaying={this.state.nowPlaying} />
                 <div className='Room-row3 RowFlexReverse'>
                     <SearchBar
                         id="searchTrack"

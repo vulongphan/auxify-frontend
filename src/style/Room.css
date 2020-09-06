@@ -35,7 +35,6 @@ html {
   background-image: linear-gradient(#6BE193, #3B7775);
   border-radius: 20px;
   margin-top: 10px
-
 }
 .Room-row2{
   order: 2;
@@ -84,7 +83,6 @@ html {
   padding-top: 0.8em;
   cursor: default;
   float: auto; 
-
 }
 .now-playing__artist-name {
   font-size: 1em;
@@ -184,14 +182,11 @@ html {
 
 /*searchbar */
 .searchbarPlaylist{
-  /* width: 450px; */
   width: 35vw;
 }
 
 .searchbarTrack{
   order: 1;
-  /*width: 450px;*/
-  /* flex-grow: 4; */
   width: 35vw;
 }
 
@@ -261,7 +256,6 @@ html {
     order: 2;
     width: 100vw;
   }
-  
 }
 
 /*for tablets*/

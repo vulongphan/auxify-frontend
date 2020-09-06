@@ -1,8 +1,9 @@
 import React from 'react';
 import api from '../api/api.js';
+import server from '../server';
 import '../style/App.css'
 
-const frontEndRoom = /*'http://localhost:3000/room#room_id='*/'http://auxify.herokuapp.com/room#room_id=';
+const frontEndRoom = sever.frontend + '/room#room_id=';
 
 class JoinRoom extends React.Component {
     constructor() {
