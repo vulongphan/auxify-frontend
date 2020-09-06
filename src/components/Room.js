@@ -57,8 +57,6 @@ class Room extends React.Component {
 
                     const current_time = Date.now();
                     const duration = 3600 * 1000; //lifetime for an access_token in the room (in mili sec)
-                    //console.log("end_time at: "+ room.end_time);
-                    //console.log("Now is: " + current_time);
                     if (current_time >= room.end_time ) {
                         console.log("Pass end_time");
                         //note that we will only request access_token once when the current access_token expires
