@@ -157,7 +157,7 @@ class Room extends React.Component {
         var d = new Date();
         d.setTime(d.getTime() + (exhrs * 60 * 60 * 1000));
         var expires = "expires=" + d.toUTCString();
-        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";";
     }
 
     cookieHandler(host_known) {
