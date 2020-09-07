@@ -8,7 +8,6 @@ import NowPlaying from './NowPlaying';
 import Queue from './Queue';
 import SearchBar from './SearchBar';
 import RoomInfo from './RoomInfo';
-import NoConection from './NoConnection';
 
 const spotifyApi = new SpotifyWebApi();
 const expired = server.frontend + '/expire';
