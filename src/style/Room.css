@@ -222,7 +222,8 @@ html {
 @media screen and (max-width: 500px){
   .media__img img{
     width: 70px;
-    height: 70px
+    height: 70px;
+    margin-bottom: auto; 
   }
   .now-playing__track-name{
     font-size: 1em;
@@ -237,16 +238,15 @@ html {
   }
   .room-info .host{
     font-size: 15px;
-    margin-top: 23px;
+    margin-top: 15px;
   }
   .room_header #room_id{
     background-color: #21315f;
-    font-size: 23px;
+    font-size: 20px;
     border-radius: 10px;
     padding: 5px;
   }
   .display-playlist{
-    margin: auto;
     font-size: 15px;
     font-family: 'proxima-nova', sans-serif;
     color: white
