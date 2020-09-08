@@ -223,7 +223,7 @@ html {
   .media__img img{
     width: 70px;
     height: 70px;
-    margin-bottom: auto; 
+    margin-bottom: 3px; 
   }
   .now-playing__track-name{
     font-size: 1em;
@@ -238,7 +238,7 @@ html {
   }
   .room-info .host{
     font-size: 15px;
-    margin-top: 15px;
+    margin-top: 10px;
   }
   .room_header #room_id{
     background-color: #21315f;
@@ -247,6 +247,7 @@ html {
     padding: 5px;
   }
   .display-playlist{
+    margin-top: -5px;
     font-size: 15px;
     font-family: 'proxima-nova', sans-serif;
     color: white
