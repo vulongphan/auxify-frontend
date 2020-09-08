@@ -15,6 +15,8 @@ export const vote = (id, payload) => api.post(`/vote/${id}`, payload);
 export const updateDefaultPlaylist = (id, payload) => api.post(`/playlist/${id}`, payload);
 export const deleteRoom = (id) => api.get(`/deleteRoom/${id}`);
 export const updateToken = (id, payload) => api.post(`/updateToken/${id}`, payload);
+export const updateHost = (id, payload) => api.post(`/updateHost/${id}`, payload);
+
 
 export const requestToken = async (refresh_token) => {
     let client_id = '98c53852256e4816afb8a2c86d95e913'; // Long's client id
@@ -52,6 +54,7 @@ const apis = {
     deleteRoom,
     requestToken,
     updateToken,
+    updateHost
 }
 
 export default apis
