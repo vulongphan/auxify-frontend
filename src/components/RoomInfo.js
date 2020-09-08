@@ -1,17 +1,24 @@
 import React from 'react';
-import DefaultPic from '../style/default.jpg';
 
-function DisplayImage(props) {
-    if (props.image) {
+class RoomInfo extends React.Component {
+    render() {
+        const hostInfo = this.props.hostInfo;
         return (
-            <div className="media__img">
-                <img alt="" src={props.image} />
-            </div>
-        )
-    } else {
-        return (
-            <div className="media__img">
-                <img alt="" src={DefaultPic} />
+            <div className="room-info media text_style highlight">
+                <div className="media__img">
+                    <img alt="" src={hostInfo.profileImage} />
+                </div>
+                <div className="media__bd">
+                    <div className="room_header">
+                        <span id = "room_id" >
+                            Room ID: {this.props.room_id}
+                        </span>
+                    </div>
+                    <div className="host">
+                        <p>Hosted by: {hostInfo.name}</p>
+                    </div>
+                </div>
+                <DefaultPlaylist playlist={this.props.playlist} />
             </div>
         )
     }
@@ -38,24 +45,5 @@ const DefaultPlaylist = (props) => {
     }
 }
 
-class RoomInfo extends React.Component {
-    render() {
-        const hostInfo = this.props.hostInfo;
-        return (
-            <div className="room-info media text_style highlight">
-                <DisplayImage image={hostInfo.profileImage} />
-                <div className="media__bd">
-                    <div className="room_id">
-                        <span>Room ID: {this.props.room_id}</span>
-                    </div>
-                    <div className="host">
-                        <p>Hosted by: {hostInfo.name}</p>
-                    </div>
-                </div>
-                <DefaultPlaylist playlist={this.props.playlist} />
-            </div>
-        )
-    }
-}
 
 export default RoomInfo;
