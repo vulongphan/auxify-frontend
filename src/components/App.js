@@ -10,7 +10,6 @@ import Expire from './Expire';
 import Maintainance from './Maintainance';
 
 var maintainance = false;
-var online = navigator.onLine; //internet connection status of browser
 
 class App extends React.Component {
   render() {
