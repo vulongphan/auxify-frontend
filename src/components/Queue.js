@@ -130,37 +130,3 @@ class Queue extends React.Component {
 }
 
 export default Queue;
-
-  /*
-  const cookieExpired = 3600 * 1000 * 4;
-
-  var hasLiked = (id) => {return document.cookie.split(';').some((item) => {
-    return item.indexOf(id + '=1') >= 0 })};
-
-  var hasDisliked = (id) => {return document.cookie.split(';').some((item) => {
-    return item.indexOf(id + '=-1') >= 0 })};
-
-  var hasNeither = (id) => {return !document.cookie.split('; ').find(row => row.startsWith(id))
-  || document.cookie.split(';').some((item) => {return item.indexOf(id + '=0') >= 0 })};
-
-  //; expires=" + (Date.now() + cookieExpired).toUTCString();
-  const onClickLike = (index, id) => {
-    var payload;
-    if (hasNeither(id)) {
-      document.cookie = id + "=1";
-      payload = {index: index, amount : 1};
-    } else {
-      if (hasLiked(id)){
-        document.cookie = id + "=0";
-        payload = {index: index, amount : - 1};
-      } else if (hasDisliked(id)){
-        document.cookie = id + "=1";
-        payload = {index: index, amount : 2};
-      }
-    }
-    console.log(document.cookie.split("; "));
-    api.vote(room_id, payload)
-    .then(() => console.log("Click liked button at " + index))
-    .catch(err => console.log(err));
-  }
-  */
