@@ -8,6 +8,7 @@ import NowPlaying from './NowPlaying';
 import Queue from './Queue';
 import SearchBar from './SearchBar';
 import RoomInfo from './RoomInfo';
+import NoConection from './NoConnection';
 
 const spotifyApi = new SpotifyWebApi();
 const expired = server.frontend + '/expire';
@@ -43,6 +44,7 @@ class Room extends React.Component {
         this.setCookie = this.setCookie.bind(this);
         this.getCookie = this.getCookie.bind(this);
         this.cookieHandler = this.cookieHandler.bind(this);
+        this.deleteRoomHandler = this.deleteRoomHandler.bind(this);
     }
 
     componentDidMount() {
@@ -64,7 +66,9 @@ class Room extends React.Component {
 
                     const current_time = Date.now();
                     const duration = 3600 * 1000; //lifetime for an access_token in the room (in mili sec)
-                    if (current_time >= room.end_time ) {
+                    //console.log("end_time at: "+ room.end_time);
+                    //console.log("Now is: " + current_time);
+                    if (current_time >= room.end_time) {
                         console.log("Pass end_time");
                         //note that we will only request access_token once when the current access_token expires
                         //request new access_token from refresh_token 
@@ -157,7 +161,7 @@ class Room extends React.Component {
         var d = new Date();
         d.setTime(d.getTime() + (exhrs * 60 * 60 * 1000));
         var expires = "expires=" + d.toUTCString();
-        document.cookie = cname + "=" + cvalue + ";" + expires + ";";
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
     }
 
     cookieHandler(host_known) {
@@ -176,6 +180,17 @@ class Room extends React.Component {
             }
         )
         console.log("Is host: " + this.state.is_host);
+    }
+
+    deleteRoomHandler() {
+        //alert user of the msg to close Room
+        var answer = window.confirm("Are you sure that you want to close this room ?");
+        if (answer === true) {
+            api.deleteRoom(this.state.room_id);
+        }
+        else{ //to prevent the window from reloading after pressing Cancel button
+            return false
+        }
     }
 
     render() {
@@ -220,10 +235,7 @@ class Room extends React.Component {
                 </div>
                 {this.state.is_host &&
                     <div className="btn-group fromtop">
-                        <form onSubmit={() => {
-                            api.deleteRoom(this.state.room_id);
-                        }
-                        }>
+                        <form onSubmit={this.deleteRoomHandler}>
                             <button type="submit" className="roomAction" > CLOSE ROOM </button>
                         </form>
                     </div>}
