@@ -30,7 +30,8 @@ class Room extends React.Component {
                 albumArt: null,
                 artists: null,
                 duration: 0,
-            }
+            },
+            is_host: null
         }
 
         this.count = 500;
@@ -38,6 +39,11 @@ class Room extends React.Component {
         this.addToQueue = this.addToQueue.bind(this);
         //this.play = this.play.bind(this);
         this.updateDefaultPlaylist = this.updateDefaultPlaylist.bind(this);
+
+        this.setCookie = this.setCookie.bind(this);
+        this.getCookie = this.getCookie.bind(this);
+        this.cookieHandler = this.cookieHandler.bind(this);
+        this.deleteRoomHandler = this.deleteRoomHandler.bind(this);
     }
 
     componentDidMount() {
@@ -54,10 +60,14 @@ class Room extends React.Component {
             .then(res => { //the returned Promise in successful case is stored in res parameter
                 if (res.data.success) {
                     const room = res.data.data;
+                    //call cookie handler here
+                    this.cookieHandler(room.host_known);
 
                     const current_time = Date.now();
                     const duration = 3600 * 1000; //lifetime for an access_token in the room (in mili sec)
-                    if (current_time >= room.end_time ) {
+                    //console.log("end_time at: "+ room.end_time);
+                    //console.log("Now is: " + current_time);
+                    if (current_time >= room.end_time) {
                         console.log("Pass end_time");
                         //note that we will only request access_token once when the current access_token expires
                         //request new access_token from refresh_token 
@@ -130,44 +140,107 @@ class Room extends React.Component {
                 , err => console.error(err));
     }
 
+    getCookie(cname) { //get cookie value from cookie name
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) { //if the given cookie name is found, return the value of the cookie
+                return c.substring(name.length, c.length);
+            }
+        }
+        return ""; //else return ""
+    }
+
+    setCookie(cname, cvalue, exhrs) { //set a cookie
+        var d = new Date();
+        d.setTime(d.getTime() + (exhrs * 60 * 60 * 1000));
+        var expires = "expires=" + d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+
+    cookieHandler(host_known) {
+        //the first call of this function tells us that it is from the browser of the host
+        //host_known receives "true"
+        const cname = "host" + this.state.room_id;
+        const cvalue = this.getCookie(cname);
+        if (cvalue === "") { //if cookie not found, this means that this is the first time the cookieHandler() is called
+            this.setCookie(cname, host_known, 4) //set the cookie to expire after 4 hrs
+        }
+        //update "host_known" of Room in db to be "false"
+        api.updateHost(this.state.room_id, { host_known: false });
+        this.setState(
+            {
+                is_host: JSON.parse(this.getCookie(cname)) //true or false
+            }
+        )
+        console.log("Is host: " + this.state.is_host);
+    }
+
+    deleteRoomHandler() {
+        //alert user of the msg to close Room
+        var answer = window.confirm("Are you sure that you want to close this room ?");
+        if (answer === true) {
+            api.deleteRoom(this.state.room_id);
+        }
+        else{ //to prevent the window from reloading after pressing Cancel button
+            return false
+        }
+    }
+
     render() {
         return (
-            <div className='Room ColumnFlex'>
-                <div className='Room-row1 RowFlex'>
-                    <RoomInfo
-                        hostInfo={this.state.hostInfo}
+            <div className="RoomPage">
+                <div className='Room ColumnFlex'>
+                    <div className='Room-row1 RowFlex'>
+                        <RoomInfo
+                            hostInfo={this.state.hostInfo}
+                            room_id={this.state.room_id}
+                            playlist={this.state.default_playlist} />
+                        {this.state.is_host &&
+                            <SearchBar
+                                id="searchPlaylist"
+                                className="searchbarPlaylist"
+                                spotifyApi={spotifyApi}
+                                onClick={this.updateDefaultPlaylist}
+                                types={['playlist']}
+                                maxSuggestion={5}
+                                placeholder={"Choose a playlist as default"} />}
+
+                    </div>
+                    <NowPlaying
+                        // play={this.play}
+                        spotifyApi={spotifyApi}
                         room_id={this.state.room_id}
-                        playlist={this.state.default_playlist} />
-                    <SearchBar
-                        id="searchPlaylist"
-                        className="searchbarPlaylist"
-                        spotifyApi={spotifyApi}
-                        onClick={this.updateDefaultPlaylist}
-                        types={['playlist']}
-                        maxSuggestion={5}
-                        placeholder={"Choose a playlist as default"} />
+                        nowPlaying={this.state.nowPlaying} />
+                    <div className='Room-row3 RowFlexReverse'>
+                        <SearchBar
+                            id="searchTrack"
+                            className="searchbarTrack"
+                            spotifyApi={spotifyApi}
+                            onClick={this.addToQueue}
+                            types={['track']}
+                            maxSuggestion={10}
+                            placeholder={"What song do you want to play?"}
+                        />
+                        <Queue
+                            queue={this.state.queue}
+                            room_id={this.state.room_id} />
+                    </div>
                 </div>
-                <NowPlaying
-                    // play={this.play}
-                    spotifyApi={spotifyApi}
-                    room_id={this.state.room_id}
-                    nowPlaying={this.state.nowPlaying} />
-                <div className='Room-row3 RowFlexReverse'>
-                    <SearchBar
-                        id="searchTrack"
-                        className="searchbarTrack"
-                        spotifyApi={spotifyApi}
-                        onClick={this.addToQueue}
-                        types={['track']}
-                        maxSuggestion={10}
-                        placeholder={"What song do you want to play?"}
-                    />
-                    <Queue
-                        queue={this.state.queue}
-                        room_id={this.state.room_id} />
-                </div>
+                {this.state.is_host &&
+                    <div className="btn-group fromtop">
+                        <form onSubmit={this.deleteRoomHandler}>
+                            <button type="submit" className="roomAction" > CLOSE ROOM </button>
+                        </form>
+                    </div>}
+
             </div>
-        );
+        )
     }
 }
 
