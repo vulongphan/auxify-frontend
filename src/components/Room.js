@@ -37,7 +37,7 @@ class Room extends React.Component {
         this.count = 500;
 
         this.addToQueue = this.addToQueue.bind(this);
-        //this.play = this.play.bind(this);
+        this.play = this.play.bind(this);
         this.updateDefaultPlaylist = this.updateDefaultPlaylist.bind(this);
 
         this.setCookie = this.setCookie.bind(this);
@@ -84,7 +84,6 @@ class Room extends React.Component {
                         default_playlist: room.default_playlist,
                         nowPlaying: room.nowPlaying,
                     })
-
                 }
             })
             .catch(() => { window.location.href = expired });
@@ -140,16 +139,47 @@ class Room extends React.Component {
                 , err => console.error(err));
     }
 
+    play() {
+        if (spotifyApi.getAccessToken()) {
+            var options;
+            //if queue is not empty, play from queue;
+            if (this.state.queue.length > 0) {
+                options = {
+                    uris: [this.state.queue[0].uri],
+                };
+                spotifyApi.play(options)
+                    .then(() => { api.removeFromQueue(this.state.room_id) },
+                        err => {
+                            console.log(err);
+                        });
+            }
+            //if queue is empty, play from default playlist;
+            else if (this.state.default_playlist) {
+                var position = Math.floor(Math.random() * this.state.default_playlist.tracks.total)
+                options = {
+                    context_uri: this.state.default_playlist.uri,
+                    offset: {
+                        position: position
+                    }
+                }
+                spotifyApi.play(options)
+                    .catch(err => console.log(err));
+            } else {
+                alert("Add songs to queue or a default playlist");
+            }
+        }
+    }
+
     getCookie(cname) { //get cookie value from cookie name
         var name = cname + "=";
         var decodedCookie = decodeURIComponent(document.cookie);
         var ca = decodedCookie.split(';');
         for (var i = 0; i < ca.length; i++) {
             var c = ca[i];
-            while (c.charAt(0) == ' ') {
+            while (c.charAt(0) === ' ') {
                 c = c.substring(1);
             }
-            if (c.indexOf(name) == 0) { //if the given cookie name is found, return the value of the cookie
+            if (c.indexOf(name) === 0) { //if the given cookie name is found, return the value of the cookie
                 return c.substring(name.length, c.length);
             }
         }
@@ -178,7 +208,6 @@ class Room extends React.Component {
                 is_host: JSON.parse(this.getCookie(cname)) //true or false
             }
         )
-        console.log("Is host: " + this.state.is_host);
     }
 
     deleteRoomHandler() {
@@ -213,7 +242,6 @@ class Room extends React.Component {
 
                     </div>
                     <NowPlaying
-                        // play={this.play}
                         spotifyApi={spotifyApi}
                         room_id={this.state.room_id}
                         nowPlaying={this.state.nowPlaying} />
@@ -229,7 +257,9 @@ class Room extends React.Component {
                         />
                         <Queue
                             queue={this.state.queue}
-                            room_id={this.state.room_id} />
+                            room_id={this.state.room_id}
+                            is_host={this.state.is_host}
+                            play={this.play} />
                     </div>
                 </div>
                 {this.state.is_host &&

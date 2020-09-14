@@ -12,6 +12,7 @@ var request = require('request');
 export const getRoom = id => api.get(`/room/${id}`);
 export const addToQueue = (id, payload) => api.post(`/addQueue/${id}`, payload);
 export const vote = (id, payload) => api.post(`/vote/${id}`, payload);
+export const removeFromQueue = (id) => api.get(`/removeQueue/${id}`);
 export const updateDefaultPlaylist = (id, payload) => api.post(`/playlist/${id}`, payload);
 export const deleteRoom = (id) => api.get(`/deleteRoom/${id}`);
 export const updateToken = (id, payload) => api.post(`/updateToken/${id}`, payload);
@@ -54,7 +55,8 @@ const apis = {
     deleteRoom,
     requestToken,
     updateToken,
-    updateHost
+    updateHost,
+    removeFromQueue
 }
 
 export default apis

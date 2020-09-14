@@ -13,7 +13,7 @@ function QueueItem(props) {
     var likeList = document.getElementById(LIKE_BTN_ID).classList; //return the className(s) of the LIKE button element as a list
     var dislikeList = document.getElementById(DISLIKE_BTN_ID).classList; //return the className(s) of the Dislike button element as a list
     if (!likeList.contains(LIKE)) { //click the like button at initial state
-      if (!dislikeList.contains(DISLIKE)) payload = { index: index, amount: 1 }; 
+      if (!dislikeList.contains(DISLIKE)) payload = { index: index, amount: 1 };
       else { //click the like button when the song was previously disliked
         payload = { index: index, amount: 2 };
         dislikeList.remove(DISLIKE);
@@ -56,7 +56,7 @@ function QueueItem(props) {
   return (
     <tr className="queue-item">
       <td width="10%">
-        <img alt= "" src={songInfo.image} />
+        <img alt="" src={songInfo.image} />
       </td>
       <td width="60%">
         <table>
@@ -90,7 +90,7 @@ function QueueItem(props) {
           onClick={() => onClickDislike(props.index)}>
           Dislike</button>
       </td>
-      <td width="5%" className = "text_style">
+      <td width="5%" className="text_style">
         {songInfo.vote}
       </td>
     </tr>
@@ -103,7 +103,14 @@ class Queue extends React.Component {
 
     return (
       <div className="queue-container">
-        <div className = "text_style highlight" id = "coming_up" >Coming Up</div>
+        {!this.props.is_host &&
+          <div className="text_style highlight" id="coming_up" >Coming Up</div>}
+        {this.props.is_host &&
+          <button
+          className="text_style highlight" id="play_next"
+          onClick={this.props.play}> Play Next
+          </button>
+        }
         <table id="queue">
           <tbody>
             {queue.map((song, index) => {
