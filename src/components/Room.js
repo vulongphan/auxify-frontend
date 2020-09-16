@@ -104,6 +104,8 @@ class Room extends React.Component {
     //update the user's current playback state
     updateDefaultPlaylist(playlist) {
         const payload = { default_playlist: playlist }
+        //spotifyApi.getPlaylist(playlist.id)
+        //.then(res => console.log(res));
         api.updateDefaultPlaylist(this.state.room_id, payload)
             .then(() => console.log("Successfully updated"))
             .catch(err => console.log(err));
@@ -155,7 +157,20 @@ class Room extends React.Component {
             }
             //if queue is empty, play from default playlist;
             else if (this.state.default_playlist) {
-                var position = Math.floor(Math.random() * this.state.default_playlist.tracks.total)
+                spotifyApi.getPlaylist(this.state.default_playlist.id)
+                .then(res => {
+                    const playlist = res.tracks.items;
+                    var position = Math.floor(Math.random() * playlist.length);
+                    console.log(position);
+                    var nextSongURI = playlist[position].track.uri;
+                    options = {
+                        uris: [nextSongURI],
+                    };
+                    spotifyApi.play(options)
+                    .catch(err => console.log(err));
+                });
+                /*
+                var position = Math.floor(Math.random() * this.state.default_playlist.tracks.total);
                 options = {
                     context_uri: this.state.default_playlist.uri,
                     offset: {
@@ -164,6 +179,7 @@ class Room extends React.Component {
                 }
                 spotifyApi.play(options)
                     .catch(err => console.log(err));
+                    */
             } else {
                 alert("Add songs to queue or a default playlist");
             }

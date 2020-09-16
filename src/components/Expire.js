@@ -5,7 +5,7 @@ class Expire extends React.Component {
         return (
             <div className="expirePage center btn-group">
                 <h1 className="text_style fromtop" id = "Expire">
-                    Oooops... Your session has ended, or please check your internet connection
+                    Oooops... Your session has ended.
                 </h1>
                 <form className = "fromtop" action='/'>
                     <button type="submit" className = "roomAction" >OK</button>

@@ -13,8 +13,8 @@ class CreateRoom extends React.Component {
                         <button type="submit" className="roomAction" > Create a room </button>
                     </form>
                 </div>
-
                 <p className="fromtop text_style">You need a Spotify Premium Account to host a new room</p>
+                <p className="fromtop text_style">This room will expire after four hours. If you choose to stop using it before it expires, please click on the "Close Room" button</p>
             </div>
         )
     }
