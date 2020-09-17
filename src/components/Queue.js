@@ -1,4 +1,6 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import api from '../api/api.js';
 
 function QueueItem(props) {
@@ -98,6 +100,12 @@ function QueueItem(props) {
 }
 
 class Queue extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      info_clicked: false
+    }
+  }
   render() {
     const queue = this.props.queue;
 
@@ -107,9 +115,18 @@ class Queue extends React.Component {
           <div className="text_style highlight" id="coming_up" >Coming Up</div>}
         {this.props.is_host &&
           <button
-          className="text_style highlight" id="play_next"
-          onClick={this.props.play}> Play Next
-          </button>
+            className="text_style highlight" id="play_next"
+            onClick={this.props.play}> Play Next
+            </button>}
+        {this.props.is_host &&
+          <FontAwesomeIcon className="text_style highlight" id="info" icon={faInfoCircle}
+            onClick={() => {
+              if (this.state.info_clicked === false) this.setState({ info_clicked: true });
+              else this.setState({ info_clicked: false })
+            }} />
+        }
+        {this.props.is_host && this.state.info_clicked &&
+          <div className = "text_style" id = "instruction"> To start playing from the queue or to play the next song, please click 'Play Next' button </div>
         }
         <table id="queue">
           <tbody>

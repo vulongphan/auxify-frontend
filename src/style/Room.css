@@ -134,6 +134,36 @@ html {
   /* width: 65vw; */
 }
 
+.queue-container #play_next{
+  background-color: #1db954;
+  border: #1db954;
+  border-radius: 30px;
+  width: 130px;
+  margin-top: 10px;
+  font-size: 1.3em;
+  padding: 8px 15px 8px 15px;
+  cursor: pointer;
+}
+
+.queue-container #info {
+  margin-top: 8px;
+  margin-left: 15px;
+  font-size: 1.3em;
+  cursor: pointer;
+}
+
+.queue-container #info:hover {
+  color: #6BE193;
+}
+
+.queue-container #instruction {
+  margin-top: 10px;
+}
+
+.queue-container #play_next:hover {
+  opacity: 0.8;
+}
+
 .queue-item img{
   border-radius: 2px;
 }
