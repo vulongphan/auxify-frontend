@@ -3,6 +3,7 @@ import '../style/Room.css';
 import SpotifyWebApi from 'spotify-web-api-js';
 import server from '../server';
 import api from '../api/api.js';
+import defaultImg from '../style/default.jpg';
 
 import NowPlaying from './NowPlaying';
 import Queue from './Queue';
@@ -133,7 +134,7 @@ class Room extends React.Component {
                         this.setState({
                             hostInfo: {
                                 name: response.display_name,
-                                profileImage: null
+                                profileImage: defaultImg
                             }
                         })
                     }
@@ -169,17 +170,6 @@ class Room extends React.Component {
                     spotifyApi.play(options)
                     .catch(err => console.log(err));
                 });
-                /*
-                var position = Math.floor(Math.random() * this.state.default_playlist.tracks.total);
-                options = {
-                    context_uri: this.state.default_playlist.uri,
-                    offset: {
-                        position: position
-                    }
-                }
-                spotifyApi.play(options)
-                    .catch(err => console.log(err));
-                    */
             } else {
                 alert("Add songs to queue or a default playlist");
             }
