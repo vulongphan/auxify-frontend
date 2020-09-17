@@ -293,15 +293,28 @@ html {
     width: 100vw;
   }
 
+  .queue-container{
+    order: 2;
+    width: 100vw;
+  }
+
   .queue-container #coming_up{
     margin-top: 10px;
     font-size: 1.2em;
   }
 
-  .queue-container{
-    order: 2;
-    width: 100vw;
+  .queue-container #play_next {
+    font-size: 1em;
+    width: 100px;
+    padding: 8px 5px 8px 5px
   }
+  .queue-container #info {
+    margin-top: 8px;
+    margin-left: 15px;
+    font-size: 1em;
+    cursor: pointer;
+  }
+  
 }
 
 /*for tablets*/
