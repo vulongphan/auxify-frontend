@@ -14,9 +14,7 @@ const spotifyApi = new SpotifyWebApi();
 const expired = server.frontend + '/expire';
 
 class Room extends React.Component {
-    constructor(props) {
-        super(props);
-
+    constructor() {
         const params = this.getHashParams();
 
         this.state = {

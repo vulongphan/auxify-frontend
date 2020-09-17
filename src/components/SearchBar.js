@@ -76,9 +76,7 @@ function Suggestion(props) {
 
 
 class SearchBar extends React.Component {
-    constructor(props) {
-        super(props);
-
+    constructor() {
         this.state = {
             searchResult: [],
             index: -1,
