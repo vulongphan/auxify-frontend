@@ -217,10 +217,14 @@ class Room extends React.Component {
     }
 
     deleteRoomHandler() {
+        //cookie name that we want to delete
+        const cname = "host" + this.state.room_id;
         //alert user of the msg to close Room
         var answer = window.confirm("Are you sure that you want to close this room ?");
         if (answer === true) {
             api.deleteRoom(this.state.room_id);
+            //we also have to set the corresponding cookie to be empty and expires in 1 sec
+            this.setCookie(cname, "", 1/3600);
         }
         else{ //to prevent the window from reloading after pressing Cancel button
             return false

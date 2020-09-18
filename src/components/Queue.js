@@ -100,9 +100,8 @@ function QueueItem(props) {
 }
 
 class Queue extends React.Component {
-  constructor() {
-    super();
-
+  constructor(props) {
+    super(props);
     this.state = {
       info_clicked: true
     }
@@ -122,15 +121,16 @@ class Queue extends React.Component {
         {this.props.is_host &&
           <FontAwesomeIcon className="text_style highlight" id="info" icon={faInfoCircle}
             onClick={() => {
-              if (!this.state.info_clicked) this.setState({ info_clicked: true });
+              if (this.state.info_clicked === false) this.setState({ info_clicked: true });
               else this.setState({ info_clicked: false })
             }} />
         }
         {this.props.is_host && this.state.info_clicked &&
-          <div className = "text_style" id = "instruction">
-            <div>After you see that Auxify is connected to your device, add a song to the queue and click "Play Next" to synchronize our queue to your account.</div>
-            <div>If you ever find that the queue is disconnected from your Spotify, click on Play Next to reconnect.</div>
-            </div>
+          // <div className = "text_style" id = "instruction"> To start playing from the queue or to play the next song, please click 'Play Next' button </div>
+          <div className="text_style" id="instruction">
+            <div>After you see that Auxify is connected to your device, add a song to the queue and click "Play Next" to synchronize our queue to</div>
+            <div> your account. If you ever find that the queue is disconnected from your Spotify, click on Play Next to reconnect.</div>
+          </div>
         }
         <table id="queue">
           <tbody>
