@@ -157,7 +157,8 @@ html {
 }
 
 .queue-container #instruction {
-  margin-top: 10px;
+  width: 100%;
+  word-wrap: normal;
 }
 
 .queue-container #play_next:hover {

@@ -15,6 +15,8 @@ const expired = server.frontend + '/expire';
 
 class Room extends React.Component {
     constructor() {
+        super();
+        
         const params = this.getHashParams();
 
         this.state = {

@@ -101,6 +101,8 @@ function QueueItem(props) {
 
 class Queue extends React.Component {
   constructor() {
+    super();
+
     this.state = {
       info_clicked: true
     }
@@ -126,10 +128,8 @@ class Queue extends React.Component {
         }
         {this.props.is_host && this.state.info_clicked &&
           <div className = "text_style" id = "instruction">
-            <div>First play a song on your device for our app to fetch that device.</div>
-            <div>Then add a song to the queue and click "Play Next" to synchronize our queue to your account.</div>
-            <div>Please minimize directly changing songs on your Spotify account because it will disconnect our queue from your device. Instead, use the Play Next button to skip to the next song on Auxify. You can also add a Default Playlist to be played when the queue is empty.</div>
-            <div>If you ever find that the queue is disconnected from your Spotify. Click on Play Next to reconnect.</div>
+            <div>After you see that Auxify is connected to your device, add a song to the queue and click "Play Next" to synchronize our queue to your account.</div>
+            <div>If you ever find that the queue is disconnected from your Spotify, click on Play Next to reconnect.</div>
             </div>
         }
         <table id="queue">
