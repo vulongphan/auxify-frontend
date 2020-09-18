@@ -79,7 +79,7 @@ class Room extends React.Component {
                         });
                     }
                     spotifyApi.setAccessToken(room.access_token);
-                    this.getInfo();
+                    if (this.state.hostInfo !== {}) this.getInfo();
                     this.setState({
                         queue: room.queue,
                         default_playlist: room.default_playlist,
@@ -208,7 +208,7 @@ class Room extends React.Component {
             this.setCookie(cname, host_known, 4) //set the cookie to expire after 4 hrs
         }
         //update "host_known" of Room in db to be "false"
-        api.updateHost(this.state.room_id, { host_known: false });
+        if (host_known) api.updateHost(this.state.room_id, { host_known: false });
         this.setState(
             {
                 is_host: JSON.parse(this.getCookie(cname)) //true or false
