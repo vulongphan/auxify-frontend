@@ -248,8 +248,8 @@ html {
 /*using media querries for different screen width*/
 
 
-/*for smartphones*/
-@media screen and (max-width: 500px){
+/*for smartphones portrait*/
+@media screen and (max-width: 420px){
   .media__img img{
     width: 70px;
     height: 70px;
@@ -317,8 +317,77 @@ html {
   
 }
 
+/*for smartphones landscape*/
+@media screen and (min-width: 421px) and (max-width: 823px){
+  .media__img img{
+    width: 70px;
+    height: 70px;
+    margin-bottom: 3px; 
+  }
+  .now-playing__track-name{
+    font-size: 1em;
+  }
+  .now-playing__artist-name{
+    font-size: 0.6em;
+  }
+  .now-playing {
+    color: #fff;
+    position: relative;
+    font-size: 1em;
+  }
+  .room-info .host{
+    font-size: 15px;
+    margin-top: 10px;
+  }
+  .room_header #room_id{
+    background-color: #21315f;
+    font-size: 20px;
+    border-radius: 10px;
+    padding: 5px;
+  }
+  .display-playlist{
+    margin-top: -5px;
+    font-size: 15px;
+    font-family: 'proxima-nova', sans-serif;
+    color: white
+  
+  }
+
+  .searchbarPlaylist{
+    width: 100vw;
+  }
+
+  .searchbarTrack{
+    order: 1;
+    width: 100vw;
+  }
+
+  .queue-container{
+    order: 2;
+    width: 100vw;
+  }
+
+  .queue-container #coming_up{
+    margin-top: 10px;
+    font-size: 1.2em;
+  }
+
+  .queue-container #play_next {
+    font-size: 1em;
+    width: 100px;
+    padding: 8px 5px 8px 5px
+  }
+  .queue-container #info {
+    margin-top: 8px;
+    margin-left: 10px;
+    font-size: 1em;
+    cursor: pointer;
+  }
+
+}
+
 /*for tablets*/
-@media screen and (min-width: 505px) and (max-width: 1160px){
+@media screen and (min-width: 824px) and (max-width: 1366px){
   .searchbarPlaylist{
     width: 30vw;
   }

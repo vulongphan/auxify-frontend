@@ -7,7 +7,7 @@
 }
 
 /*Widths and heights of Pages for the fromtop and frombottom class to work*/
-.homePage, .createPage, .joinPage, .expirePage, .maintainancePage, .RoomPage {
+.homePage, .createPage, .joinPage, .expirePage, .maintainancePage, .noConnectionPage, .RoomPage {
   width: 100vw;
   height: 100vh;
 }
@@ -125,7 +125,7 @@ body{
 }
 .frombottom{
   position: relative;
-  top: 60%;
+  top: 50%;
 }
 .text_style{
   color: white;
@@ -149,8 +149,8 @@ p Link,a:hover{
   font-weight: 600;
 }
 
-/*for smartphones*/
-@media screen and (max-width: 768px){
+/*for smartphones portrait*/
+@media screen and (max-width: 420px){
   
   .btn-group .roomAction {
     background-color:#1db954; /* background */
@@ -194,6 +194,66 @@ p Link,a:hover{
     font-size: 30px;
   }
 
+  .noConnectionPage #noConnection {
+    font-size: 30px;
+  }
+  
+  .searchbarId{
+    width: 50vw;
+
+  }
+
+}
+
+/*for smartphones landscape*/
+@media screen and (min-width: 421px) and (max-width: 823px){
+  
+  .btn-group .roomAction {
+    background-color:#1db954; /* background */
+    border: 2px solid #1db954; /* border */
+    border-radius: 20px;
+    color: white; /* text color */
+    font-family: 'proxima-nova', sans-serif;
+    font-weight: 400; /*weight of text*/
+    font-size: 20px;
+    padding: center; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    width: 30vw;
+    height: 12vh;
+    margin: 10px auto 0px auto;
+    display:block;
+  }
+
+  .fromtop{
+    position: relative;
+    top: 20%; 
+  }
+
+  .frombottom{
+    position: relative;
+    top: 32%;
+  }
+
+  .homePage #welcome  {
+    font-size: 30px;
+  }
+
+  .instruction h1, .developed_by h1 {
+    font-size: 25px;
+  }
+
+  .expirePage #Expire {
+    font-size: 30px;
+  }
+
+  .maintainancePage #Maintanance {
+    font-size: 30px;
+  }
+
+  .noConnectionPage #noConnection {
+    font-size: 30px;
+  }
+  
   .searchbarId{
     width: 50vw;
 
@@ -202,4 +262,94 @@ p Link,a:hover{
 }
 
 
+/*for tablets portrait */
+@media screen and (min-width: 824px) and (max-width: 1024px){
+  .btn-group .roomAction {
+    background-color:#1db954; /* background */
+    border: 2px solid #1db954; /* border */
+    border-radius: 30px;
+    color: white; /* text color */
+    font-family: 'proxima-nova', sans-serif;
+    font-weight: 400; /*weight of text*/
+    font-size: 28px;
+    padding: center; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    width: 30vw;
+    height: 6vh;
+    margin: 10px auto 0px auto;
+    display:block;
+  }
+  .homePage #welcome  {
+    font-size: 40px;
+  }
+
+  .searchbarId{
+    width: 400px;
+    height: 60px;
+  }
+
+  .btn-group #join_room{
+    background-color:#1db954;
+    border-radius: 20px;
+    border: 2px solid #1db954; /* border */
+    color: white;
+    font-family: 'proxima-nova', sans-serif;
+    font-weight: 600; /*weight of text*/
+    font-size: 20px;
+    padding: center; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    width: 150px;
+    height: 50px;
+    margin: 10px auto 0px auto;
+    display:block;
+    float: center;
+  
+  }
+}
+
+
+/*for tablets landscapes*/
+@media screen and (min-width: 1024px) and (max-width: 1366px){
+  .btn-group .roomAction {
+    background-color:#1db954; /* background */
+    border: 2px solid #1db954; /* border */
+    border-radius: 30px;
+    color: white; /* text color */
+    font-family: 'proxima-nova', sans-serif;
+    font-weight: 400; /*weight of text*/
+    font-size: 30px;
+    padding: center; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    width: 30vw;
+    height: 7vh;
+    margin: 20px auto 0px auto;
+    display:block;
+  }
+  .homePage #welcome  {
+    font-size: 50px;
+  }
+
+  .searchbarId{
+    width: 400px;
+    height: 60px;
+  }
+
+  .btn-group #join_room{
+    background-color:#1db954;
+    border-radius: 20px;
+    border: 2px solid #1db954; /* border */
+    color: white;
+    font-family: 'proxima-nova', sans-serif;
+    font-weight: 600; /*weight of text*/
+    font-size: 20px;
+    padding: center; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    width: 150px;
+    height: 50px;
+    margin: 10px auto 0px auto;
+    display:block;
+    float: center;
+  
+  }
+}
 
