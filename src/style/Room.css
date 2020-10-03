@@ -283,7 +283,6 @@ html {
     color: white
   
   }
-
   .searchbarPlaylist{
     width: 100vw;
   }
@@ -313,6 +312,13 @@ html {
     margin-left: 10px;
     font-size: 1em;
     cursor: pointer;
+  }
+  .queue-item__track-name {
+    font-size: 1em;
+  }
+  
+  .queue-item__artist-name {
+    font-size: 0.6em;
   }
   
 }
