@@ -150,7 +150,9 @@ p Link,a:hover{
 }
 
 /*for smartphones portrait
-540px is the largest width of device in portrait mode - Surface Duo*/
+540px is the largest width of device in portrait mode - Surface Duo
+360px is the smallest width of device in portrait mode - Galaxy S5
+Fix width of searchbarId according to the smallest width device to avoid it to be floated unexpectedly on smartphone when users input info*/
 @media screen and (max-width: 540px) and (orientation:portrait){
   
   .btn-group .roomAction {
@@ -200,7 +202,7 @@ p Link,a:hover{
   }
   
   .searchbarId{
-    width: 50vw;
+    width: 180px;
 
   }
 

@@ -211,7 +211,8 @@ html {
   font-size: 1.2em;
 }
 
-/*searchbar */
+/*searchbar
+fix the width to avoid it to be unexpectedly floating when users input information */
 .searchbarPlaylist{
   width: 450px;
 }
