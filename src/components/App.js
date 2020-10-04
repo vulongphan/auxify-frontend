@@ -56,8 +56,8 @@ class Home extends React.Component {
             <button type="submit" className="roomAction">Join Room</button>
           </form>
         </div>
-        <p className="frombottom"><u><Link to={`/about`}>About</Link></u></p>
-        <p className = "frombottom"><u><a href = "https://forms.gle/NsMB5L5Ge5THb6Hj7"> Feedback</a></u></p>
+        <p className="frombottom" id = "about"><u><Link to={`/about`}>About</Link></u></p>
+        <p className = "frombottom" id = "feedback"><u><a href = "https://forms.gle/NsMB5L5Ge5THb6Hj7"> Feedback</a></u></p>
       </div>
     )
   }

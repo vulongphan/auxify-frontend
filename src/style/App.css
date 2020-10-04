@@ -149,8 +149,9 @@ p Link,a:hover{
   font-weight: 600;
 }
 
-/*for smartphones portrait*/
-@media screen and (max-width: 420px){
+/*for smartphones portrait
+540px is the largest width of device in portrait mode - Surface Duo*/
+@media screen and (max-width: 540px) and (orientation:portrait){
   
   .btn-group .roomAction {
     background-color:#1db954; /* background */
@@ -205,8 +206,10 @@ p Link,a:hover{
 
 }
 
-/*for smartphones landscape*/
-@media screen and (min-width: 421px) and (max-width: 823px){
+/*for smartphones landscape
+the smallest width is 568px - iphone 4
+the largest width is 896px - iphone 11, iphone XS MAX*/
+@media screen and (min-width: 480px) and (max-width: 896px) and (orientation:landscape){
   
   .btn-group .roomAction {
     background-color:#1db954; /* background */
@@ -219,7 +222,7 @@ p Link,a:hover{
     padding: center; /* Some padding */
     cursor: pointer; /* Pointer/hand icon */
     width: 30vw;
-    height: 12vh;
+    height: 13vh;
     margin: 10px auto 0px auto;
     display:block;
   }
@@ -262,25 +265,31 @@ p Link,a:hover{
 }
 
 
-/*for tablets portrait */
-@media screen and (min-width: 824px) and (max-width: 1024px){
+/*for tablets portrait
+the smallest width is 768px - Ipad Mini (Rectina)
+the largest width is 1024px - Ipad Pro */
+@media screen and (min-width: 768px) and (max-width: 1024px) and (orientation:portrait){
   .btn-group .roomAction {
     background-color:#1db954; /* background */
     border: 2px solid #1db954; /* border */
-    border-radius: 30px;
+    border-radius: 25px;
     color: white; /* text color */
     font-family: 'proxima-nova', sans-serif;
     font-weight: 400; /*weight of text*/
     font-size: 28px;
     padding: center; /* Some padding */
     cursor: pointer; /* Pointer/hand icon */
-    width: 30vw;
+    width: 35vw;
     height: 6vh;
     margin: 10px auto 0px auto;
     display:block;
   }
   .homePage #welcome  {
-    font-size: 40px;
+    font-size: 50px;
+  }
+
+  .homePage #about, .homePage #feedback{
+    font-size: 25px;
   }
 
   .searchbarId{
@@ -308,8 +317,10 @@ p Link,a:hover{
 }
 
 
-/*for tablets landscapes*/
-@media screen and (min-width: 1024px) and (max-width: 1366px){
+/*for tablets landscapes
+the smallest width is 1024px - Ipad Mini (Rectina)
+the largest width is 1366px - Ipad Pro*/
+@media screen and (min-width: 1024px) and (max-width: 1366px) and (orientation:landscape){
   .btn-group .roomAction {
     background-color:#1db954; /* background */
     border: 2px solid #1db954; /* border */
@@ -321,14 +332,17 @@ p Link,a:hover{
     padding: center; /* Some padding */
     cursor: pointer; /* Pointer/hand icon */
     width: 30vw;
-    height: 7vh;
-    margin: 20px auto 0px auto;
+    height: 9vh;
+    margin: 10px auto 0px auto;
     display:block;
   }
   .homePage #welcome  {
     font-size: 50px;
   }
 
+  .homePage #about, .homePage #feedback{
+    font-size: 25px;
+  }
   .searchbarId{
     width: 400px;
     height: 60px;
@@ -352,4 +366,9 @@ p Link,a:hover{
   
   }
 }
+
+
+
+
+
 
