@@ -90,9 +90,6 @@ class Room extends React.Component {
             .catch(() => {
                 //direct to Expire component
                 window.location.href = expired;
-                //delete the room id cookie
-                const cname = "host" + this.state.room_id;
-                this.setCookie(cname, "", 1 / 3600);
             });
     }
 
