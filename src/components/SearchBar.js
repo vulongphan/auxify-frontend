@@ -96,8 +96,17 @@ class SearchBar extends React.Component {
             spotifyApi.search(query, types)
                 .then((response) => {
                     var result;
-                    if (types.includes("track")) result = response.tracks.items;
-                    else if (types.includes("playlist")) result = response.playlists.items;
+                    //filter out explicit songs
+                    if (types.includes("track")){
+                        result = response.tracks.items;
+                        for (var i = 0; i < result.length; i++){ //iterate through the returned array and remove items with explicit: true
+                            if (result[i].explicit == true) result.splice(i,1)
+                        }
+                    } 
+                    else if (types.includes("playlist")) {
+                        result = response.playlists.items;
+
+                    }
                     if (result.length > this.props.maxSuggestion) {
                         result = result.slice(0, this.props.maxSuggestion);
                     }
