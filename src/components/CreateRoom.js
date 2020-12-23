@@ -1,8 +1,8 @@
 import React from 'react';
-import server from '../server';
+import {server_url} from '../config';
 import '../style/App.css'
 
-const backEndLogin = server.backend + '/login';
+const backEndLogin = server_url + '/login';
 
 class CreateRoom extends React.Component {
     render() {
