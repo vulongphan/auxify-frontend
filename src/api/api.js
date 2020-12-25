@@ -1,7 +1,7 @@
 import axios from 'axios';
-import server from '../server';
+import {server_url, spotify_id, spotify_secret} from '../config';
 
-var baseurl = server.backend + '/api';
+var baseurl = server_url + '/api';
 
 const api = axios.create({
     baseURL: baseurl,
@@ -20,11 +20,9 @@ export const updateHost = (id, payload) => api.post(`/updateHost/${id}`, payload
 
 
 export const requestToken = async (refresh_token) => {
-    let client_id = '98c53852256e4816afb8a2c86d95e913'; // Long's client id
-    let client_secret = 'd3cd3fae251f4eceb4751c6cd82c984d'; // Long's client secret
     let authOptions = {
         url: 'https://accounts.spotify.com/api/token',
-        headers: { 'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')) },
+        headers: { 'Authorization': 'Basic ' + (new Buffer(spotify_id + ':' + spotify_secret).toString('base64')) },
         form: {
             grant_type: 'refresh_token',
             refresh_token: refresh_token

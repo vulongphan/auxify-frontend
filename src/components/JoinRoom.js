@@ -1,9 +1,9 @@
 import React from 'react';
 import api from '../api/api.js';
-import server from '../server';
+import {client_url} from '../config';
 import '../style/App.css'
 
-const frontEndRoom = server.frontend + '/room#room_id=';
+const frontEndRoom = client_url + '/room#room_id=';
 
 class JoinRoom extends React.Component {
     constructor() {

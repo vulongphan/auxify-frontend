@@ -1,7 +1,7 @@
 import React from 'react';
 import '../style/Room.css';
 import SpotifyWebApi from 'spotify-web-api-js';
-import server from '../server';
+import {client_url} from '../config';
 import api from '../api/api.js';
 import defaultImg from '../style/default.jpg';
 
@@ -11,7 +11,7 @@ import SearchBar from './SearchBar';
 import RoomInfo from './RoomInfo';
 
 const spotifyApi = new SpotifyWebApi();
-const expired = server.frontend + '/expire';
+const expired = client_url + '/expire';
 
 class Room extends React.Component {
     constructor() {
