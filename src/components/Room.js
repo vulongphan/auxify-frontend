@@ -55,23 +55,24 @@ class Room extends React.Component {
         clearInterval(this.timer);
     }
 
+    /**
+     * Fetch the room info and update room state 
+     * @param {String} room_id
+     */
     fetchRoom(room_id) {
-        // var current_time = Date.now();
         api.getRoom(room_id)
-            .then(res => { //the returned Promise in successful case is stored in res parameter
+            .then(res => { 
                 if (res.data.success) {
                     const room = res.data.data;
-                    //call cookie handler here
+
                     this.cookieHandler(room.host_known);
 
                     const current_time = Date.now();
                     const duration = 3600 * 1000; //lifetime for an access_token in the room (in mili sec)
-                    //console.log("end_time at: "+ room.end_time);
-                    //console.log("Now is: " + current_time);
                     if (current_time >= room.end_time) {
                         console.log("Pass end_time");
-                        //note that we will only request access_token once when the current access_token expires
-                        //request new access_token from refresh_token 
+                        /*note that we will only request access_token once when the current access_token expires
+                        request new access_token from refresh_token */
                         api.requestToken(room.refresh_token).then(access_token => {
                             console.log("New access_token: " + access_token);
                             //update the access_token and end_time of room
@@ -87,12 +88,15 @@ class Room extends React.Component {
                     })
                 }
             })
+            //when room expires, direct to Expire component
             .catch(() => {
-                //direct to Expire component
                 window.location.href = expired;
             });
     }
 
+    /**
+     * Get the parameter from the url
+     */
     getHashParams() {
         var hashParams = {};
         var e, r = /([^&;=]+)=?([^&;]*)/g,
@@ -105,11 +109,12 @@ class Room extends React.Component {
         return hashParams;
     }
 
-    //update the user's current playback state
+    /**
+     * Update the user's current playback state
+     * @param {*} playlist: playlist info in json
+     */
     updateDefaultPlaylist(playlist) {
         const payload = { default_playlist: playlist }
-        //spotifyApi.getPlaylist(playlist.id)
-        //.then(res => console.log(res));
         api.updateDefaultPlaylist(this.state.room_id, payload)
             .then(() => console.log("Successfully updated"))
             .catch(err => console.log(err));
@@ -122,6 +127,9 @@ class Room extends React.Component {
             .catch(err => console.log(err));
     }
 
+    /**
+     * Update user info, called in fetchRoom
+     */
     getInfo() {
         spotifyApi.getMe()
             .then(
@@ -145,6 +153,9 @@ class Room extends React.Component {
                 , err => console.error(err));
     }
 
+    /**
+     * Play the next song when users click the play next button
+     */
     play() {
         if (spotifyApi.getAccessToken()) {
             var options;
@@ -179,7 +190,11 @@ class Room extends React.Component {
         }
     }
 
-    getCookie(cname) { //get cookie value from cookie name
+    /**
+     * Get cookie from cookie's name
+     * @param {String} cname: cookie name 
+     */
+    getCookie(cname) { 
         var name = cname + "=";
         var decodedCookie = decodeURIComponent(document.cookie);
         var ca = decodedCookie.split(';');
@@ -192,23 +207,33 @@ class Room extends React.Component {
                 return c.substring(name.length, c.length);
             }
         }
-        return ""; //else return ""
+        return ""; 
     }
 
-    setCookie(cname, cvalue, exhrs) { //set a cookie
+    /**
+     * Set a cookie
+     * @param {String} cname: name of the cookie 
+     * @param {String} cvalue: value of the cookie
+     * @param {number} exhrs: time expired (in hours) 
+     */
+    setCookie(cname, cvalue, exhrs) {
         var d = new Date();
         d.setTime(d.getTime() + (exhrs * 60 * 60 * 1000));
         var expires = "expires=" + d.toUTCString();
         document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
     }
 
+    /**
+     * 
+     * @param {boolean} host_known: 
+     */
     cookieHandler(host_known) {
         //the first call of this function tells us that it is from the browser of the host
         //host_known receives "true"
         const cname = "host" + this.state.room_id;
         const cvalue = this.getCookie(cname);
         if (cvalue === "") { //if cookie not found, this means that this is the first time the cookieHandler() is called
-            this.setCookie(cname, host_known, 4) //set the cookie to expire after 4 hrs
+            this.setCookie(cname, host_known, 4) 
         }
         //update "host_known" of Room in db to be "false"
         if (host_known) api.updateHost(this.state.room_id, { host_known: false });
@@ -219,6 +244,9 @@ class Room extends React.Component {
         )
     }
 
+    /**
+     * 
+     */
     deleteRoomHandler() {
         //cookie name that we want to delete
         const cname = "host" + this.state.room_id;

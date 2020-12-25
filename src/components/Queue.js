@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import api from '../api/api.js';
 
+
 function QueueItem(props) {
   const room_id = props.room_id;
   const LIKE = 'liked';
@@ -10,18 +11,22 @@ function QueueItem(props) {
   const LIKE_BTN_ID = 'like' + props.id;
   const DISLIKE_BTN_ID = 'dislike' + props.id;
 
-  const onClickLike = (index, id) => {
+  /**
+   * update the vote of the song whose like button is clicked
+   * @param {number} index: the index of the song in the queue whose like button is clicked
+   */
+  const onClickLike = (index) => {
     var payload;
     var likeList = document.getElementById(LIKE_BTN_ID).classList; //return the className(s) of the LIKE button element as a list
     var dislikeList = document.getElementById(DISLIKE_BTN_ID).classList; //return the className(s) of the Dislike button element as a list
-    if (!likeList.contains(LIKE)) { //click the like button at initial state
+    if (!likeList.contains(LIKE)) { //if the song has not been liked before
       if (!dislikeList.contains(DISLIKE)) payload = { index: index, amount: 1 };
-      else { //click the like button when the song was previously disliked
+      else { //if the song has been disliked before
         payload = { index: index, amount: 2 };
         dislikeList.remove(DISLIKE);
       }
       likeList.add(LIKE);
-      //click the like button when the song was previously liked;
+      //if the song has been liked before
     } else {
       payload = { index: index, amount: -1 };
       likeList.remove(LIKE);
@@ -31,20 +36,24 @@ function QueueItem(props) {
       .catch(err => console.log(err));
   }
 
+  /**
+   * update the vote of the song whose dislike button is clicked
+   * @param {*} index: the index of the song in the queue whose dislike button is clicked
+   */
   const onClickDislike = (index) => {
     var payload;
     var likeList = document.getElementById(LIKE_BTN_ID).classList;
     var dislikeList = document.getElementById(DISLIKE_BTN_ID).classList;
     if (!dislikeList.contains(DISLIKE)) {
-      //click the dislike button at initial state
+      //if the song has not been disliked before
       if (!likeList.contains(LIKE)) payload = { index: index, amount: -1 };
-      //click the dislike button when the song was previously liked;
+      //if the song has been liked before
       else {
         payload = { index: index, amount: -2 };
         likeList.remove(LIKE);
       }
       dislikeList.add(DISLIKE);
-      //click the dislike button when the song was previously disliked;
+      //if the song has been disliked before
     } else {
       payload = { index: index, amount: 1 };
       dislikeList.remove(DISLIKE);

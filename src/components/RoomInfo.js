@@ -31,7 +31,6 @@ const DefaultPlaylist = (props) => {
             <div className="display-playlist">
                 <span>
                     <span>Playlist: </span>
-                    {/* <img src={playlist.images[0].url} width="20px" height="20px" /> */}
                     <span className="display-playlist__name"> {playlist.name}</span>
                 </span>
             </div>

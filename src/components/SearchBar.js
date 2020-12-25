@@ -1,8 +1,13 @@
 import React from 'react';
 
+/**
+ * Load top 10 suggestions based on search
+ * @param {*} props 
+ */
 function Suggestion(props) {
     const searchResult = props.searchResult;
-    if (props.types.includes("track")) { //search bar for track
+    //if the player is searching for a song track
+    if (props.types.includes("track")) { 
         return (
             <ul className="suggestionList">
                 {searchResult.map((song, index) => {
@@ -37,7 +42,9 @@ function Suggestion(props) {
                 })}
             </ul>
         );
-    } else { //search bar for playlist
+    }
+    // if the user is searching for a playlist 
+    else {
         return (
             <ul className="suggestionList">
                 {searchResult.map((playlist, index) => {
@@ -89,7 +96,12 @@ class SearchBar extends React.Component {
         this.onKeyDown = this.onKeyDown.bind(this);
     }
 
+    /**
+     * Search for songs/playlist based on string query
+     * @param {String} query 
+     */
     search(query) {
+        // if the user is typing, then search for something
         if (query) {
             const types = this.props.types;
             const spotifyApi = this.props.spotifyApi;
@@ -99,8 +111,8 @@ class SearchBar extends React.Component {
                     //filter out explicit songs
                     if (types.includes("track")){
                         result = response.tracks.items;
-                        for (var i = 0; i < result.length; i++){ //iterate through the returned array and remove items with explicit: true
-                            if (result[i].explicit == true) result.splice(i,1)
+                        for (var i = 0; i < result.length; i++){ 
+                            if (result[i].explicit) result.splice(i,1)
                         }
                     } 
                     else if (types.includes("playlist")) {
@@ -115,9 +127,14 @@ class SearchBar extends React.Component {
                     });
                 })
                 .catch(err => console.log(err));
-        } else this.clearSearch();
+        }
+        // if the user is not typing, then clear the search
+        else this.clearSearch();
     }
 
+    /**
+     * Clear the search result state 
+     */
     clearSearch() {
         document.getElementById(this.props.id).value = '';
         this.setState({
@@ -126,7 +143,11 @@ class SearchBar extends React.Component {
         });
     }
 
-    onKeyDown(event) { //rerender SearchBar and its child elements if ArrowDown and ArrowUp are pressed
+    /**
+     * Rerender SearchBar and its child elements if ArrowDown and ArrowUp are pressed
+     * @param {*} event 
+     */
+    onKeyDown(event) { 
         var key = event.key;
         var i = this.state.index;
         if (key === "ArrowDown") {
