@@ -43,7 +43,7 @@ class Room extends React.Component {
 
         this.setCookie = this.setCookie.bind(this);
         this.getCookie = this.getCookie.bind(this);
-        this.cookieHandler = this.cookieHandler.bind(this);
+        this.handleHost = this.handleHost.bind(this);
         this.deleteRoomHandler = this.deleteRoomHandler.bind(this);
     }
 
@@ -65,7 +65,7 @@ class Room extends React.Component {
                 if (res.data.success) {
                     const room = res.data.data;
 
-                    this.cookieHandler(room.host_known);
+                    this.handleHost(room.host_known);
 
                     const current_time = Date.now();
                     const duration = 3600 * 1000; //lifetime for an access_token in the room (in mili sec)
@@ -224,19 +224,18 @@ class Room extends React.Component {
     }
 
     /**
-     * 
+     * Differentiate host's browser using cookie
      * @param {boolean} host_known: 
      */
-    cookieHandler(host_known) {
-        //the first call of this function tells us that it is from the browser of the host
-        //host_known receives "true"
+    handleHost(host_known) {
         const cname = "host" + this.state.room_id;
         const cvalue = this.getCookie(cname);
-        if (cvalue === "") { //if cookie not found, this means that this is the first time the cookieHandler() is called
+        if (cvalue === "") { // set cookie if cookie not found
             this.setCookie(cname, host_known, 4) 
         }
-        //update "host_known" of Room in db to be "false"
-        if (host_known) api.updateHost(this.state.room_id, { host_known: false });
+        // if this is the host's browser then update the value of host_known 
+        // so that subsequent browsers are not hosts
+        if (host_known === true) api.updateHost(this.state.room_id, { host_known: false });
         this.setState(
             {
                 is_host: JSON.parse(this.getCookie(cname)) //true or false
@@ -245,10 +244,10 @@ class Room extends React.Component {
     }
 
     /**
-     * 
+     * Delete cookie that corresponds to the room when the host wants to close the room
      */
     deleteRoomHandler() {
-        //cookie name that we want to delete
+        //cookie name that corresponds to the room being hosted
         const cname = "host" + this.state.room_id;
         //alert user of the msg to close Room
         var answer = window.confirm("Are you sure that you want to close this room ?");

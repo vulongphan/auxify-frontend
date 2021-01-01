@@ -10,16 +10,16 @@ class JoinRoom extends React.Component {
         super();
         this.state = {
             value: '',
-            rooms: [], //each object in this list contains the room id and boolean value to tell whether is the host 
+            rooms: [], // the list contains all the rooms that the browser has accessed {room_id: "" , is_host: boolean}
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.checkRoom = this.checkRoom.bind(this);
+        this.updateAccessedRooms = this.updateAccessedRooms.bind(this);
     }
 
     componentDidMount() {
-        this.checkRoom(); //check for the rooms that have been created by the host every time the page is reloaded
+        this.updateAccessedRooms(); //check for the rooms that have been created by the host every time the page is reloaded
     }
 
     handleChange(event) {
@@ -35,9 +35,12 @@ class JoinRoom extends React.Component {
             .catch(() => alert("Invalid Room Id or Connection Interrupted"));
     }
 
-    checkRoom() {
-        //we need to do, in order: get the cookies list and then the elements with substring "host" (an element is "hostABCD=true" or "hostABCD=false")
-        //for each of these elements, get all the room ids and boolean value to tell whether it is the host of the room
+    /**
+     * Update the list of rooms that the browser has accessed by retrieving cookies from the browser
+     */
+    updateAccessedRooms() {
+        //we need to first get the cookies list of the browser, then get the elements with substring "host" (an element is "hostABCD=true" or "hostABCD=false")
+        //for each of these elements, get all the room ids and boolean values to tell whether the browser is the host for each room it has accessed
         var rooms = [];
         var decodedCookie = decodeURIComponent(document.cookie);
         var ca = decodedCookie.split(';');
@@ -46,7 +49,7 @@ class JoinRoom extends React.Component {
             while (c.charAt(0) === ' ') { //take out any whitespace
                 c = c.substring(1);
             };
-            if (c.indexOf("host") === 0) { // we find the appropriate cookie
+            if (c.indexOf("host") === 0) { // we find the appropriate cookie for this application 
                 var room = {};
                 var room_id = c.substring(4, 8); //the room id we are looking for (why 4 and 8: "hostABCD=false")
                 room["id"] = room_id;
