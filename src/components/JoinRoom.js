@@ -32,7 +32,7 @@ class JoinRoom extends React.Component {
             .then(() => {
                 window.location.href = frontEndRoom + this.state.value;
             })
-            .catch(() => alert("Invalid Room Id or Connection Interrupted"));
+            .catch(() => alert("No Room Found or Connection Interrupted"));
     }
 
     /**
@@ -81,7 +81,7 @@ class JoinRoom extends React.Component {
                     </form>
                 </div>
                 <div className="frombottom text_style">
-                    <span>Rooms that you are hosting: </span>
+                    <span>Room(s) hosted by you: </span>
                     {this.state.rooms.map(room => {
                         var id = room["id"];
                         var is_host = room["is_host"]
