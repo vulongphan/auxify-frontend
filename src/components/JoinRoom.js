@@ -1,6 +1,6 @@
 import React from 'react';
 import api from '../api/api.js';
-import {client_url} from '../config';
+import { client_url } from '../config';
 import '../style/App.css'
 
 const frontEndRoom = client_url + '/room#room_id=';
@@ -43,6 +43,7 @@ class JoinRoom extends React.Component {
         //for each of these elements, get all the room ids and boolean values to tell whether the browser is the host for each room it has accessed
         var rooms = [];
         var decodedCookie = decodeURIComponent(document.cookie);
+        console.log(decodedCookie);
         var ca = decodedCookie.split(';');
         for (var i = 0; i < ca.length; i++) {
             var c = ca[i];
@@ -52,10 +53,12 @@ class JoinRoom extends React.Component {
             if (c.indexOf("host") === 0) { // we find the appropriate cookie for this application 
                 var room = {};
                 var room_id = c.substring(4, 8); //the room id we are looking for (why 4 and 8: "hostABCD=false")
-                room["id"] = room_id;
-                var bool = JSON.parse(c.substring(9, c.length)); // a boolean value to tell if this is the host
-                room["is_host"] = bool;
-                rooms.push(room);
+                if (c.length > 9) { // only consider cookie that has a value
+                    room["id"] = room_id;
+                    var bool = JSON.parse(c.substring(9, c.length)); // a boolean value to tell if this is the host
+                    room["is_host"] = bool;
+                    rooms.push(room);
+                }
             }
         }
         this.setState({

@@ -257,7 +257,9 @@ class Room extends React.Component {
         if (answer === true) {
             api.deleteRoom(this.state.room_id);
             //we also have to set the corresponding cookie to be empty and expires in 1 sec
-            this.setCookie(cname, "", 1/3600);
+            //note that only the cookie value is deleted but the cookie name still exists (i.e: hostABCD=)
+            this.setCookie(cname, "", 1/3600); 
+            console.log("cookie deleted");
         }
         else{ //to prevent the window from reloading after pressing Cancel button
             return false
