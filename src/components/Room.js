@@ -73,6 +73,7 @@ class Room extends React.Component {
                         console.log("Pass end_time");
                         /*note that we will only request access_token once when the current access_token expires
                         request new access_token from refresh_token */
+                        console.log("refresh_token: ", room.refresh_token);
                         api.requestToken(room.refresh_token).then(access_token => {
                             console.log("New access_token: " + access_token);
                             //update the access_token and end_time of room
@@ -214,13 +215,15 @@ class Room extends React.Component {
      * Set a cookie
      * @param {String} cname: name of the cookie 
      * @param {String} cvalue: value of the cookie
-     * @param {number} exhrs: time expired (in hours) 
+     * @param {number} exhrs: time expired (in hours) - not setting the expire time for now
+     * 
      */
     setCookie(cname, cvalue, exhrs) {
         var d = new Date();
         d.setTime(d.getTime() + (exhrs * 60 * 60 * 1000));
-        var expires = "expires=" + d.toUTCString();
-        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        // var expires = "expires=" + d.toUTCString();
+        // document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        document.cookie = cname + "=" + cvalue;
     }
 
     /**
@@ -254,7 +257,9 @@ class Room extends React.Component {
         if (answer === true) {
             api.deleteRoom(this.state.room_id);
             //we also have to set the corresponding cookie to be empty and expires in 1 sec
-            this.setCookie(cname, "", 1/3600);
+            //note that only the cookie value is deleted but the cookie name still exists (i.e: hostABCD=)
+            this.setCookie(cname, "", 1/3600); 
+            console.log("cookie deleted");
         }
         else{ //to prevent the window from reloading after pressing Cancel button
             return false
