@@ -67,19 +67,20 @@ class Room extends React.Component {
 
                     this.handleHost(room.host_known);
 
-                    const current_time = Date.now();
-                    const duration = 3600 * 1000; //lifetime for an access_token in the room (in mili sec)
-                    if (current_time >= room.end_time) {
-                        console.log("Pass end_time");
-                        /*note that we will only request access_token once when the current access_token expires
-                        request new access_token from refresh_token */
-                        console.log("refresh_token: ", room.refresh_token);
-                        api.requestToken(room.refresh_token).then(access_token => {
-                            console.log("New access_token: " + access_token);
-                            //update the access_token and end_time of room
-                            api.updateToken(room_id, { access_token: access_token, end_time: current_time + duration });
-                        });
-                    }
+                    // const current_time = Date.now();
+                    // const duration = 3600 * 1000; //lifetime for an access_token in the room (in mili sec)
+                    // if (current_time >= room.end_time) {
+                    //     console.log("Pass end_time");
+                    //     /*note that we will only request access_token once when the current access_token expires
+                    //     request new access_token from refresh_token */
+                    //     console.log("refresh_token: ", room.refresh_token);
+                    //     api.requestToken(room.refresh_token).then(access_token => {
+                    //         console.log("New access_token: " + access_token);
+                    //         //update the access_token and end_time of room
+                    //         api.updateToken(room_id, { access_token: access_token, end_time: current_time + duration });
+                    //     });
+                    // }
+                    
                     spotifyApi.setAccessToken(room.access_token);
                     if (this.state.hostInfo !== {}) this.getInfo();
                     this.setState({
