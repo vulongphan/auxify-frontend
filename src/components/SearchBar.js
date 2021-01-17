@@ -111,8 +111,12 @@ class SearchBar extends React.Component {
                     //filter out explicit songs
                     if (types.includes("track")){
                         result = response.tracks.items;
-                        for (var i = 0; i < result.length; i++){ 
-                            if (result[i].explicit) result.splice(i,1)
+                        let i = 0;
+                        while (i < result.length) {
+                            if (result[i].explicit) {
+                                result.splice(i,1);
+                            }
+                            else i+=1
                         }
                     } 
                     else if (types.includes("playlist")) {
