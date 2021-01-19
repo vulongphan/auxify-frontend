@@ -1,10 +1,12 @@
-### How to deply the app to Heroku
-To fix the H10 error, add "heroku-postbuild": "npm run build" to "scripts" in package.json file , then run "yarn add serve --save" to add the 'serve' command to the dependencies, then change "start": "serve -s build", 
-    "dev": "react-scripts start",
+# Auxify Frontend
+This is the frontend repository for the Auxify app which you can find at https://auxify.herokuapp.com.
 
-Post to Heroku:
-1. Change baseurl in api/api
-2. Change links in CreateRoom.js, JoinRoom.js, Room.js
+# Welcome!
 
-### How to run the app locally
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Code of conduct
+
+# Contribution
+To start contributing to the repository as a developer, please navigate to `/developer_docs`
+
+# Acknowledgement
+
