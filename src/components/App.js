@@ -44,10 +44,7 @@ class Home extends React.Component {
             <button type="submit" className="roomAction">Join Room</button>
           </form>
         </div>
-        {/*
-        <p className="frombottom" id="about"><u><Link to={`/about`}>About</Link></u></p>
-        <p className="frombottom" id="feedback"><u><a href="https://forms.gle/NsMB5L5Ge5THb6Hj7"> Feedback</a></u></p>
-        */}
+        <p className="text_style" id="developed_by"> Developed by <a href = "https://www.linkedin.com/in/hdo2000/">Hieu Do</a> and <a href = "https://vulongphan.netlify.app/">Vu Long Phan</a>.</p>
       </div>
     )
   }
