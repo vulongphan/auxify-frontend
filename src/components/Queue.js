@@ -76,17 +76,16 @@ function QueueItem(props) {
    * update the report of the song whose report button is clicked
    * @param {*} index 
    */
-
   const onClickReport = (index) => {
     var payload = { index: index, amount: 1 };
-    var reportList = document.getElementById(REPORT_BTN_ID).classList;
+    var reportButtonList = document.getElementById(REPORT_BTN_ID).classList;
     // if the song has been reported
-    if (reportList.contains(REPORT)) {
+    if (reportButtonList.contains(REPORT)) {
       payload = { index: index, amount: -1 };
-      reportList.remove(REPORT);
+      reportButtonList.remove(REPORT);
     }
     // if the song has not been reported
-    else reportList.add(REPORT);
+    else reportButtonList.add(REPORT);
     api.report(room_id, payload)
       .then(() => console.log("Click reported button at " + index))
       .catch(err => console.log(err));
@@ -116,15 +115,10 @@ function QueueItem(props) {
           </tbody>
         </table>
       </td>
-      <td width="1%" className="text_style">
+      <td width="1%" className="text_style" id = "report-cnt">
         {songInfo.report}
       </td>
       <td width="10%">
-        {/* <button
-          id={'report' + props.id}
-          className="vote-btn report text_style"
-          onClick={() => onClickReport(props.index)}>
-          R</button> */}
           <FontAwesomeIcon
           id={'report' + props.id}
           className="report"
@@ -133,11 +127,6 @@ function QueueItem(props) {
           />
       </td>
       <td width="10%">
-        {/* <button
-          id={'like' + props.id}
-          className="vote-btn like text_style"
-          onClick={() => onClickLike(props.index)}>
-          L</button> */}
         <FontAwesomeIcon
           id={'like' + props.id}
           className="like"
@@ -146,11 +135,6 @@ function QueueItem(props) {
         />
       </td>
       <td width="10%">
-        {/* <button
-          id={'dislike' + props.id}
-          className="vote-btn dislike text_style"
-          onClick={() => onClickDislike(props.index)}>
-          D</button> */}
         <FontAwesomeIcon
           id={'dislike' + props.id}
           className="dislike"
@@ -159,7 +143,7 @@ function QueueItem(props) {
         />
       </td>
 
-      <td width="5%" className="text_style">
+      <td width="5%" className="text_style" id = "vote-cnt">
         {songInfo.vote}
       </td>
     </tr>

@@ -176,6 +176,10 @@ html {
   font-size: 0.8em;
 }
 
+#report-cnt{
+  color: red;
+}
+
 .vote-btn{
   background-color: white;
   padding: 6px 10px;
