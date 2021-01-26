@@ -2,20 +2,24 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import '../style/App.css';
 
+import NavigationBar from './NavigationBar';
 import Room from './Room';
 import About from './About';
 import CreateRoom from './CreateRoom';
 import JoinRoom from './JoinRoom';
 import Expire from './Expire';
+import Instruction from './Instruction';
 
 class App extends React.Component {
   render() {
     return (
       <Router>
         <div>
+          <NavigationBar />
           <Switch>
             <Route path='/' exact component={Home} />
             <Route path='/about' component={About} />
+            <Route path='/instruction' component={Instruction} />
             <Route path='/room' component={Room} />
             <Route path='/create' component={CreateRoom} />
             <Route path='/join' component={JoinRoom} />
@@ -40,12 +44,13 @@ class Home extends React.Component {
             <button type="submit" className="roomAction">Join Room</button>
           </form>
         </div>
+        {/*
         <p className="frombottom" id="about"><u><Link to={`/about`}>About</Link></u></p>
         <p className="frombottom" id="feedback"><u><a href="https://forms.gle/NsMB5L5Ge5THb6Hj7"> Feedback</a></u></p>
+        */}
       </div>
     )
   }
 }
-
 
 export default App;
