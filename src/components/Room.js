@@ -124,6 +124,7 @@ class Room extends React.Component {
 
     addToQueue(song) {
         song.vote = 0;
+        song.report = 0;
         api.addToQueue(this.state.room_id, song)
             .then(() => console.log("Successfully added"))
             .catch(err => console.log(err));

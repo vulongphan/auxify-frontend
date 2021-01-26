@@ -178,8 +178,8 @@ html {
 
 .vote-btn{
   background-color: white;
-  padding: 8px 16px;
-  margin: 4px 2px;
+  padding: 6px 10px;
+  margin: 4px 1px;
   transition-duration: 0.4s;
   cursor: pointer;  
   color: black;
@@ -187,23 +187,42 @@ html {
 }
 
 .like{
-  border: 2px solid #6BE193;
-  border-radius: 20px;
-  width: 75px;
+  /* border: 2px solid #6BE193;
+  border-radius: 25px; */
+  /* width: 75px; */
+  color: white;
+  font-size: 1.2em;
 }
 
+
+
 .like:hover, .liked {
-  background-color: #6BE193;
+  /* background-color: #6BE193; */
+  color: #6BE193;
 }
 
 .dislike{
-  border: 2px solid gray;
-  border-radius: 20px;
+  /* border: 2px solid gray;
+  border-radius: 20px; */
+  color: white;
+  font-size: 1.2em;
 }
 
 .dislike:hover, .disliked{
-  background-color: grey;
+  /* background-color: grey; */
+  color: grey;
+}
+
+.report{
+  /* border: 2px solid red;
+  border-radius: 20px; */
   color: white;
+  font-size: 1.2em;
+}
+
+.report:hover, .reported{
+  /* background-color: red; */
+  color:red;
 }
 
 .queue-container #coming_up{
