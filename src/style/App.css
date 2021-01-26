@@ -236,7 +236,7 @@ Remove orientation to avoid it to be floated unexpectedly on smartphone when use
     font-size: 30px;
   }
 
-  .instruction h1, {
+  .instruction h1{
     font-size: 25px;
   }
 
@@ -299,7 +299,7 @@ the largest width is 896px - iphone 11, iphone XS MAX*/
     font-size: 30px;
   }
 
-  .instruction h1, {
+  .instruction h1{
     font-size: 25px;
   }
 
