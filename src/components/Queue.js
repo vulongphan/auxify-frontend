@@ -6,6 +6,7 @@ import { faThumbsUp } from '@fortawesome/free-solid-svg-icons'
 
 import { faHeartBroken } from '@fortawesome/free-solid-svg-icons'
 import { faThumbsDown } from '@fortawesome/free-solid-svg-icons'
+import { faBan } from '@fortawesome/free-solid-svg-icons'
 
 import { faFlag } from '@fortawesome/free-solid-svg-icons'
 import api from '../api/api.js';
@@ -123,7 +124,7 @@ function QueueItem(props) {
           id={'report' + props.id}
           className="report"
           onClick={() => onClickReport(props.index)}
-          icon = {faFlag}
+          icon = {faBan}
           />
       </td>
       <td width="10%">
@@ -139,7 +140,7 @@ function QueueItem(props) {
           id={'dislike' + props.id}
           className="dislike"
           onClick={() => onClickDislike(props.index)}
-          icon={faHeartBroken}
+          icon={faThumbsDown}
         />
       </td>
 

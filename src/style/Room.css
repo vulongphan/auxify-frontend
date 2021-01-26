@@ -214,7 +214,7 @@ html {
 
 .dislike:hover, .disliked{
   /* background-color: grey; */
-  color: grey;
+  color:#6BE193;
 }
 
 .report{
