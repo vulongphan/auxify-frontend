@@ -1,6 +1,14 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
+import { faHeart } from '@fortawesome/free-solid-svg-icons'
+import { faThumbsUp } from '@fortawesome/free-solid-svg-icons'
+
+import { faHeartBroken } from '@fortawesome/free-solid-svg-icons'
+import { faThumbsDown } from '@fortawesome/free-solid-svg-icons'
+import { faBan } from '@fortawesome/free-solid-svg-icons'
+
+import { faFlag } from '@fortawesome/free-solid-svg-icons'
 import api from '../api/api.js';
 
 
@@ -10,6 +18,8 @@ function QueueItem(props) {
   const DISLIKE = 'disliked';
   const LIKE_BTN_ID = 'like' + props.id;
   const DISLIKE_BTN_ID = 'dislike' + props.id;
+  const REPORT = 'reported';
+  const REPORT_BTN_ID = 'report' + props.id;
 
   /**
    * update the vote of the song whose like button is clicked
@@ -63,6 +73,25 @@ function QueueItem(props) {
       .catch(err => console.log(err));
   }
 
+  /**
+   * update the report of the song whose report button is clicked
+   * @param {*} index 
+   */
+  const onClickReport = (index) => {
+    var payload = { index: index, amount: 1 };
+    var reportButtonList = document.getElementById(REPORT_BTN_ID).classList;
+    // if the song has been reported
+    if (reportButtonList.contains(REPORT)) {
+      payload = { index: index, amount: -1 };
+      reportButtonList.remove(REPORT);
+    }
+    // if the song has not been reported
+    else reportButtonList.add(REPORT);
+    api.report(room_id, payload)
+      .then(() => console.log("Click reported button at " + index))
+      .catch(err => console.log(err));
+  }
+
   const songInfo = props.songInfo;
   return (
     <tr className="queue-item">
@@ -87,21 +116,35 @@ function QueueItem(props) {
           </tbody>
         </table>
       </td>
-      <td width="15%">
-        <button
-          id={'like' + props.id}
-          className="vote-btn like text_style"
-          onClick={() => onClickLike(props.index, props.id)}>
-          Like</button>
+      <td width="1%" className="text_style" id="report-cnt">
+        {songInfo.report}
       </td>
       <td width="10%">
-        <button
-          id={'dislike' + props.id}
-          className="vote-btn dislike text_style"
-          onClick={() => onClickDislike(props.index)}>
-          Dislike</button>
+        <FontAwesomeIcon
+          id={'report' + props.id}
+          className="report"
+          onClick={() => onClickReport(props.index)}
+          icon={faBan}
+        />
       </td>
-      <td width="5%" className="text_style">
+      <td width="10%">
+        <FontAwesomeIcon
+          id={'like' + props.id}
+          className="like"
+          onClick={() => onClickLike(props.index)}
+          icon={faHeart}
+        />
+      </td>
+      <td width="10%">
+        <FontAwesomeIcon
+          id={'dislike' + props.id}
+          className="dislike"
+          onClick={() => onClickDislike(props.index)}
+          icon={faThumbsDown}
+        />
+      </td>
+
+      <td width="5%" className="text_style" id="vote-cnt">
         {songInfo.vote}
       </td>
     </tr>
@@ -143,12 +186,25 @@ class Queue extends React.Component {
         <table id="queue">
           <tbody>
             {queue.map((song, index) => {
-              var songInfo = {
-                image: song.album.images[2].url,
-                name: song.name,
-                artists: song.artists,
-                vote: song.vote,
-              };
+              var songInfo = {};
+              if (song.album === undefined || song.album.images.length < 3) {
+                songInfo = {
+                  image: null,
+                  name: song.name,
+                  artists: song.artists,
+                  vote: song.vote,
+                  report: song.report
+                }
+              }
+              else {
+                songInfo = {
+                  image: song.album.images[2].url,
+                  name: song.name,
+                  artists: song.artists,
+                  vote: song.vote,
+                  report: song.report
+                };
+              }
               return (
                 <QueueItem
                   room_id={this.props.room_id}

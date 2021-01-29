@@ -1,7 +1,7 @@
 import React from 'react';
 import '../style/Room.css';
 import SpotifyWebApi from 'spotify-web-api-js';
-import {client_url} from '../config';
+import { client_url } from '../config';
 import api from '../api/api.js';
 import defaultImg from '../style/default.jpg';
 
@@ -9,6 +9,7 @@ import NowPlaying from './NowPlaying';
 import Queue from './Queue';
 import SearchBar from './SearchBar';
 import RoomInfo from './RoomInfo';
+import apis from '../api/api.js';
 
 const spotifyApi = new SpotifyWebApi();
 const expired = client_url + '/expire';
@@ -16,7 +17,7 @@ const expired = client_url + '/expire';
 class Room extends React.Component {
     constructor() {
         super();
-        
+
         const params = this.getHashParams();
 
         this.state = {
@@ -61,7 +62,7 @@ class Room extends React.Component {
      */
     fetchRoom(room_id) {
         api.getRoom(room_id)
-            .then(res => { 
+            .then(res => {
                 if (res.data.success) {
                     const room = res.data.data;
 
@@ -80,7 +81,7 @@ class Room extends React.Component {
                     //         api.updateToken(room_id, { access_token: access_token, end_time: current_time + duration });
                     //     });
                     // }
-                    
+
                     spotifyApi.setAccessToken(room.access_token);
                     if (this.state.hostInfo !== {}) this.getInfo();
                     this.setState({
@@ -124,6 +125,7 @@ class Room extends React.Component {
 
     addToQueue(song) {
         song.vote = 0;
+        song.report = 0;
         api.addToQueue(this.state.room_id, song)
             .then(() => console.log("Successfully added"))
             .catch(err => console.log(err));
@@ -175,17 +177,17 @@ class Room extends React.Component {
             //if queue is empty, play from default playlist;
             else if (this.state.default_playlist) {
                 spotifyApi.getPlaylist(this.state.default_playlist.id)
-                .then(res => {
-                    const playlist = res.tracks.items;
-                    var position = Math.floor(Math.random() * playlist.length);
-                    console.log(position);
-                    var nextSongURI = playlist[position].track.uri;
-                    options = {
-                        uris: [nextSongURI],
-                    };
-                    spotifyApi.play(options)
-                    .catch(err => console.log(err));
-                });
+                    .then(res => {
+                        const playlist = res.tracks.items;
+                        var position = Math.floor(Math.random() * playlist.length);
+                        console.log(position);
+                        var nextSongURI = playlist[position].track.uri;
+                        options = {
+                            uris: [nextSongURI],
+                        };
+                        spotifyApi.play(options)
+                            .catch(err => console.log(err));
+                    });
             } else {
                 alert("Add songs to queue or a default playlist");
             }
@@ -197,7 +199,7 @@ class Room extends React.Component {
      * @param {String} cname: cookie name 
      * @returns {String}: if found the cookie, return the cookie; else return an empty string
      */
-    getCookie(cname) { 
+    getCookie(cname) {
         var name = cname + "=";
         var decodedCookie = decodeURIComponent(document.cookie);
         var ca = decodedCookie.split(';');
@@ -210,7 +212,7 @@ class Room extends React.Component {
                 return c.substring(name.length, c.length);
             }
         }
-        return ""; 
+        return "";
     }
 
     /**
@@ -236,7 +238,7 @@ class Room extends React.Component {
         const cname = "host" + this.state.room_id;
         const cvalue = this.getCookie(cname);
         if (cvalue === "") { // set cookie if cookie not found
-            this.setCookie(cname, host_known, 4) 
+            this.setCookie(cname, host_known, 4)
         }
         // if this is the host's browser then update the value of host_known 
         // so that subsequent browsers are not hosts
@@ -260,10 +262,10 @@ class Room extends React.Component {
             api.deleteRoom(this.state.room_id);
             //we also have to set the corresponding cookie to be empty and expires in 1 sec
             //note that only the cookie value is deleted but the cookie name still exists (i.e: hostABCD=)
-            this.setCookie(cname, "", 1/3600); 
+            this.setCookie(cname, "", 1 / 3600);
             console.log("cookie deleted");
         }
-        else{ //to prevent the window from reloading after pressing Cancel button
+        else { //to prevent the window from reloading after pressing Cancel button
             return false
         }
     }
