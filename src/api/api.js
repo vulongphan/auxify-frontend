@@ -7,8 +7,6 @@ const api = axios.create({
     baseURL: baseurl,
 })
 
-var request = require('request');
-
 export const getRoom = id => api.get(`/room/${id}`);
 export const addToQueue = (id, payload) => api.post(`/addQueue/${id}`, payload);
 export const vote = (id, payload) => api.post(`/vote/${id}`, payload);
@@ -28,7 +26,7 @@ const apis = {
     deleteRoom,
     updateToken,
     updateHost,
-    removeFromQueue
+    removeFromQueue,
 }
 
 export default apis

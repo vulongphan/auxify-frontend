@@ -116,16 +116,16 @@ function QueueItem(props) {
           </tbody>
         </table>
       </td>
-      <td width="1%" className="text_style" id = "report-cnt">
+      <td width="1%" className="text_style" id="report-cnt">
         {songInfo.report}
       </td>
       <td width="10%">
-          <FontAwesomeIcon
+        <FontAwesomeIcon
           id={'report' + props.id}
           className="report"
           onClick={() => onClickReport(props.index)}
-          icon = {faBan}
-          />
+          icon={faBan}
+        />
       </td>
       <td width="10%">
         <FontAwesomeIcon
@@ -144,7 +144,7 @@ function QueueItem(props) {
         />
       </td>
 
-      <td width="5%" className="text_style" id = "vote-cnt">
+      <td width="5%" className="text_style" id="vote-cnt">
         {songInfo.vote}
       </td>
     </tr>
@@ -186,13 +186,25 @@ class Queue extends React.Component {
         <table id="queue">
           <tbody>
             {queue.map((song, index) => {
-              var songInfo = {
-                image: song.album.images[2].url,
-                name: song.name,
-                artists: song.artists,
-                vote: song.vote,
-                report: song.report
-              };
+              var songInfo = {};
+              if (song.album === undefined || song.album.images.length < 3) {
+                songInfo = {
+                  image: null,
+                  name: song.name,
+                  artists: song.artists,
+                  vote: song.vote,
+                  report: song.report
+                }
+              }
+              else {
+                songInfo = {
+                  image: song.album.images[2].url,
+                  name: song.name,
+                  artists: song.artists,
+                  vote: song.vote,
+                  report: song.report
+                };
+              }
               return (
                 <QueueItem
                   room_id={this.props.room_id}
