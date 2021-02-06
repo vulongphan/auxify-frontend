@@ -16,7 +16,7 @@ class NowPlaying extends React.PureComponent {
                 {nowPlaying.name}
               </div>
               <div className="now-playing__artist-name text_style">
-                {nowPlaying.artists.map(a => a.name).join(', ')}
+                {nowPlaying.artists !== undefined && nowPlaying.artists.map(a => a.name).join(', ')}
               </div>
             </div>
           </div>

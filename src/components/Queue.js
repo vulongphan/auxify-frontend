@@ -111,7 +111,7 @@ function QueueItem(props) {
               <td
                 className="queue-item__artist-name text_style"
                 align="left">
-                {songInfo.artists.map(artist => artist.name).join(', ')}</td>
+                {songInfo.artists !== undefined && songInfo.artists.map(artist => artist.name).join(', ')}</td>
             </tr>
           </tbody>
         </table>
