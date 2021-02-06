@@ -197,6 +197,7 @@ class Room extends React.Component {
     /**
      * Get cookie from cookie's name
      * @param {String} cname: cookie name 
+     * @returns {String}: if found the cookie, return the cookie; else return an empty string
      */
     getCookie(cname) {
         var name = cname + "=";
