@@ -24,7 +24,6 @@ class Room extends React.Component {
             room_id: params.room_id,
             hostInfo: {},
             queue: [],
-            user_votes: {},
             default_playlist: null,
             nowPlaying: {
                 playing: false,
@@ -47,7 +46,6 @@ class Room extends React.Component {
         this.getCookie = this.getCookie.bind(this);
         this.handleHost = this.handleHost.bind(this);
         this.deleteRoomHandler = this.deleteRoomHandler.bind(this);
-        this.updateSongCookie = this.updateSongCookie.bind(this);
     }
 
     componentDidMount() {
@@ -69,22 +67,33 @@ class Room extends React.Component {
                     const room = res.data.data;
 
                     this.handleHost(room.host_known);
-                    
-                    spotifyApi.setAccessToken(room.access_token);
 
+                    // const current_time = Date.now();
+                    // const duration = 3600 * 1000; //lifetime for an access_token in the room (in mili sec)
+                    // if (current_time >= room.end_time) {
+                    //     console.log("Pass end_time");
+                    //     /*note that we will only request access_token once when the current access_token expires
+                    //     request new access_token from refresh_token */
+                    //     console.log("refresh_token: ", room.refresh_token);
+                    //     api.requestToken(room.refresh_token).then(access_token => {
+                    //         console.log("New access_token: " + access_token);
+                    //         //update the access_token and end_time of room
+                    //         api.updateToken(room_id, { access_token: access_token, end_time: current_time + duration });
+                    //     });
+                    // }
+
+                    spotifyApi.setAccessToken(room.access_token);
                     if (this.state.hostInfo !== {}) this.getInfo();
                     this.setState({
                         queue: room.queue,
                         default_playlist: room.default_playlist,
                         nowPlaying: room.nowPlaying,
-                        user_votes: user_votes,
                     })
-                    console.log(this.state.user_votes);
                 }
             })
             //when room expires, direct to Expire component
             .catch(() => {
-                // window.location.href = expired;
+                window.location.href = expired;
             });
     }
 
@@ -186,64 +195,16 @@ class Room extends React.Component {
     }
 
     /**
-     * Update cookie that corresponds to a song in a room
-     */
-    updateSongCookie(room_id) {
-        let votes_prv = {};
-        // get all the cookies that corresponds to songs in the room: room_id + "_" + song_id + "=" + vote
-        let decodedCookie = decodeURIComponent(document.cookie);
-        let ca = decodedCookie.split(';');
-        for (let i = 0; i < ca.length; i++) {
-            let c = ca[i];
-            while (c.charAt(0) === ' ') { // stripping whitespace
-                c = c.substring(1);
-            }
-            if (c.indexOf(room_id) === 0) { //if the cookie corresponds to a song in the room
-                let song_cookie = c.substring(0, c.length - 2);
-                let vote = parseInt(c.substring(c.length - 1));
-                votes_prv[song_cookie] = vote;
-            }
-        }
-        // get all the song_ids in the current queue
-        let votes_cur = {};
-        for (let i = 0; i < this.state.queue.length; i++) {
-            let song_id = this.state.queue[i].id;
-            let song_cookie = room_id + "_" + song_id;
-            votes_cur[song_cookie] = 0;
-        }
-        // check for new songs and delete songs that are no longer in queue
-        let votes = {};
-        let entries_cur = Object.keys(votes_cur); // an array of song_ids in current queue
-        for (let i = 0; i < entries_cur.length; i++) {
-            let song_cookie = entries_cur[i];
-            if (votes_prv[song_cookie] !== undefined) { // if song_ids in current queue are already saved in cookies
-                votes[song_cookie] = votes_prv[song_cookie];
-                delete votes_prv[song_cookie];
-            }
-            else { // new songs
-                votes[song_cookie] = 0;
-                this.setCookie(song_cookie, 0);
-            }
-        }
-        let entries_prv = Object.keys(votes_prv); // an array of song_ids no longer in queue
-        for (let i = 0; i < entries_prv; i++) {
-            this.setCookie(entries_prv[i], "", 1 / 3600); // delete the corresponding cookie of songs that no are no longer in queue
-        }
-        return votes;
-    }
-
-    /**
      * Get cookie from cookie's name
      * @param {String} cname: cookie name 
-     * @returns {String}: if found the cookie, return the cookie; else return an empty string
      */
     getCookie(cname) {
-        let name = cname + "=";
-        let decodedCookie = decodeURIComponent(document.cookie);
-        let ca = decodedCookie.split(';');
-        for (let i = 0; i < ca.length; i++) {
-            let c = ca[i];
-            while (c.charAt(0) === ' ') { // stripping whitespace
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) === ' ') {
                 c = c.substring(1);
             }
             if (c.indexOf(name) === 0) { //if the given cookie name is found, return the value of the cookie
@@ -261,14 +222,11 @@ class Room extends React.Component {
      * 
      */
     setCookie(cname, cvalue, exhrs) {
-        if (exhrs !== undefined) {
-            console.log("expire time for cookie is set");
-            var d = new Date();
-            d.setTime(d.getTime() + (exhrs * 60 * 60 * 1000));
-            var expires = "expires=" + d.toUTCString();
-            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-        }
-        else document.cookie = cname + "=" + cvalue;
+        var d = new Date();
+        d.setTime(d.getTime() + (exhrs * 60 * 60 * 1000));
+        // var expires = "expires=" + d.toUTCString();
+        // document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        document.cookie = cname + "=" + cvalue;
     }
 
     /**
@@ -349,8 +307,7 @@ class Room extends React.Component {
                             queue={this.state.queue}
                             room_id={this.state.room_id}
                             is_host={this.state.is_host}
-                            play={this.play}
-                            user_votes={this.state.user_votes} />
+                            play={this.play} />
                     </div>
                 </div>
                 {this.state.is_host &&
