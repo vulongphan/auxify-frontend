@@ -25,53 +25,108 @@ function QueueItem(props) {
    * update the vote of the song whose like button is clicked
    * @param {number} index: the index of the song in the queue whose like button is clicked
    */
-  const onClickLike = (index) => {
-    var payload;
-    var likeList = document.getElementById(LIKE_BTN_ID).classList; //return the className(s) of the LIKE button element as a list
-    var dislikeList = document.getElementById(DISLIKE_BTN_ID).classList; //return the className(s) of the Dislike button element as a list
-    if (!likeList.contains(LIKE)) { //if the song has not been liked before
-      if (!dislikeList.contains(DISLIKE)) payload = { index: index, amount: 1 };
-      else { //if the song has been disliked before
-        payload = { index: index, amount: 2 };
-        dislikeList.remove(DISLIKE);
-      }
-      likeList.add(LIKE);
-      //if the song has been liked before
-    } else {
-      payload = { index: index, amount: -1 };
-      likeList.remove(LIKE);
+  // const onClickLike = (index) => {
+  //   var payload;
+  //   var likeList = document.getElementById(LIKE_BTN_ID).classList; //return the className(s) of the LIKE button element as a list
+  //   var dislikeList = document.getElementById(DISLIKE_BTN_ID).classList; //return the className(s) of the Dislike button element as a list
+  //   if (!likeList.contains(LIKE)) { //if the song has not been liked before
+  //     if (!dislikeList.contains(DISLIKE)) payload = { index: index, amount: 1 };
+  //     else { //if the song has been disliked before
+  //       payload = { index: index, amount: 2 };
+  //       dislikeList.remove(DISLIKE);
+  //     }
+  //     likeList.add(LIKE);
+  //     //if the song has been liked before
+  //   } else {
+  //     payload = { index: index, amount: -1 };
+  //     likeList.remove(LIKE);
+  //   }
+  //   api.vote(room_id, payload)
+  //     .then(() => console.log("Click liked button at " + index))
+  //     .catch(err => console.log(err));
+  // }
+  const onClickLike = (song_cookie, vote, index) => {
+    // we need to somehow be able to setState of Room which is the parent component of QueueItem
+    let amount = 0;
+    if (vote === -1) {
+      vote = 1;
+      amount = 2;
     }
+    else if (vote === 0) {
+      vote = 1;
+      amount = 1;
+    }
+    else if (vote === 1) {
+      vote = 0;
+      amount = -1;
+    }
+    document.cookie = song_cookie + "=" + vote; // update the cookie of the song
+
+    /* We need to consider whether to setState (user_votes state) of the Room component since if fetchRoom() takes too long to return
+    then the like/dislike button appears not responsive*/
+
+    let payload = { index: index, amount: amount };
+
     api.vote(room_id, payload)
       .then(() => console.log("Click liked button at " + index))
       .catch(err => console.log(err));
   }
 
+
   /**
    * update the vote of the song whose dislike button is clicked
    * @param {*} index: the index of the song in the queue whose dislike button is clicked
    */
-  const onClickDislike = (index) => {
-    var payload;
-    var likeList = document.getElementById(LIKE_BTN_ID).classList;
-    var dislikeList = document.getElementById(DISLIKE_BTN_ID).classList;
-    if (!dislikeList.contains(DISLIKE)) {
-      //if the song has not been disliked before
-      if (!likeList.contains(LIKE)) payload = { index: index, amount: -1 };
-      //if the song has been liked before
-      else {
-        payload = { index: index, amount: -2 };
-        likeList.remove(LIKE);
-      }
-      dislikeList.add(DISLIKE);
-      //if the song has been disliked before
-    } else {
-      payload = { index: index, amount: 1 };
-      dislikeList.remove(DISLIKE);
+  // const onClickDislike = (index) => {
+  //   var payload;
+  //   var likeList = document.getElementById(LIKE_BTN_ID).classList;
+  //   var dislikeList = document.getElementById(DISLIKE_BTN_ID).classList;
+  //   if (!dislikeList.contains(DISLIKE)) {
+  //     //if the song has not been disliked before
+  //     if (!likeList.contains(LIKE)) payload = { index: index, amount: -1 };
+  //     //if the song has been liked before
+  //     else {
+  //       payload = { index: index, amount: -2 };
+  //       likeList.remove(LIKE);
+  //     }
+  //     dislikeList.add(DISLIKE);
+  //     //if the song has been disliked before
+  //   } else {
+  //     payload = { index: index, amount: 1 };
+  //     dislikeList.remove(DISLIKE);
+  //   }
+  //   api.vote(room_id, payload)
+  //     .then(() => console.log("Click disliked button at " + index))
+  //     .catch(err => console.log(err));
+  const onClickDislike = (song_cookie, vote, index) => {
+    // we need to somehow be able to setState of Room which is the parent component of QueueItem
+    let amount = 0;
+    if (vote === -1) {
+      vote = 0;
+      amount = 1;
     }
+    else if (vote === 0) {
+      console.log("Here");
+      vote = -1;
+      amount = -1;
+    }
+    else if (vote === 1) {
+      vote = -1;
+      amount = -2;
+    }
+    document.cookie = song_cookie + "=" + vote; // update the cookie of the song
+
+    /* We need to consider whether to setState (user_votes state) of the Room component since if fetchRoom() takes too long to return
+    then the like/dislike button appears not responsive*/
+
+    let payload = { index: index, amount: amount };
+
     api.vote(room_id, payload)
       .then(() => console.log("Click disliked button at " + index))
       .catch(err => console.log(err));
   }
+
+
 
   /**
    * update the report of the song whose report button is clicked
@@ -92,7 +147,23 @@ function QueueItem(props) {
       .catch(err => console.log(err));
   }
 
+
   const songInfo = props.songInfo;
+  const song_cookie = props.room_id + "_" + props.id;
+  let LIKE_CLASS, DISLIKE_CLASS;
+  if (props.user_vote === -1) {
+    LIKE_CLASS = "like";
+    DISLIKE_CLASS = "disliked";
+  }
+  else if (props.user_vote === 0) {
+    LIKE_CLASS = "like";
+    DISLIKE_CLASS = "dislike";
+  }
+  else if (props.user_vote === 1) {
+    LIKE_CLASS = "liked";
+    DISLIKE_CLASS = "dislike";
+  }
+
   return (
     <tr className="queue-item">
       <td width="10%">
@@ -130,16 +201,20 @@ function QueueItem(props) {
       <td width="10%">
         <FontAwesomeIcon
           id={'like' + props.id}
-          className="like"
-          onClick={() => onClickLike(props.index)}
+          // className="like"
+          className = {LIKE_CLASS}
+          // onClick={() => onClickLike(props.index)}
+          onClick={() => onClickLike(song_cookie, props.user_vote, props.index)}
           icon={faHeart}
         />
       </td>
       <td width="10%">
         <FontAwesomeIcon
           id={'dislike' + props.id}
-          className="dislike"
-          onClick={() => onClickDislike(props.index)}
+          // className="dislike"
+          className = {DISLIKE_CLASS}
+          // onClick={() => onClickDislike(props.index)}
+          onClick={() => onClickDislike(song_cookie, props.user_vote, props.index)}
           icon={faThumbsDown}
         />
       </td>
@@ -187,6 +262,8 @@ class Queue extends React.Component {
           <tbody>
             {queue.map((song, index) => {
               var songInfo = {};
+              var song_cookie = this.props.room_id + "_" + song.id;
+              var user_vote = this.props.user_votes[song_cookie];
               if (song.album === undefined || song.album.images.length < 3) {
                 songInfo = {
                   image: null,
@@ -211,7 +288,8 @@ class Queue extends React.Component {
                   key={song.id}
                   id={song.id}
                   index={index}
-                  songInfo={songInfo} />
+                  songInfo={songInfo}
+                  user_vote={user_vote} />
               )
             })}
           </tbody>
