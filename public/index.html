@@ -6,8 +6,8 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-180097789-1"></script>
   <script>
     var host = window.location.hostname;
-    function gtag() { dataLayer.push(arguments); }
-    if (host != "localhost") { // not tracking local host
+    if (host != "localhost") {
+      // not tracking localhost
       window.dataLayer = window.dataLayer || [];
       function gtag() { dataLayer.push(arguments); }
       gtag('js', new Date());
