@@ -36,7 +36,7 @@ class Room extends React.Component {
             is_host: null
         }
 
-        this.count = 500;
+        this.count = 2000;
 
         this.addToQueue = this.addToQueue.bind(this);
         this.play = this.play.bind(this);
