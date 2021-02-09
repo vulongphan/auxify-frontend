@@ -1,7 +1,7 @@
 import React from 'react';
 import '../style/Room.css';
 import SpotifyWebApi from 'spotify-web-api-js';
-import { client_url } from '../config';
+import { client_url, pusher_key, pusher_cluster } from '../config';
 import api from '../api/api.js';
 import defaultImg from '../style/default.jpg';
 
@@ -10,6 +10,8 @@ import Queue from './Queue';
 import SearchBar from './SearchBar';
 import RoomInfo from './RoomInfo';
 import apis from '../api/api.js';
+
+import Pusher from 'pusher-js';
 
 const spotifyApi = new SpotifyWebApi();
 const expired = client_url + '/expire';
@@ -50,11 +52,44 @@ class Room extends React.Component {
 
     componentDidMount() {
         this.timer = setInterval(() => this.fetchRoom(this.state.room_id), this.count);
+
+        // subsribe to pusher channel
+        this.pusher = new Pusher(/*pusher_key*/ '33a84370b676c7c55305', {
+            cluster: /*pusher_cluster*/ 'ap2',
+            encrypted: true,
+        });
+
+        // this.pusher.logToConsole = true; 
+
+        this.channel = this.pusher.subscribe('rooms');
+
+        this.channel.bind('update', function(data, error) {
+            console.log(data);
+          });
     }
 
     componentWillUnmount() {
         clearInterval(this.timer);
     }
+
+
+    /**
+     * Update Room when there is a change in the database
+     * @param {*} data
+     */
+    updateRoom(data) {
+        console.log(data);
+        // let room = data;
+        // this.handleHost(room.host_known);
+        // spotifyApi.setAccessToken(room.access_token);
+        // if (this.state.hostInfo !== {}) this.getInfo();
+        // this.setState({
+        //     queue: room.queue,
+        //     default_playlist: room.default_playlist,
+        //     nowPlaying: room.nowPlaying,
+        // })
+    }
+
 
     /**
      * Fetch the room info and update room state 
