@@ -42,34 +42,38 @@ class Room extends React.Component {
 
         this.addToQueue = this.addToQueue.bind(this);
         this.play = this.play.bind(this);
-        this.updateDefaultPlaylist = this.updateDefaultPlaylist.bind(this);
+        this.addDefaultPlaylist = this.addDefaultPlaylist.bind(this);
 
         this.setCookie = this.setCookie.bind(this);
         this.getCookie = this.getCookie.bind(this);
         this.handleHost = this.handleHost.bind(this);
         this.deleteRoomHandler = this.deleteRoomHandler.bind(this);
+        this.updateNowPlaying = this.updateNowPlaying.bind(this);
+        this.updateQueue = this.updateQueue.bind(this);
+        this.updateDefaultPlaylist = this.updateDefaultPlaylist.bind(this);
     }
 
     componentDidMount() {
-        this.timer = setInterval(() => this.fetchRoom(this.state.room_id), this.count);
+        // this.timer = setInterval(() => this.fetchRoom(this.state.room_id), this.count);
+        this.fetchRoom(this.state.room_id);
 
         // subsribe to pusher channel
-        this.pusher = new Pusher(/*pusher_key*/ '33a84370b676c7c55305', {
-            cluster: /*pusher_cluster*/ 'ap2',
+        this.pusher = new Pusher(pusher_key, {
+            cluster: pusher_cluster,
             encrypted: true,
         });
 
-        // this.pusher.logToConsole = true; 
-
         this.channel = this.pusher.subscribe('rooms');
 
-        this.channel.bind('update', function(data, error) {
-            console.log(data);
-          });
+        // this.channel.bind('update', this.updateRoom);
+        this.channel.bind('updateNowPlaying', this.updateNowPlaying);
+        this.channel.bind('updateQueue', this.updateQueue);
+        this.channel.bind('updateDefaultPlaylist', this.updateDefaultPlaylist);
+
     }
 
     componentWillUnmount() {
-        clearInterval(this.timer);
+        // clearInterval(this.timer);
     }
 
 
@@ -77,17 +81,50 @@ class Room extends React.Component {
      * Update Room when there is a change in the database
      * @param {*} data
      */
-    updateRoom(data) {
-        console.log(data);
-        // let room = data;
-        // this.handleHost(room.host_known);
-        // spotifyApi.setAccessToken(room.access_token);
-        // if (this.state.hostInfo !== {}) this.getInfo();
-        // this.setState({
-        //     queue: room.queue,
-        //     default_playlist: room.default_playlist,
-        //     nowPlaying: room.nowPlaying,
-        // })
+    // updateRoom(data) {
+    //     let room = data.room;
+    //     this.handleHost(room.host_known);
+    //     spotifyApi.setAccessToken(room.access_token);
+    //     if (this.state.hostInfo !== {}) this.getInfo();
+    //     this.setState({
+    //         queue: room.queue,
+    //         default_playlist: room.default_playlist,
+    //         nowPlaying: room.nowPlaying,
+    //     })
+    // }
+
+
+    /**
+     * update nowPlaying of the current state
+     * @param {*} data 
+     */
+    updateNowPlaying(data) {
+        let nowPlaying = data.nowPlaying;
+        this.setState({
+            nowPlaying: nowPlaying
+        })
+    }
+
+    /**
+     * update queue of the current state
+     * @param {*} data 
+     */
+    updateQueue(data) {
+        let queue = data.queue;
+        this.setState({
+            queue: queue
+        })
+    }
+
+    /**
+     * update default_playlist of the current state
+     * @param {*} data 
+     */
+    updateDefaultPlaylist(data) {
+        let default_playlist = data.default_playlist;
+        this.setState({
+            default_playlist: default_playlist
+        })
     }
 
 
@@ -102,20 +139,6 @@ class Room extends React.Component {
                     const room = res.data.data;
 
                     this.handleHost(room.host_known);
-
-                    // const current_time = Date.now();
-                    // const duration = 3600 * 1000; //lifetime for an access_token in the room (in mili sec)
-                    // if (current_time >= room.end_time) {
-                    //     console.log("Pass end_time");
-                    //     /*note that we will only request access_token once when the current access_token expires
-                    //     request new access_token from refresh_token */
-                    //     console.log("refresh_token: ", room.refresh_token);
-                    //     api.requestToken(room.refresh_token).then(access_token => {
-                    //         console.log("New access_token: " + access_token);
-                    //         //update the access_token and end_time of room
-                    //         api.updateToken(room_id, { access_token: access_token, end_time: current_time + duration });
-                    //     });
-                    // }
 
                     spotifyApi.setAccessToken(room.access_token);
                     if (this.state.hostInfo !== {}) this.getInfo();
@@ -151,14 +174,40 @@ class Room extends React.Component {
      * Update the user's current playback state
      * @param {*} playlist: playlist info in json
      */
-    updateDefaultPlaylist(playlist) {
+    addDefaultPlaylist(playlist) {
         const payload = { default_playlist: playlist }
-        api.updateDefaultPlaylist(this.state.room_id, payload)
+        api.addPlaylist(this.state.room_id, payload)
             .then(() => console.log("Successfully updated"))
             .catch(err => console.log(err));
     }
 
-    addToQueue(song) {
+    addToQueue(search) {
+        let song = {};
+        // get the name of all artists
+        let artists = [];
+        if (search.artists != undefined) {
+            for (let i = 0; i < search.artists.length; i++) {
+                if (search.artists[i].name !== undefined) {
+                    artists.push(search.artists[i].name)
+                }
+            }
+        }
+        song.artists = artists;
+        // get the song name
+        song.name = search.name;
+        // get the song image_url
+        let image_url = null;
+        if (search.album !== undefined) {
+            if (search.album.images.length >= 3) {
+                image_url = search.album.images[2].url;
+            }
+        }
+        song.image_url = image_url;
+        // get the track url
+        song.uri = search.uri;
+        // get the song id
+        song.id = search.id;
+        // create the default song vote and report
         song.vote = 0;
         song.report = 0;
         api.addToQueue(this.state.room_id, song)
@@ -318,7 +367,7 @@ class Room extends React.Component {
                                 id="searchPlaylist"
                                 className="searchbarPlaylist"
                                 spotifyApi={spotifyApi}
-                                onClick={this.updateDefaultPlaylist}
+                                onClick={this.addDefaultPlaylist}
                                 types={['playlist']}
                                 maxSuggestion={5}
                                 placeholder={"Choose a playlist as default"} />}

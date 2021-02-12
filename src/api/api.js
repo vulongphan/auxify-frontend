@@ -12,7 +12,7 @@ export const addToQueue = (id, payload) => api.post(`/addQueue/${id}`, payload);
 export const vote = (id, payload) => api.post(`/vote/${id}`, payload);
 export const report = (id, payload) => api.post(`/report/${id}`, payload);
 export const removeFromQueue = (id) => api.get(`/removeQueue/${id}`);
-export const updateDefaultPlaylist = (id, payload) => api.post(`/playlist/${id}`, payload);
+export const addPlaylist = (id, payload) => api.post(`/playlist/${id}`, payload);
 export const deleteRoom = (id) => api.get(`/deleteRoom/${id}`);
 export const updateToken = (id, payload) => api.post(`/updateToken/${id}`, payload);
 export const updateHost = (id, payload) => api.post(`/updateHost/${id}`, payload);
@@ -22,7 +22,7 @@ const apis = {
     addToQueue,
     vote,
     report,
-    updateDefaultPlaylist,
+    addPlaylist,
     deleteRoom,
     updateToken,
     updateHost,
