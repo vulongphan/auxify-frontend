@@ -63,7 +63,7 @@ class Room extends React.Component {
             encrypted: true,
         });
 
-        this.channel = this.pusher.subscribe('rooms');
+        this.channel = this.pusher.subscribe('room' + this.state.room_id);
 
         // this.channel.bind('update', this.updateRoom);
         this.channel.bind('updateNowPlaying', this.updateNowPlaying);

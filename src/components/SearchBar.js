@@ -113,7 +113,7 @@ class SearchBar extends React.Component {
                         result = response.tracks.items;
                         let i = 0;
                         while (i < result.length) {
-                            if (result[i].explicit) {
+                            if (result[i].explicit !== undefined && result[i].explicit) {
                                 result.splice(i,1);
                             }
                             else i+=1
