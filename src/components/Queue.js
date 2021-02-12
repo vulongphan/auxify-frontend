@@ -2,13 +2,10 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import { faHeart } from '@fortawesome/free-solid-svg-icons'
-import { faThumbsUp } from '@fortawesome/free-solid-svg-icons'
 
-import { faHeartBroken } from '@fortawesome/free-solid-svg-icons'
 import { faThumbsDown } from '@fortawesome/free-solid-svg-icons'
 import { faBan } from '@fortawesome/free-solid-svg-icons'
 
-import { faFlag } from '@fortawesome/free-solid-svg-icons'
 import api from '../api/api.js';
 
 

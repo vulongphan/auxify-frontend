@@ -9,12 +9,12 @@ import NowPlaying from './NowPlaying';
 import Queue from './Queue';
 import SearchBar from './SearchBar';
 import RoomInfo from './RoomInfo';
-import apis from '../api/api.js';
 
 import Pusher from 'pusher-js';
 
 const spotifyApi = new SpotifyWebApi();
 const expired = client_url + '/expire';
+const MAX_SONG_IN_QUEUE = 15;
 
 class Room extends React.Component {
     constructor() {
@@ -157,37 +157,40 @@ class Room extends React.Component {
     }
 
     addToQueue(search) {
-        let song = {};
-        // get the name of all artists
-        let artists = [];
-        if (search.artists != undefined) {
-            for (let i = 0; i < search.artists.length; i++) {
-                if (search.artists[i].name !== undefined) {
-                    artists.push(search.artists[i].name)
+        if (this.state.queue.length >= MAX_SONG_IN_QUEUE) alert("Our queue can only contain a maximum of " + MAX_SONG_IN_QUEUE + " songs.");
+        else{
+            let song = {};
+            // get the name of all artists
+            let artists = [];
+            if (search.artists !== undefined) {
+                for (let i = 0; i < search.artists.length; i++) {
+                    if (search.artists[i].name !== undefined) {
+                        artists.push(search.artists[i].name)
+                    }
                 }
             }
-        }
-        song.artists = artists;
-        // get the song name
-        song.name = search.name;
-        // get the song image_url
-        let image_url = null;
-        if (search.album !== undefined) {
-            if (search.album.images.length >= 3) {
-                image_url = search.album.images[2].url;
+            song.artists = artists;
+            // get the song name
+            song.name = search.name;
+            // get the song image_url
+            let image_url = null;
+            if (search.album !== undefined) {
+                if (search.album.images.length >= 3) {
+                    image_url = search.album.images[2].url;
+                }
             }
+            song.image_url = image_url;
+            // get the track url
+            song.uri = search.uri;
+            // get the song id
+            song.id = search.id;
+            // create the default song vote and report
+            song.vote = 0;
+            song.report = 0;
+            api.addToQueue(this.state.room_id, song)
+                .then(() => console.log("Successfully added"))
+                .catch(err => console.log(err));
         }
-        song.image_url = image_url;
-        // get the track url
-        song.uri = search.uri;
-        // get the song id
-        song.id = search.id;
-        // create the default song vote and report
-        song.vote = 0;
-        song.report = 0;
-        api.addToQueue(this.state.room_id, song)
-            .then(() => console.log("Successfully added"))
-            .catch(err => console.log(err));
     }
 
     /**

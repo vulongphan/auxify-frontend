@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {server_url, spotify_id, spotify_secret} from '../config';
+import {server_url} from '../config';
 
 var baseurl = server_url + '/api';
 
