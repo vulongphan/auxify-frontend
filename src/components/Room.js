@@ -54,10 +54,9 @@ class Room extends React.Component {
     }
 
     componentDidMount() {
-        // this.timer = setInterval(() => this.fetchRoom(this.state.room_id), this.count);
         this.fetchRoom(this.state.room_id);
 
-        // subsribe to pusher channel
+        // subscribe to pusher channel that corresponds to the room_id
         this.pusher = new Pusher(pusher_key, {
             cluster: pusher_cluster,
             encrypted: true,
@@ -65,34 +64,11 @@ class Room extends React.Component {
 
         this.channel = this.pusher.subscribe('room' + this.state.room_id);
 
-        // this.channel.bind('update', this.updateRoom);
         this.channel.bind('updateNowPlaying', this.updateNowPlaying);
         this.channel.bind('updateQueue', this.updateQueue);
         this.channel.bind('updateDefaultPlaylist', this.updateDefaultPlaylist);
 
     }
-
-    componentWillUnmount() {
-        // clearInterval(this.timer);
-    }
-
-
-    /**
-     * Update Room when there is a change in the database
-     * @param {*} data
-     */
-    // updateRoom(data) {
-    //     let room = data.room;
-    //     this.handleHost(room.host_known);
-    //     spotifyApi.setAccessToken(room.access_token);
-    //     if (this.state.hostInfo !== {}) this.getInfo();
-    //     this.setState({
-    //         queue: room.queue,
-    //         default_playlist: room.default_playlist,
-    //         nowPlaying: room.nowPlaying,
-    //     })
-    // }
-
 
     /**
      * update nowPlaying of the current state
@@ -126,7 +102,6 @@ class Room extends React.Component {
             default_playlist: default_playlist
         })
     }
-
 
     /**
      * Fetch the room info and update room state 
