@@ -2,13 +2,10 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import { faHeart } from '@fortawesome/free-solid-svg-icons'
-import { faThumbsUp } from '@fortawesome/free-solid-svg-icons'
 
-import { faHeartBroken } from '@fortawesome/free-solid-svg-icons'
 import { faThumbsDown } from '@fortawesome/free-solid-svg-icons'
 import { faBan } from '@fortawesome/free-solid-svg-icons'
 
-import { faFlag } from '@fortawesome/free-solid-svg-icons'
 import api from '../api/api.js';
 
 
@@ -96,7 +93,7 @@ function QueueItem(props) {
   return (
     <tr className="queue-item">
       <td width="10%">
-        <img alt="" src={songInfo.image} />
+        <img alt="" src={songInfo.image_url} />
       </td>
       <td width="60%">
         <table>
@@ -111,7 +108,7 @@ function QueueItem(props) {
               <td
                 className="queue-item__artist-name text_style"
                 align="left">
-                {songInfo.artists !== undefined && songInfo.artists.map(artist => artist.name).join(', ')}</td>
+                {songInfo.artists.join(', ')}</td>
             </tr>
           </tbody>
         </table>
@@ -186,25 +183,14 @@ class Queue extends React.Component {
         <table id="queue">
           <tbody>
             {queue.map((song, index) => {
-              var songInfo = {};
-              if (song.album === undefined || song.album.images.length < 3) {
-                songInfo = {
-                  image: null,
-                  name: song.name,
-                  artists: song.artists,
-                  vote: song.vote,
-                  report: song.report
-                }
-              }
-              else {
-                songInfo = {
-                  image: song.album.images[2].url,
-                  name: song.name,
-                  artists: song.artists,
-                  vote: song.vote,
-                  report: song.report
-                };
-              }
+              let songInfo = {};
+              songInfo = {
+                image_url: song.image_url,
+                name: song.name,
+                artists: song.artists,
+                vote: song.vote,
+                report: song.report
+              };
               return (
                 <QueueItem
                   room_id={this.props.room_id}
