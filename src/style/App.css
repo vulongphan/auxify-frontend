@@ -24,8 +24,8 @@
 
 body{
   background-color: black;
+  background-image: url("valentine_theme2.jpg");
 }
-
 
 .Room input{
   background-color: white; /* background */
