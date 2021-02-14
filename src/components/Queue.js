@@ -176,8 +176,8 @@ class Queue extends React.Component {
         }
         {this.props.is_host && this.state.info_clicked &&
           <div className="text_style" id="instruction">
-            <div>After you see that Auxify is connected to your device, add a song to the queue and click "Play Next" to synchronize our queue to</div>
-            <div> your account. If you ever find that the queue is disconnected from your Spotify, click on Play Next to reconnect.</div>
+            <div> Click 'Play Next' to skip to the next song </div>
+            <div> Click on the info circle to hide this alert </div>
           </div>
         }
         <table id="queue">

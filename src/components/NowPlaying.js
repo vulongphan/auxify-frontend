@@ -27,7 +27,7 @@ class NowPlaying extends React.PureComponent {
       );
     } else {
       return (
-        <div className="now-playing Room-row2">Play a song on your device for Auxify to connect with it</div>
+        <div className="now-playing Room-row2">Not connected to host's Spotify App</div>
       )
     }
   }
