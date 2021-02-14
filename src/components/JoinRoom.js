@@ -43,7 +43,6 @@ class JoinRoom extends React.Component {
         //for each of these elements, get all the room ids and boolean values to tell whether the browser is the host for each room it has accessed
         var rooms = [];
         var decodedCookie = decodeURIComponent(document.cookie);
-        console.log(decodedCookie);
         var ca = decodedCookie.split(';');
         for (var i = 0; i < ca.length; i++) {
             var c = ca[i];
