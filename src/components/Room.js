@@ -158,7 +158,7 @@ class Room extends React.Component {
     }
 
     addToQueue(search) {
-        if (this.state.queue.length >= MAX_SONG_IN_QUEUE){
+        if (this.state.queue.length >= MAX_SONG_IN_QUEUE) {
             sAlert({
                 title: "Maximum number of songs reached!",
                 text: "Our queue can only contain a maximum of " + MAX_SONG_IN_QUEUE + " songs.",
@@ -258,143 +258,145 @@ class Room extends React.Component {
                             .catch(err => console.log(err));
                     });
             } else {
-                alert("Add songs to queue or a default playlist");
+                sAlert({
+                    text: "Please add a song to the queue or add a playlist as default to play",
+                    icon: "error",
+                })
             }
         }
-    }
 
-    /**
-     * Get cookie from cookie's name
-     * @param {String} cname: cookie name 
-     */
-    getCookie(cname) {
-        var name = cname + "=";
-        var decodedCookie = decodeURIComponent(document.cookie);
-        var ca = decodedCookie.split(';');
-        for (var i = 0; i < ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) === ' ') {
-                c = c.substring(1);
+        /**
+         * Get cookie from cookie's name
+         * @param {String} cname: cookie name 
+         */
+        getCookie(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) === ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) === 0) { //if the given cookie name is found, return the value of the cookie
+                    return c.substring(name.length, c.length);
+                }
             }
-            if (c.indexOf(name) === 0) { //if the given cookie name is found, return the value of the cookie
-                return c.substring(name.length, c.length);
-            }
+            return "";
         }
-        return "";
-    }
 
-    /**
-     * Set a cookie
-     * @param {String} cname: name of the cookie 
-     * @param {String} cvalue: value of the cookie
-     * @param {number} exhrs: time expired (in hours) - not setting the expire time for now
-     * 
-     */
-    setCookie(cname, cvalue, exhrs) {
-        var d = new Date();
-        d.setTime(d.getTime() + (exhrs * 60 * 60 * 1000));
-        // var expires = "expires=" + d.toUTCString();
-        // document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-        document.cookie = cname + "=" + cvalue;
-    }
-
-    /**
-     * Differentiate host's browser using cookie
-     * @param {boolean} host_known: 
-     */
-    handleHost(host_known) {
-        const cname = "host" + this.state.room_id;
-        const cvalue = this.getCookie(cname);
-        if (cvalue === "") { // set cookie if cookie not found
-            this.setCookie(cname, host_known, 4)
+        /**
+         * Set a cookie
+         * @param {String} cname: name of the cookie 
+         * @param {String} cvalue: value of the cookie
+         * @param {number} exhrs: time expired (in hours) - not setting the expire time for now
+         * 
+         */
+        setCookie(cname, cvalue, exhrs) {
+            var d = new Date();
+            d.setTime(d.getTime() + (exhrs * 60 * 60 * 1000));
+            // var expires = "expires=" + d.toUTCString();
+            // document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+            document.cookie = cname + "=" + cvalue;
         }
-        // if this is the host's browser then update the value of host_known 
-        // so that subsequent browsers are not hosts
-        if (host_known === true) api.updateHost(this.state.room_id, { host_known: false });
-        this.setState(
-            {
-                is_host: JSON.parse(this.getCookie(cname)) //true or false
+
+        /**
+         * Differentiate host's browser using cookie
+         * @param {boolean} host_known: 
+         */
+        handleHost(host_known) {
+            const cname = "host" + this.state.room_id;
+            const cvalue = this.getCookie(cname);
+            if (cvalue === "") { // set cookie if cookie not found
+                this.setCookie(cname, host_known, 4)
             }
-        )
-    }
+            // if this is the host's browser then update the value of host_known 
+            // so that subsequent browsers are not hosts
+            if (host_known === true) api.updateHost(this.state.room_id, { host_known: false });
+            this.setState(
+                {
+                    is_host: JSON.parse(this.getCookie(cname)) //true or false
+                }
+            )
+        }
 
-    /**
-     * Delete cookie that corresponds to the room when the host wants to close the room
-     */
-    deleteRoomHandler() {
-        sAlert({
-            title: "Are you sure that you want to close this room ?",
-            text: "Everyone will lose access to this room!",
-            icon: "warning",
-            buttons: ["Cancel", "Close"],
-            dangerMode: true,
-        })
-        .then((isConfirmed) => {
-            if (isConfirmed) {
-                //cookie name that corresponds to the room being hosted
-                const cname = "host" + this.state.room_id;
-                api.deleteRoom(this.state.room_id);
-                //we also have to set the corresponding cookie to be empty and expires in 1 sec
-                //note that only the cookie value is deleted but the cookie name still exists (i.e: hostABCD=)
-                this.setCookie(cname, "", 1 / 3600);
-                console.log("cookie deleted");
-                window.location.href = "/expire"
-            }
-        })
-    }
+        /**
+         * Delete cookie that corresponds to the room when the host wants to close the room
+         */
+        deleteRoomHandler() {
+            sAlert({
+                title: "Are you sure that you want to close this room ?",
+                text: "Everyone will lose access to this room!",
+                icon: "warning",
+                buttons: ["Cancel", "Close"],
+                dangerMode: true,
+            })
+                .then((isConfirmed) => {
+                    if (isConfirmed) {
+                        //cookie name that corresponds to the room being hosted
+                        const cname = "host" + this.state.room_id;
+                        api.deleteRoom(this.state.room_id);
+                        //we also have to set the corresponding cookie to be empty and expires in 1 sec
+                        //note that only the cookie value is deleted but the cookie name still exists (i.e: hostABCD=)
+                        this.setCookie(cname, "", 1 / 3600);
+                        console.log("cookie deleted");
+                        window.location.href = "/expire"
+                    }
+                })
+        }
 
 
-    render() {
-        return (
-            <div className="RoomPage">
-                <div className='Room ColumnFlex'>
-                    <div className='Room-row1 RowFlex'>
-                        <RoomInfo
-                            hostInfo={this.state.hostInfo}
-                            room_id={this.state.room_id}
-                            playlist={this.state.default_playlist} />
-                        {this.state.is_host &&
-                            <SearchBar
-                                id="searchPlaylist"
-                                className="searchbarPlaylist"
-                                spotifyApi={spotifyApi}
-                                onClick={this.addDefaultPlaylist}
-                                types={['playlist']}
-                                maxSuggestion={5}
-                                placeholder={"Choose a playlist as default"} />}
+        render() {
+            return (
+                <div className="RoomPage">
+                    <div className='Room ColumnFlex'>
+                        <div className='Room-row1 RowFlex'>
+                            <RoomInfo
+                                hostInfo={this.state.hostInfo}
+                                room_id={this.state.room_id}
+                                playlist={this.state.default_playlist} />
+                            {this.state.is_host &&
+                                <SearchBar
+                                    id="searchPlaylist"
+                                    className="searchbarPlaylist"
+                                    spotifyApi={spotifyApi}
+                                    onClick={this.addDefaultPlaylist}
+                                    types={['playlist']}
+                                    maxSuggestion={5}
+                                    placeholder={"Choose a playlist as default"} />}
 
-                    </div>
-                    <NowPlaying
-                        spotifyApi={spotifyApi}
-                        room_id={this.state.room_id}
-                        nowPlaying={this.state.nowPlaying} />
-                    <div className='Room-row3 RowFlexReverse'>
-                        <SearchBar
-                            id="searchTrack"
-                            className="searchbarTrack"
+                        </div>
+                        <NowPlaying
                             spotifyApi={spotifyApi}
-                            onClick={this.addToQueue}
-                            types={['track']}
-                            maxSuggestion={10}
-                            placeholder={"What song do you want to play?"}
-                        />
-                        <Queue
-                            queue={this.state.queue}
                             room_id={this.state.room_id}
-                            is_host={this.state.is_host}
-                            play={this.play} />
+                            nowPlaying={this.state.nowPlaying} />
+                        <div className='Room-row3 RowFlexReverse'>
+                            <SearchBar
+                                id="searchTrack"
+                                className="searchbarTrack"
+                                spotifyApi={spotifyApi}
+                                onClick={this.addToQueue}
+                                types={['track']}
+                                maxSuggestion={10}
+                                placeholder={"What song do you want to play?"}
+                            />
+                            <Queue
+                                queue={this.state.queue}
+                                room_id={this.state.room_id}
+                                is_host={this.state.is_host}
+                                play={this.play} />
+                        </div>
                     </div>
+                    {this.state.is_host &&
+                        <div className="btn-group fromtop">
+                            <form onSubmit={this.deleteRoomHandler}>
+                                <button type="submit" className="roomAction" > CLOSE ROOM </button>
+                            </form>
+                        </div>}
+
                 </div>
-                {this.state.is_host &&
-                    <div className="btn-group fromtop">
-                        <form onSubmit={this.deleteRoomHandler}>
-                            <button type="submit" className="roomAction" > CLOSE ROOM </button>
-                        </form>
-                    </div>}
-
-            </div>
-        )
+            )
+        }
     }
-}
 
-export default Room;
+    export default Room;
