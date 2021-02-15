@@ -158,7 +158,13 @@ class Room extends React.Component {
     }
 
     addToQueue(search) {
-        if (this.state.queue.length >= MAX_SONG_IN_QUEUE) alert("Our queue can only contain a maximum of " + MAX_SONG_IN_QUEUE + " songs.");
+        if (this.state.queue.length >= MAX_SONG_IN_QUEUE){
+            sAlert({
+                title: "Maximum number of songs reached!",
+                text: "Our queue can only contain a maximum of " + MAX_SONG_IN_QUEUE + " songs.",
+                icon: "warning",
+            })
+        }
         else {
             let song = {};
             // get the name of all artists
@@ -335,23 +341,6 @@ class Room extends React.Component {
                 window.location.href = "/expire"
             }
         })
-        /*
-        //cookie name that corresponds to the room being hosted
-        const cname = "host" + this.state.room_id;
-        //alert user of the msg to close Room
-
-        var answer = window.confirm("Are you sure that you want to close this room ?");
-        if (answer === true) {
-            api.deleteRoom(this.state.room_id);
-            //we also have to set the corresponding cookie to be empty and expires in 1 sec
-            //note that only the cookie value is deleted but the cookie name still exists (i.e: hostABCD=)
-            this.setCookie(cname, "", 1 / 3600);
-            console.log("cookie deleted");
-        }
-        else { //to prevent the window from reloading after pressing Cancel button
-            return false
-        }
-        */
     }
 
 

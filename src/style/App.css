@@ -148,6 +148,12 @@ p Link,a:hover{
   font-weight: 600;
 }
 
+.swal-button--confirm{
+  background-color: #1db954;
+  font-size: 12px;
+  border: 1px solid #32e26f;
+}
+
 /*for smartphones portrait
 540px is the largest width of device in portrait mode - Surface Duo
 360px is the smallest width of device in portrait mode - Galaxy S5

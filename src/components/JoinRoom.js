@@ -2,6 +2,7 @@ import React from 'react';
 import api from '../api/api.js';
 import { client_url } from '../config';
 import '../style/App.css'
+import sAlert from '@sweetalert/with-react'
 
 const frontEndRoom = client_url + '/room#room_id=';
 
@@ -32,7 +33,11 @@ class JoinRoom extends React.Component {
             .then(() => {
                 window.location.href = frontEndRoom + this.state.value;
             })
-            .catch(() => alert("No Room Found or Connection Interrupted"));
+            .catch(() => sAlert({
+                title: "Invalid Room ID",
+                text: "Please input a valid room ID",
+                icon: "error",
+            }));
     }
 
     /**
