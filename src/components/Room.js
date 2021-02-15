@@ -81,7 +81,7 @@ class Room extends React.Component {
      * when the page is reloaded 
      */
     updateSongCookie(room_id, queue) {
-        let votes_prv = {};
+        let store = {};
         // get all the cookies that corresponds to songs in the room: room_id + "_" + song_id + "=" + report + "_" + vote
         let decodedCookie = decodeURIComponent(document.cookie);
         let ca = decodedCookie.split(';');
@@ -95,17 +95,17 @@ class Room extends React.Component {
                     let song_cookie = c.substring(0, c.length - 5);
                     let report = parseInt(c.charAt(c.length - 4));
                     let vote = (-1) * parseInt(c.substring(c.length - 1));
-                    votes_prv[song_cookie] = [report,vote];
+                    store[song_cookie] = [report,vote];
                 }
                 else { // positive vote
                     let song_cookie = c.substring(0, c.length - 4);
                     let report = parseInt(c.charAt(c.length - 3));
                     let vote = parseInt(c.substring(c.length - 1));
-                    votes_prv[song_cookie] = [report,vote];
+                    store[song_cookie] = [report,vote];
                 }
             }
         }
-        console.log("user_votes before queue update (retrieved from cookies): ", votes_prv)
+        console.log("store of votes (retrieved from cookies): ", store)
         // get all the song_ids in the current queue
         let entries_cur = [];
         for (let i = 0; i < queue.length; i++) {
@@ -119,16 +119,16 @@ class Room extends React.Component {
         // check for new songs and delete songs that are no longer in queue
         for (let i = 0; i < entries_cur.length; i++) {
             let song_cookie = entries_cur[i];
-            if (votes_prv[song_cookie] !== undefined) { // if song_ids in current queue are already saved in cookies
-                user_votes[song_cookie] = votes_prv[song_cookie];
-                delete votes_prv[song_cookie];
+            if (store[song_cookie] !== undefined) { // if song_ids in current queue are already saved in cookies
+                user_votes[song_cookie] = store[song_cookie];
+                delete store[song_cookie];
             }
             else { // new songs
                 user_votes[song_cookie] = [0,0];
                 this.setCookie(song_cookie, '0_0', 4);
             }
         }
-        let entries_prv = Object.keys(votes_prv); // an array of song_ids no longer in queue
+        let entries_prv = Object.keys(store); // an array of song_ids no longer in queue
         for (let i = 0; i < entries_prv.length; i++) {
             console.log("song_cookie to be deleted: " + entries_prv[i]);
             this.setCookie(entries_prv[i], "", 1 / 3600); // delete the corresponding cookie of songs that are no longer in queue
