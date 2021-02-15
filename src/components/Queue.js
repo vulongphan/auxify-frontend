@@ -11,62 +11,59 @@ import api from '../api/api.js';
 
 function QueueItem(props) {
   const room_id = props.room_id;
-  const LIKE = 'liked';
-  const DISLIKE = 'disliked';
-  const LIKE_BTN_ID = 'like' + props.id;
-  const DISLIKE_BTN_ID = 'dislike' + props.id;
-  const REPORT = 'reported';
-  const REPORT_BTN_ID = 'report' + props.id;
+  const setCookie = props.setCookie;
 
   /**
    * update the vote of the song whose like button is clicked
    * @param {number} index: the index of the song in the queue whose like button is clicked
    */
-  const onClickLike = (index) => {
-    var payload;
-    var likeList = document.getElementById(LIKE_BTN_ID).classList; //return the className(s) of the LIKE button element as a list
-    var dislikeList = document.getElementById(DISLIKE_BTN_ID).classList; //return the className(s) of the Dislike button element as a list
-    if (!likeList.contains(LIKE)) { //if the song has not been liked before
-      if (!dislikeList.contains(DISLIKE)) payload = { index: index, amount: 1 };
-      else { //if the song has been disliked before
-        payload = { index: index, amount: 2 };
-        dislikeList.remove(DISLIKE);
-      }
-      likeList.add(LIKE);
-      //if the song has been liked before
-    } else {
-      payload = { index: index, amount: -1 };
-      likeList.remove(LIKE);
+  const onClickLike = (song_cookie, user_vote, index) => {
+    let amount = 0;
+    if (user_vote[1] === -1) {
+      user_vote[1] = 1;
+      amount = 2;
     }
+    else if (user_vote[1] === 0) {
+      user_vote[1] = 1;
+      amount = 1;
+    }
+    else if (user_vote[1] === 1) {
+      user_vote[1] = 0;
+      amount = -1;
+    }
+    // document.cookie = song_cookie + "=" + user_vote[0] + "_" + user_vote[1]; // update cookie of the song
+    setCookie(song_cookie, user_vote[0] + "_" + user_vote[1], 4);
+    
+    let payload = { index: index, amount: amount };
     api.vote(room_id, payload)
       .then(() => console.log("Click liked button at " + index))
       .catch(err => console.log(err));
   }
 
+
   /**
    * update the vote of the song whose dislike button is clicked
    * @param {*} index: the index of the song in the queue whose dislike button is clicked
    */
-  const onClickDislike = (index) => {
-    var payload;
-    var likeList = document.getElementById(LIKE_BTN_ID).classList;
-    var dislikeList = document.getElementById(DISLIKE_BTN_ID).classList;
-    if (!dislikeList.contains(DISLIKE)) {
-      //if the song has not been disliked before
-      if (!likeList.contains(LIKE)) payload = { index: index, amount: -1 };
-      //if the song has been liked before
-      else {
-        payload = { index: index, amount: -2 };
-        likeList.remove(LIKE);
-      }
-      dislikeList.add(DISLIKE);
-      //if the song has been disliked before
-    } else {
-      payload = { index: index, amount: 1 };
-      dislikeList.remove(DISLIKE);
+  const onClickDislike = (song_cookie, user_vote, index) => {
+    let amount = 0;
+    if (user_vote[1] === -1) {
+      user_vote[1] = 0;
+      amount = 1;
     }
+    else if (user_vote[1] === 0) {
+      user_vote[1] = -1;
+      amount = -1;
+    }
+    else if (user_vote[1] === 1) {
+      user_vote[1] = -1;
+      amount = -2;
+    }
+    // document.cookie = song_cookie + "=" + user_vote[0] + "_" + user_vote[1]; // update cookie of the song
+    setCookie(song_cookie, user_vote[0] + "_" + user_vote[1], 4);
+    let payload = { index: index, amount: amount };
     api.vote(room_id, payload)
-      .then(() => console.log("Click disliked button at " + index))
+      .then(() => console.log("Click liked button at " + index))
       .catch(err => console.log(err));
   }
 
@@ -74,22 +71,47 @@ function QueueItem(props) {
    * update the report of the song whose report button is clicked
    * @param {*} index 
    */
-  const onClickReport = (index) => {
-    var payload = { index: index, amount: 1 };
-    var reportButtonList = document.getElementById(REPORT_BTN_ID).classList;
-    // if the song has been reported
-    if (reportButtonList.contains(REPORT)) {
-      payload = { index: index, amount: -1 };
-      reportButtonList.remove(REPORT);
+  const onClickReport = (song_cookie, user_vote, index) => {
+    let amount = 0;
+    if (user_vote[0] === 0) {
+      user_vote[0] = 1;
+      amount = 1;
     }
-    // if the song has not been reported
-    else reportButtonList.add(REPORT);
+    else {
+      user_vote[0] = 0;
+      amount = -1;
+    }
+    // document.cookie = song_cookie + "=" + user_vote[0] + "_" + user_vote[1]; // update cookie of the song
+    setCookie(song_cookie, user_vote[0] + "_" + user_vote[1], 4);
+    let payload = { index: index, amount: amount };
     api.report(room_id, payload)
       .then(() => console.log("Click reported button at " + index))
       .catch(err => console.log(err));
   }
 
+  /* Rendering className of report/like/dislike button based on props.user_vote */
   const songInfo = props.songInfo;
+  const song_cookie = props.room_id + "_" + props.id;
+  let LIKE_CLASS, DISLIKE_CLASS, REPORT_CLASS;
+  if (props.user_vote !== undefined) {
+    if (props.user_vote[1] === -1) {
+      LIKE_CLASS = "like";
+      DISLIKE_CLASS = "disliked";
+    }
+    else if (props.user_vote[1] === 0) {
+      LIKE_CLASS = "like";
+      DISLIKE_CLASS = "dislike";
+    }
+    else if (props.user_vote[1] === 1) {
+      LIKE_CLASS = "liked";
+      DISLIKE_CLASS = "dislike";
+    }
+    if (props.user_vote[0] === 0) {
+      REPORT_CLASS = "report";
+    }
+    else REPORT_CLASS = "reported";
+  }
+
   return (
     <tr className="queue-item">
       <td width="10%">
@@ -119,24 +141,24 @@ function QueueItem(props) {
       <td width="10%">
         <FontAwesomeIcon
           id={'report' + props.id}
-          className="report"
-          onClick={() => onClickReport(props.index)}
+          className={REPORT_CLASS}
+          onClick={() => onClickReport(song_cookie, props.user_vote, props.index)}
           icon={faBan}
         />
       </td>
       <td width="10%">
         <FontAwesomeIcon
           id={'like' + props.id}
-          className="like"
-          onClick={() => onClickLike(props.index)}
+          className={LIKE_CLASS}
+          onClick={() => onClickLike(song_cookie, props.user_vote, props.index)}
           icon={faHeart}
         />
       </td>
       <td width="10%">
         <FontAwesomeIcon
           id={'dislike' + props.id}
-          className="dislike"
-          onClick={() => onClickDislike(props.index)}
+          className={DISLIKE_CLASS}
+          onClick={() => onClickDislike(song_cookie, props.user_vote, props.index)}
           icon={faThumbsDown}
         />
       </td>
@@ -191,13 +213,17 @@ class Queue extends React.Component {
                 vote: song.vote,
                 report: song.report
               };
+              let song_cookie = this.props.room_id + "_" + song.id;
+              let user_vote = this.props.user_votes[song_cookie]; // user_vote[0] is report count and user_vote[1] is vote count
               return (
                 <QueueItem
                   room_id={this.props.room_id}
                   key={song.id}
                   id={song.id}
                   index={index}
-                  songInfo={songInfo} />
+                  songInfo={songInfo}
+                  setCookie = {this.props.setCookie}
+                  user_vote={user_vote} />
               )
             })}
           </tbody>

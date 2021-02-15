@@ -26,6 +26,7 @@ class Room extends React.Component {
             room_id: params.room_id,
             hostInfo: {},
             queue: [],
+            user_votes: {},
             default_playlist: null,
             nowPlaying: {
                 playing: false,
@@ -51,10 +52,15 @@ class Room extends React.Component {
         this.updateNowPlaying = this.updateNowPlaying.bind(this);
         this.updateQueue = this.updateQueue.bind(this);
         this.updateDefaultPlaylist = this.updateDefaultPlaylist.bind(this);
+
+        this.updateSongCookie = this.updateSongCookie.bind(this);
     }
 
-    componentDidMount() {
-        this.fetchRoom(this.state.room_id);
+    async componentDidMount() {
+        // wait until fetchRoom returns before doing other operations that are dependent on the room state
+        await this.fetchRoom(this.state.room_id);
+
+        this.updateSongCookie(this.state.room_id, this.state.queue);
 
         // subscribe to pusher channel that corresponds to the room_id
         this.pusher = new Pusher(pusher_key, {
@@ -68,6 +74,69 @@ class Room extends React.Component {
         this.channel.bind('updateQueue', this.updateQueue);
         this.channel.bind('updateDefaultPlaylist', this.updateDefaultPlaylist);
 
+    }
+
+    /**
+     * Update cookie that corresponds to a song in a room, this function is to be called when an updateQueue event happens or 
+     * when the page is reloaded 
+     */
+    updateSongCookie(room_id, queue) {
+        let votes_prv = {};
+        // get all the cookies that corresponds to songs in the room: room_id + "_" + song_id + "=" + report + "_" + vote
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let ca = decodedCookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') { // stripping whitespace
+                c = c.substring(1);
+            }
+            if (c.indexOf(room_id) === 0) { //if the cookie corresponds to a song in the room
+                if (c[c.length - 2] === '-') { // negative vote
+                    let song_cookie = c.substring(0, c.length - 5);
+                    let report = parseInt(c.charAt(c.length - 4));
+                    let vote = (-1) * parseInt(c.substring(c.length - 1));
+                    votes_prv[song_cookie] = [report,vote];
+                }
+                else { // positive vote
+                    let song_cookie = c.substring(0, c.length - 4);
+                    let report = parseInt(c.charAt(c.length - 3));
+                    let vote = parseInt(c.substring(c.length - 1));
+                    votes_prv[song_cookie] = [report,vote];
+                }
+            }
+        }
+        console.log("user_votes before queue update (retrieved from cookies): ", votes_prv)
+        // get all the song_ids in the current queue
+        let entries_cur = [];
+        for (let i = 0; i < queue.length; i++) {
+            let song_id = queue[i].id;
+            let song_cookie = room_id + "_" + song_id;
+            entries_cur.push(song_cookie);
+        }
+        console.log("current song_cookies of songs in queue (retrieved from queue property): ", entries_cur)
+        let user_votes = {};
+        
+        // check for new songs and delete songs that are no longer in queue
+        for (let i = 0; i < entries_cur.length; i++) {
+            let song_cookie = entries_cur[i];
+            if (votes_prv[song_cookie] !== undefined) { // if song_ids in current queue are already saved in cookies
+                user_votes[song_cookie] = votes_prv[song_cookie];
+                delete votes_prv[song_cookie];
+            }
+            else { // new songs
+                user_votes[song_cookie] = [0,0];
+                this.setCookie(song_cookie, '0_0', 4);
+            }
+        }
+        let entries_prv = Object.keys(votes_prv); // an array of song_ids no longer in queue
+        for (let i = 0; i < entries_prv.length; i++) {
+            console.log("song_cookie to be deleted: " + entries_prv[i]);
+            this.setCookie(entries_prv[i], "", 1 / 3600); // delete the corresponding cookie of songs that are no longer in queue
+        }
+        console.log("new user_votes property of room: ", user_votes);
+        this.setState({
+            user_votes: user_votes
+        })
     }
 
     /**
@@ -87,8 +156,9 @@ class Room extends React.Component {
      */
     updateQueue(data) {
         let queue = data.queue;
+        this.updateSongCookie(this.state.room_id, queue);
         this.setState({
-            queue: queue
+            queue: queue,
         })
     }
 
@@ -107,8 +177,8 @@ class Room extends React.Component {
      * Fetch the room info and update room state 
      * @param {String} room_id
      */
-    fetchRoom(room_id) {
-        api.getRoom(room_id)
+    async fetchRoom(room_id) {
+        await api.getRoom(room_id)
             .then(res => {
                 if (res.data.success) {
                     const room = res.data.data;
@@ -158,7 +228,7 @@ class Room extends React.Component {
 
     addToQueue(search) {
         if (this.state.queue.length >= MAX_SONG_IN_QUEUE) alert("Our queue can only contain a maximum of " + MAX_SONG_IN_QUEUE + " songs.");
-        else{
+        else {
             let song = {};
             // get the name of all artists
             let artists = [];
@@ -283,12 +353,14 @@ class Room extends React.Component {
      * @param {number} exhrs: time expired (in hours) - not setting the expire time for now
      * 
      */
-    setCookie(cname, cvalue, exhrs) {
-        var d = new Date();
-        d.setTime(d.getTime() + (exhrs * 60 * 60 * 1000));
-        // var expires = "expires=" + d.toUTCString();
-        // document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-        document.cookie = cname + "=" + cvalue;
+    setCookie(cname, cvalue, exhrs = null) {
+        if (exhrs !== null) {
+            var d = new Date();
+            d.setTime(d.getTime() + (exhrs * 60 * 60 * 1000));
+            var expires = "expires=" + d.toUTCString();
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
+        else document.cookie = cname + "=" + cvalue;
     }
 
     /**
@@ -369,7 +441,9 @@ class Room extends React.Component {
                             queue={this.state.queue}
                             room_id={this.state.room_id}
                             is_host={this.state.is_host}
-                            play={this.play} />
+                            play={this.play}
+                            setCookie = {this.setCookie}
+                            user_votes={this.state.user_votes} />
                     </div>
                 </div>
                 {this.state.is_host &&
