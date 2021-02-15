@@ -4,6 +4,7 @@ import SpotifyWebApi from 'spotify-web-api-js';
 import { client_url, pusher_key, pusher_cluster } from '../config';
 import api from '../api/api.js';
 import defaultImg from '../style/default.jpg';
+import sAlert from '@sweetalert/with-react';
 
 import NowPlaying from './NowPlaying';
 import Queue from './Queue';
@@ -158,7 +159,7 @@ class Room extends React.Component {
 
     addToQueue(search) {
         if (this.state.queue.length >= MAX_SONG_IN_QUEUE) alert("Our queue can only contain a maximum of " + MAX_SONG_IN_QUEUE + " songs.");
-        else{
+        else {
             let song = {};
             // get the name of all artists
             let artists = [];
@@ -315,9 +316,30 @@ class Room extends React.Component {
      * Delete cookie that corresponds to the room when the host wants to close the room
      */
     deleteRoomHandler() {
+        sAlert({
+            title: "Are you sure that you want to close this room ?",
+            text: "Everyone will lose access to this room!",
+            icon: "warning",
+            buttons: ["Cancel", "Close"],
+            dangerMode: true,
+        })
+        .then((isConfirmed) => {
+            if (isConfirmed) {
+                //cookie name that corresponds to the room being hosted
+                const cname = "host" + this.state.room_id;
+                api.deleteRoom(this.state.room_id);
+                //we also have to set the corresponding cookie to be empty and expires in 1 sec
+                //note that only the cookie value is deleted but the cookie name still exists (i.e: hostABCD=)
+                this.setCookie(cname, "", 1 / 3600);
+                console.log("cookie deleted");
+                window.location.href = "/expire"
+            }
+        })
+        /*
         //cookie name that corresponds to the room being hosted
         const cname = "host" + this.state.room_id;
         //alert user of the msg to close Room
+
         var answer = window.confirm("Are you sure that you want to close this room ?");
         if (answer === true) {
             api.deleteRoom(this.state.room_id);
@@ -329,7 +351,9 @@ class Room extends React.Component {
         else { //to prevent the window from reloading after pressing Cancel button
             return false
         }
+        */
     }
+
 
     render() {
         return (
