@@ -91,17 +91,20 @@ class Room extends React.Component {
                 c = c.substring(1);
             }
             if (c.indexOf(room_id) === 0) { //if the cookie corresponds to a song in the room
-                if (c[c.length - 2] === '-') { // negative vote
+                if (c.charAt(c.length - 2) === '-') { // negative vote
                     let song_cookie = c.substring(0, c.length - 5);
                     let report = parseInt(c.charAt(c.length - 4));
                     let vote = (-1) * parseInt(c.substring(c.length - 1));
-                    store[song_cookie] = [report,vote];
+                    store[song_cookie] = [report, vote];
                 }
-                else { // positive vote
+                else if (c.charAt(c.length - 2) === '_') { // positive vote
                     let song_cookie = c.substring(0, c.length - 4);
                     let report = parseInt(c.charAt(c.length - 3));
                     let vote = parseInt(c.substring(c.length - 1));
-                    store[song_cookie] = [report,vote];
+                    store[song_cookie] = [report, vote];
+                }
+                else {
+                    alert("Please clear cookies stored on this site");
                 }
             }
         }
@@ -115,7 +118,7 @@ class Room extends React.Component {
         }
         console.log("current song_cookies of songs in queue (retrieved from queue property): ", entries_cur)
         let user_votes = {};
-        
+
         // check for new songs and delete songs that are no longer in queue
         for (let i = 0; i < entries_cur.length; i++) {
             let song_cookie = entries_cur[i];
@@ -124,7 +127,7 @@ class Room extends React.Component {
                 delete store[song_cookie];
             }
             else { // new songs
-                user_votes[song_cookie] = [0,0];
+                user_votes[song_cookie] = [0, 0];
                 this.setCookie(song_cookie, '0_0', 4);
             }
         }
@@ -442,7 +445,7 @@ class Room extends React.Component {
                             room_id={this.state.room_id}
                             is_host={this.state.is_host}
                             play={this.play}
-                            setCookie = {this.setCookie}
+                            setCookie={this.setCookie}
                             user_votes={this.state.user_votes} />
                     </div>
                 </div>
