@@ -191,9 +191,6 @@ html {
 }
 
 .like{
-  /* border: 2px solid #6BE193;
-  border-radius: 25px; */
-  /* width: 75px; */
   color: white;
   font-size: 1.2em;
 }
@@ -201,32 +198,28 @@ html {
 
 
 .like:hover, .liked {
-  /* background-color: #6BE193; */
   color: #6BE193;
+  font-size: 1.2em;
 }
 
 .dislike{
-  /* border: 2px solid gray;
-  border-radius: 20px; */
   color: white;
   font-size: 1.2em;
 }
 
 .dislike:hover, .disliked{
-  /* background-color: grey; */
   color:#6BE193;
+  font-size: 1.2em;
 }
 
 .report{
-  /* border: 2px solid red;
-  border-radius: 20px; */
   color: white;
   font-size: 1.2em;
 }
 
 .report:hover, .reported{
-  /* background-color: red; */
   color:red;
+  font-size: 1.2em;
 }
 
 .queue-container #coming_up{
