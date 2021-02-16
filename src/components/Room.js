@@ -91,7 +91,7 @@ class Room extends React.Component {
                 c = c.substring(1);
             }
             if (c.indexOf(room_id) === 0) { //if the cookie corresponds to a song in the room
-                if (c.charAt(c.length - 2) === '-') { // negative vote
+                if (c.charAt(c.length - 2) === '-' && c.charAt(c.length - 3) === '_') { // negative vote
                     let song_cookie = c.substring(0, c.length - 5);
                     let report = parseInt(c.charAt(c.length - 4));
                     let vote = (-1) * parseInt(c.substring(c.length - 1));

@@ -31,7 +31,6 @@ function QueueItem(props) {
       user_vote[1] = 0;
       amount = -1;
     }
-    // document.cookie = song_cookie + "=" + user_vote[0] + "_" + user_vote[1]; // update cookie of the song
     setCookie(song_cookie, user_vote[0] + "_" + user_vote[1], 4);
     
     let payload = { index: index, amount: amount };
@@ -59,7 +58,6 @@ function QueueItem(props) {
       user_vote[1] = -1;
       amount = -2;
     }
-    // document.cookie = song_cookie + "=" + user_vote[0] + "_" + user_vote[1]; // update cookie of the song
     setCookie(song_cookie, user_vote[0] + "_" + user_vote[1], 4);
     let payload = { index: index, amount: amount };
     api.vote(room_id, payload)
@@ -81,7 +79,6 @@ function QueueItem(props) {
       user_vote[0] = 0;
       amount = -1;
     }
-    // document.cookie = song_cookie + "=" + user_vote[0] + "_" + user_vote[1]; // update cookie of the song
     setCookie(song_cookie, user_vote[0] + "_" + user_vote[1], 4);
     let payload = { index: index, amount: amount };
     api.report(room_id, payload)
@@ -92,7 +89,9 @@ function QueueItem(props) {
   /* Rendering className of report/like/dislike button based on props.user_vote */
   const songInfo = props.songInfo;
   const song_cookie = props.room_id + "_" + props.id;
-  let LIKE_CLASS, DISLIKE_CLASS, REPORT_CLASS;
+  let LIKE_CLASS = "like";
+  let DISLIKE_CLASS = "dislike";
+  let REPORT_CLASS = "report";
   if (props.user_vote !== undefined) {
     if (props.user_vote[1] === -1) {
       LIKE_CLASS = "like";
