@@ -59,13 +59,7 @@ class Room extends React.Component {
     componentDidMount() {
         // wait until fetchRoom returns before doing other operations that are dependent on the room state
         this.fetchRoom(this.state.room_id);
-
-        // let user_votes = this.updateSongCookie(this.state.room_id, this.state.queue);
-
-        // this.setState({
-        //     user_votes: user_votes
-        // })
-
+        
         // subscribe to pusher channel that corresponds to the room_id
         this.pusher = new Pusher(pusher_key, {
             cluster: pusher_cluster,
@@ -141,9 +135,6 @@ class Room extends React.Component {
             this.setCookie(entries_prv[i], "", 1 / 3600); // delete the corresponding cookie of songs that are no longer in queue
         }
         console.log("new user_votes property of room: ", user_votes);
-        // this.setState({
-        //     user_votes: user_votes
-        // })
         return user_votes;
     }
 
