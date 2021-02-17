@@ -87,11 +87,9 @@ class JoinRoom extends React.Component {
                     {this.state.rooms.map(room => {
                         var id = room["id"];
                         var is_host = room["is_host"]
-                        if (is_host) { //if that is the host then return the room_id
-                            return (
-                                <span>{id} </span>
-                            )
-                        }
+                        return (
+                            <span>{is_host && id}</span>
+                        )
                     })}
                 </div>
             </div>
