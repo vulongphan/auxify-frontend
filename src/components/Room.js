@@ -59,7 +59,7 @@ class Room extends React.Component {
     componentDidMount() {
         // wait until fetchRoom returns before doing other operations that are dependent on the room state
         this.fetchRoom(this.state.room_id);
-        
+
         // subscribe to pusher channel that corresponds to the room_id
         this.pusher = new Pusher(pusher_key, {
             cluster: pusher_cluster,
@@ -101,12 +101,9 @@ class Room extends React.Component {
                     let vote = parseInt(c.substring(c.length - 1));
                     store[song_cookie] = [report, vote];
                 }
-                else { // if the cookie stored is not the supported format
-                    alert("Please clear cookies stored on this site");
-                }
             }
         }
-        console.log("store of votes (retrieved from cookies): ", store)
+        // console.log("store of votes (retrieved from cookies): ", store)
         // get all the song_ids in the current queue
         let entries_cur = [];
         for (let i = 0; i < queue.length; i++) {
@@ -114,7 +111,7 @@ class Room extends React.Component {
             let song_cookie = room_id + "_" + song_id;
             entries_cur.push(song_cookie);
         }
-        console.log("current song_cookies of songs in queue (retrieved from queue property): ", entries_cur)
+        // console.log("current song_cookies of songs in queue (retrieved from queue property): ", entries_cur)
         let user_votes = {};
 
         // check for new songs and delete songs that are no longer in queue
@@ -131,10 +128,10 @@ class Room extends React.Component {
         }
         let entries_prv = Object.keys(store); // an array of song_ids no longer in queue
         for (let i = 0; i < entries_prv.length; i++) {
-            console.log("song_cookie to be deleted: " + entries_prv[i]);
+            // console.log("song_cookie to be deleted: " + entries_prv[i]);
             this.setCookie(entries_prv[i], "", 1 / 3600); // delete the corresponding cookie of songs that are no longer in queue
         }
-        console.log("new user_votes property of room: ", user_votes);
+        // console.log("new user_votes property of room: ", user_votes);
         return user_votes;
     }
 
@@ -224,7 +221,7 @@ class Room extends React.Component {
     addDefaultPlaylist(playlist) {
         const payload = { default_playlist: playlist }
         api.addPlaylist(this.state.room_id, payload)
-            .then(() => console.log("Successfully updated"))
+            .then(() => console.log("Default Playlist successfully updated"))
             .catch(err => console.log(err));
     }
 
@@ -260,7 +257,7 @@ class Room extends React.Component {
             song.vote = 0;
             song.report = 0;
             api.addToQueue(this.state.room_id, song)
-                .then(() => console.log("Successfully added"))
+                .then(() => console.log("Song successfully added"))
                 .catch(err => console.log(err));
         }
     }
@@ -314,7 +311,6 @@ class Room extends React.Component {
                     .then(res => {
                         const playlist = res.tracks.items;
                         var position = Math.floor(Math.random() * playlist.length);
-                        console.log(position);
                         var nextSongURI = playlist[position].track.uri;
                         options = {
                             uris: [nextSongURI],
