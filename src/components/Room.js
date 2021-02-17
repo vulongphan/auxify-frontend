@@ -56,11 +56,15 @@ class Room extends React.Component {
         this.updateSongCookie = this.updateSongCookie.bind(this);
     }
 
-    async componentDidMount() {
+    componentDidMount() {
         // wait until fetchRoom returns before doing other operations that are dependent on the room state
-        await this.fetchRoom(this.state.room_id);
+        this.fetchRoom(this.state.room_id);
 
-        this.updateSongCookie(this.state.room_id, this.state.queue);
+        // let user_votes = this.updateSongCookie(this.state.room_id, this.state.queue);
+
+        // this.setState({
+        //     user_votes: user_votes
+        // })
 
         // subscribe to pusher channel that corresponds to the room_id
         this.pusher = new Pusher(pusher_key, {
@@ -90,7 +94,7 @@ class Room extends React.Component {
             while (c.charAt(0) === ' ') { // stripping whitespace
                 c = c.substring(1);
             }
-            if (c.indexOf(room_id) === 0) { //if the cookie corresponds to a song in the room
+            if (c.indexOf(room_id) === 0) { //if the cookie corresponds to the room 
                 if (c.charAt(c.length - 2) === '-' && c.charAt(c.length - 3) === '_') { // negative vote
                     let song_cookie = c.substring(0, c.length - 5);
                     let report = parseInt(c.charAt(c.length - 4));
@@ -103,7 +107,7 @@ class Room extends React.Component {
                     let vote = parseInt(c.substring(c.length - 1));
                     store[song_cookie] = [report, vote];
                 }
-                else {
+                else { // if the cookie stored is not the supported format
                     alert("Please clear cookies stored on this site");
                 }
             }
@@ -137,9 +141,10 @@ class Room extends React.Component {
             this.setCookie(entries_prv[i], "", 1 / 3600); // delete the corresponding cookie of songs that are no longer in queue
         }
         console.log("new user_votes property of room: ", user_votes);
-        this.setState({
-            user_votes: user_votes
-        })
+        // this.setState({
+        //     user_votes: user_votes
+        // })
+        return user_votes;
     }
 
     /**
@@ -159,9 +164,10 @@ class Room extends React.Component {
      */
     updateQueue(data) {
         let queue = data.queue;
-        this.updateSongCookie(this.state.room_id, queue);
+        let user_votes = this.updateSongCookie(this.state.room_id, queue);
         this.setState({
             queue: queue,
+            user_votes: user_votes
         })
     }
 
@@ -180,11 +186,12 @@ class Room extends React.Component {
      * Fetch the room info and update room state 
      * @param {String} room_id
      */
-    async fetchRoom(room_id) {
-        await api.getRoom(room_id)
+    fetchRoom(room_id) {
+        api.getRoom(room_id)
             .then(res => {
                 if (res.data.success) {
                     const room = res.data.data;
+                    let user_votes = this.updateSongCookie(this.state.room_id, room.queue);
 
                     this.handleHost(room.host_known);
 
@@ -194,6 +201,7 @@ class Room extends React.Component {
                         queue: room.queue,
                         default_playlist: room.default_playlist,
                         nowPlaying: room.nowPlaying,
+                        user_votes: user_votes
                     })
                 }
             })
