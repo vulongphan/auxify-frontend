@@ -9,6 +9,48 @@ import JoinRoom from './JoinRoom';
 import Expire from './Expire';
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      is_private: null
+    }
+  }
+
+  async componentDidMount() {
+    await this.checkIncognito();
+    while (this.state.is_private === true) {
+      alert("Auxify currently does not support private mode. Sorry:(");
+    }
+  }
+
+  async checkIncognito() {
+    // work on Chrome and FireFox
+    let is_private;
+    if ("storage" in navigator && "estimate" in navigator.storage) {
+      const { usage, quota } = await navigator.storage.estimate();
+      console.log(`Using ${usage} out of ${quota} bytes.`);
+      if (quota < 1000000000) {
+        is_private = true;
+        // console.log("Chrome/FireFox: In Cognito");
+      } else {
+        is_private = false;
+        // console.log("Chrome/FireFox: Not in Cognito");
+      }
+    } else {
+      is_private = null;
+      // console.log("Safari: Cannot detect");
+    }
+    // for Safari
+    try { localStorage.test = 2; } catch (e) {
+      is_private = true;
+      // console.log("Safari: In Cognito");
+    }
+    this.setState({
+      is_private: is_private
+    })
+
+  }
+
   render() {
     return (
       <Router>
