@@ -24,6 +24,8 @@ class App extends React.Component {
   }
 
   async checkIncognito() {
+    // console.log(navigator.cookieEnabled);
+
     // work on Chrome and FireFox
     let is_private;
     if ("storage" in navigator && "estimate" in navigator.storage) {
@@ -31,24 +33,40 @@ class App extends React.Component {
       // console.log(`Using ${usage} out of ${quota} bytes.`);
       if (quota < 1000000000) {
         is_private = true;
-        // console.log("Chrome/FireFox: In Cognito");
+        console.log("Chrome/FireFox: Incognito enabled");
       } else {
         is_private = false;
-        // console.log("Chrome/FireFox: Not in Cognito");
+        console.log("Chrome/FireFox: Incognito disabled");
       }
-    } else {
-      is_private = null;
-      // console.log("Safari: Cannot detect");
     }
     // for Safari
-    try { localStorage.test = 2; } catch (e) {
-      is_private = true;
-      // console.log("Safari: In Cognito");
+    // else if (navigator.cookieEnabled === true) {
+    //   is_private = false;
+    //   console.log("Safari: Incognito disabled");
+    // }
+
+    // else if (/*navigator.cookieEnabled === false window.history === undefined*/ !window.RequestFileSystem) {
+    //   is_private = true;
+    //   console.log("Safari: Incognito enabled");
+    // }
+    /*Some failed attempts to check safari incognito mode*/
+    // try { window.openDatabase(null, null, null, null); } catch (e) {
+    //   console.log("Checking Safari browser");
+    //   if (e.code === DOMException.QUOTA_EXCEEDED_ERR && storage.length === 0) {
+    //     is_private = true;
+    //     console.log("Safari: In Cognito");
+    //   }
+    // }
+    // else if (!window.indexedDB && (window.PointerEvent || window.MSPointerEvent)) {
+    //   is_private = true;
+    //   console.log("Safari: In Cognito");
+    // }
+    else {
+      console.log("Safari: Cannot detect");
     }
     this.setState({
       is_private: is_private
     })
-
   }
 
   render() {
