@@ -152,6 +152,12 @@ p Link,a:hover{
   background-color: #1db954;
   font-size: 12px;
   border: 1px solid #32e26f;
+  margin-top: -20px;
+  
+}
+
+.swal-modal{
+  height: 120px;
 }
 
 /*for smartphones portrait

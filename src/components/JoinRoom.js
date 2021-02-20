@@ -34,9 +34,9 @@ class JoinRoom extends React.Component {
                 window.location.href = frontEndRoom + this.state.value;
             })
             .catch(() => sAlert({
-                title: "Invalid Room ID",
+                // title: "Invalid Room ID",
                 text: "Please input a valid room ID",
-                icon: "error",
+                // icon: "error",
             }));
     }
 
