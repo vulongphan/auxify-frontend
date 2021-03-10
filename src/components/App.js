@@ -5,6 +5,8 @@ import '../style/App.css';
 import Room from './Room';
 import About from './About';
 import CreateRoom from './CreateRoom';
+import AccessCode from './AccessCode';
+import RoomSettings from './RoomSettings';
 import JoinRoom from './JoinRoom';
 import Expire from './Expire';
 
@@ -18,6 +20,8 @@ class App extends React.Component {
             <Route path='/about' component={About} />
             <Route path='/room' component={Room} />
             <Route path='/create' component={CreateRoom} />
+            <Route path='/accessCode' component = {AccessCode}/>
+            <Route path='/roomSettings' component={RoomSettings} />
             <Route path='/join' component={JoinRoom} />
             <Route path='/expire' component={Expire} />
           </Switch>

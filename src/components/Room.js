@@ -11,6 +11,7 @@ import SearchBar from './SearchBar';
 import RoomInfo from './RoomInfo';
 
 import Pusher from 'pusher-js';
+import RoomSettings from './RoomSettings';
 
 const spotifyApi = new SpotifyWebApi();
 const expired = client_url + '/expire';
@@ -418,7 +419,8 @@ class Room extends React.Component {
                                 onClick={this.addDefaultPlaylist}
                                 types={['playlist']}
                                 maxSuggestion={5}
-                                placeholder={"Choose a playlist as default"} />}
+                                placeholder={"Choose a playlist as default"}
+                                />}
 
                     </div>
                     <NowPlaying
@@ -450,6 +452,9 @@ class Room extends React.Component {
                             <button type="submit" className="roomAction" > CLOSE ROOM </button>
                         </form>
                     </div>}
+                <RoomSettings
+                    spotifyApi={spotifyApi}
+                />
 
             </div>
         )
